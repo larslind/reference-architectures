@@ -43,7 +43,7 @@
         "extensions": [
           {
             "name": "ra-iis-config-ext",
-            "settingsConfigMapperUri": "https://raw.githubusercontent.com/mspnp/template-building-blocks/kirpas/bb-nva/templates/buildingBlocks/nvas-ntier-network/nvas-ntier-settings-mapper.json",
+            "settingsConfigMapperUri": "https://raw.githubusercontent.com/mspnp/reference-architectures/kirpas/ra-multi-vm-extend/guidance-compute-multi-vm/extensions/windows/settings-mapper.json",
             "publisher": "Microsoft.Powershell",
             "type": "DSC",
             "typeHandlerVersion": "2.20",
