@@ -67,7 +67,8 @@
             "backendPort": 80,
             "protocol": "Tcp",
             "backendPoolName": "ra-multi-vm-lb-bep1",
-            "frontendIPConfigurationName": "ra-multi-vm-lb-fe-config1"
+            "frontendIPConfigurationName": "ra-multi-vm-lb-fe-config1",
+            "probeName": "lbp1"
           }
         ],
         "probes": [
@@ -75,10 +76,7 @@
             "name": "lbp1",
             "port": 80,
             "protocol": "Http",
-            "requestPath": "/",
-            "loadBalancingRules": [
-              "lbr1"
-            ]
+            "requestPath": "/"
           }
         ],
         "backendPools": [
