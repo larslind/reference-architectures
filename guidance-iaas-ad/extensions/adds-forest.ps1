@@ -5,6 +5,8 @@ Param(
 	[string]$DomainNetbiosName = "CONTOSO"
 )
 
+$ErrorActionPreference = "Stop"
+
 Initialize-Disk -Number 2 -PartitionStyle GPT
 New-Partition -UseMaximumSize -DriveLetter F -DiskNumber 2
 Format-Volume -DriveLetter F -Confirm:$false -FileSystem NTFS -force 
