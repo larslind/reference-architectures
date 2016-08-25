@@ -48,7 +48,7 @@
             "type": "CustomScriptForLinux",
             "typeHandlerVersion": "1.5",
             "autoUpgradeMinorVersion": true,
-            "properties": { }
+            "settingsConfig": { }
           }
         ],
         "availabilitySet": {

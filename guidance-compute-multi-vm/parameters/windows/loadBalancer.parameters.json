@@ -48,7 +48,7 @@
             "type": "DSC",
             "typeHandlerVersion": "2.20",
             "autoUpgradeMinorVersion": true,
-            "properties": { }
+            "settingsConfig": { }
           }
         ],
         "availabilitySet": {
