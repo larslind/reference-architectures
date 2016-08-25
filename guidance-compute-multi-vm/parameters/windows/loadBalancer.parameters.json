@@ -67,7 +67,8 @@
             "backendPort": 80,
             "protocol": "Tcp",
             "backendPoolName": "ra-multi-vm-lb-bep1",
-            "frontendIPConfigurationName": "ra-multi-vm-lb-fe-config1"
+            "frontendIPConfigurationName": "ra-multi-vm-lb-fe-config1",
+            "probeName": "lbp1"
           }
         ],
         "probes": [
