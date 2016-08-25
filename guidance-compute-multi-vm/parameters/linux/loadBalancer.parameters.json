@@ -40,7 +40,17 @@
         "osDisk": {
           "caching": "ReadWrite"
         },
-        "extensions": [ ],
+        "extensions": [
+          {
+            "name": "ra-apache-config-ext",
+            "settingsMapperUri": "https://raw.githubusercontent.com/mspnp/template-building-blocks/kirpas/bb-nva/templates/buildingBlocks/nvas-ntier-network/nvas-ntier-settings-mapper.json",
+            "publisher": "Microsoft.OSTCExtensions",
+            "type": "CustomScriptForLinux",
+            "typeHandlerVersion": "1.5",
+            "autoUpgradeMinorVersion": true,
+            "properties": { }
+          }
+        ],
         "availabilitySet": {
           "useExistingAvailabilitySet": "No",
           "name": "ra-multi-vm-as"
