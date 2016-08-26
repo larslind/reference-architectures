@@ -45,6 +45,7 @@
     <None Include="Parameters\virtualMachine-onprem.parameters.json" />
     <None Include="Parameters\virtualNetwork-onprem.parameters.json" />
     <None Include="Parameters\virtualNetwork.parameters.json" />
+    <None Include="Parameters\virtualNetworkGateway.parameters.json" />
     <None Include="Templates\azuredeploy-onprem.json" />
   </ItemGroup>
   <Target Name="GetReferenceAssemblyPaths" />
