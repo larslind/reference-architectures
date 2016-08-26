@@ -4,25 +4,25 @@
   "parameters": {
     "virtualNetworkSettings": {
       "value": {
-        "name": "ra-vnet",
+        "name": "ra-ntier-vnet",
         "addressPrefixes": [
           "10.0.0.0/16"
         ],
         "subnets": [
           {
-            "name": "app1-web-sn",
+            "name": "ra-ntier-web-sn",
             "addressPrefix": "10.0.0.0/24"
           },
           {
-            "name": "app1-biz-sn",
+            "name": "ra-ntier-biz-sn",
             "addressPrefix": "10.0.1.0/24"
           },
           {
-            "name": "app1-data-sn",
+            "name": "ra-ntier-data-sn",
             "addressPrefix": "10.0.2.0/24"
           },
           {
-            "name": "app1-mgmt-sn",
+            "name": "ra-ntier-mgmt-sn",
             "addressPrefix": "10.0.3.0/24"
           }
         ],

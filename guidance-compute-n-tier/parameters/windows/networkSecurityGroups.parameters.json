@@ -4,16 +4,16 @@
   "parameters": {
     "virtualNetworkSettings": {
       "value": {
-        "name": "ra-vnet",
+        "name": "ra-ntier-vnet",
         "resourceGroup": "ra-ntier-vm-rg"
 	}
     },
     "networkSecurityGroupsSettings": {
       "value": [
         {
-          "name": "app1-biz-nsg",
+          "name": "ra-ntier-biz-nsg",
           "subnets": [
-            "app1-biz-sn"
+            "ra-ntier-biz-sn"
           ],
           "networkInterfaces": [
           ],
@@ -41,13 +41,24 @@
               "access": "Deny",
               "priority": 120,
               "direction": "Inbound"
+            },
+            {
+              "name": "allow-mgmt-ssh",
+              "direction": "Inbound",
+              "priority": 110,
+              "sourceAddressPrefix": "10.0.3.0/24",
+              "destinationAddressPrefix": "*",
+              "sourcePortRange": "*",
+              "destinationPortRange": "3389",
+              "access": "Allow",
+              "protocol": "Tcp"
             }
           ]
         },
         {
-          "name": "app1-data-nsg",
+          "name": "ra-ntier-data-nsg",
           "subnets": [
-            "app1-data-sn"
+            "ra-ntier-data-sn"
           ],
           "networkInterfaces": [
           ],
@@ -65,6 +76,17 @@
               "direction": "Inbound"
             },
             {
+              "name": "allow-mgmt-ssh",
+              "direction": "Inbound",
+              "priority": 110,
+              "sourceAddressPrefix": "10.0.3.0/24",
+              "destinationAddressPrefix": "*",
+              "sourcePortRange": "*",
+              "destinationPortRange": "3389",
+              "access": "Allow",
+              "protocol": "Tcp"
+            },
+            {
               "name": "deny-other-traffic",
               "description": "Deny all other traffic",
               "protocol": "*",
@@ -79,9 +101,9 @@
           ]
         },
         {
-          "name": "app1-web-nsg",
+          "name": "ra-ntier-web-nsg",
           "subnets": [
-            "app1-web-sn"
+            "ra-ntier-web-sn"
           ],
           "networkInterfaces": [
           ],
@@ -111,6 +133,17 @@
               "direction": "Inbound"
             },
             {
+              "name": "allow-mgmt-ssh",
+              "direction": "Inbound",
+              "priority": 120,
+              "sourceAddressPrefix": "10.0.3.0/24",
+              "destinationAddressPrefix": "*",
+              "sourcePortRange": "*",
+              "destinationPortRange": "3389",
+              "access": "Allow",
+              "protocol": "Tcp"
+            },
+            {
               "name": "deny-other-traffic",
               "description": "Deny all other traffic",
               "protocol": "*",
@@ -119,22 +152,22 @@
               "sourceAddressPrefix": "*",
               "destinationAddressPrefix": "*",
               "access": "Deny",
-              "priority": 120,
+              "priority": 130,
               "direction": "Inbound"
             }
           ]
         },
         {
-          "name": "app1-mgmt-nsg",
+          "name": "ra-ntier-mgmt-nsg",
           "subnets": [ ],
           "networkInterfaces": [
-            "ra-vm9-nic1"
+            "ra-ntier-vm9-nic1"
           ],
           "securityRules": [
             {
-              "name": "RDP",
+              "name": "default-allow-rdp",
               "description": "Allow RDP Subnet",
-              "protocol": "tcp",
+              "protocol": "Tcp",
               "sourcePortRange": "*",
               "destinationPortRange": "3389",
               "sourceAddressPrefix": "*",

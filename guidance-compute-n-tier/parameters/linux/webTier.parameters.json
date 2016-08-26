@@ -4,14 +4,14 @@
   "parameters": {
     "loadBalancerSettings": {
       "value": {
-        "name": "app1-web-lb",
+        "name": "ra-ntier-web-lb",
         "frontendIPConfigurations": [
           {
             "name": "lb-fe-config1",
             "loadBalancerType": "public",
             "internalLoadBalancerSettings": {
               "privateIPAddress": "10.0.0.250",
-              "subnetName": "app1-web-sn"
+              "subnetName": "ra-ntier-web-sn"
             }
           }
         ],
@@ -82,14 +82,13 @@
         "extensions": [ ],
         "availabilitySet": {
           "useExistingAvailabilitySet": "No",
-          "name": "app1-web-as"
-        },
-        "extensions": [ ]
+          "name": "ra-ntier-web-as"
+        }
       }
     },
     "virtualNetworkSettings": {
       "value": {
-        "name": "ra-vnet",
+        "name": "ra-ntier-vnet",
         "resourceGroup": "ra-ntier-vm-rg"
       }
     },

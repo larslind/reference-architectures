@@ -4,7 +4,7 @@
   "parameters": {
     "virtualMachinesSettings": {
       "value": {
-        "namePrefix": "ra",
+        "namePrefix": "ra-ntier-mgmt",
         "computerNamePrefix": "cn",
         "size": "Standard_DS1",
         "adminUsername": "testuser",
@@ -16,7 +16,7 @@
           {
             "isPublic": "true",
             "isPrimary": "true",
-            "subnetName": "app1-mgmt-sn",
+            "subnetName": "ra-ntier-mgmt-sn",
             "privateIPAllocationMethod": "dynamic",
             "publicIPAllocationMethod": "dynamic",
             "enableIPForwarding": false,
@@ -44,13 +44,12 @@
         "availabilitySet": {
           "useExistingAvailabilitySet": "No",
           "name": ""
-        },
-        "extensions": [ ]
+        }
       }
     },
     "virtualNetworkSettings": {
       "value": {
-        "name": "ra-vnet",
+        "name": "ra-ntier-vnet",
         "resourceGroup": "ra-ntier-vm-rg"
       }
     },
