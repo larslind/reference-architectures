@@ -22,7 +22,8 @@
             "backendPort": 80,
             "protocol": "Tcp",
             "backendPoolName": "lb-bep1",
-            "frontendIPConfigurationName": "lbfe1"
+            "frontendIPConfigurationName": "lbfe1",
+            "probeName": "http-probe"
           },
           {
             "name": "https-rule",
@@ -30,7 +31,8 @@
             "backendPort": 443,
             "protocol": "Tcp",
             "backendPoolName": "lb-bep1",
-            "frontendIPConfigurationName": "lbfe1"
+            "frontendIPConfigurationName": "lbfe1",
+            "probeName": "https-probe"
           }
         ],
         "probes": [
@@ -60,7 +62,7 @@
       "value": {
         "namePrefix": "ra-ad-adfs",
         "computerNamePrefix": "adfs",
-        "size": "Standard_DS2",
+        "size": "Standard_DS2_v2",
         "osType": "windows",
         "adminUsername": "testuser",
         "adminPassword": "AweS0me@PW",
