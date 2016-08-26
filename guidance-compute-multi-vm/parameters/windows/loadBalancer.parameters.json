@@ -48,7 +48,10 @@
             "type": "DSC",
             "typeHandlerVersion": "2.20",
             "autoUpgradeMinorVersion": true,
-            "settingsConfig": { }
+            "settingsConfig": {
+              "modulesUrl": "https://raw.githubusercontent.com/mspnp/reference-architectures/kirpas/ra-multi-vm-extend/guidance-compute-multi-vm/extensions/windows/iisaspnet.ps1.zip",
+              "configurationFunction": "iisaspnet.ps1\\iisaspnet"
+            }
           }
         ],
         "availabilitySet": {
