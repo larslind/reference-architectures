@@ -4,7 +4,7 @@
   "parameters": {
     "virtualMachinesSettings": {
       "value": {
-        "namePrefix": "ra-multi-vm",
+        "namePrefix": "ra-multi",
         "computerNamePrefix": "cn",
         "size": "Standard_DS1_v2",
         "osType": "windows",
@@ -42,7 +42,7 @@
         },
         "extensions": [
           {
-            "name": "ra-iis-config-ext",
+            "name": "iis-config-ext",
             "settingsConfigMapperUri": "https://raw.githubusercontent.com/mspnp/reference-architectures/kirpas/ra-multi-vm-extend/guidance-compute-multi-vm/extensions/windows/settings-mapper.json",
             "publisher": "Microsoft.Powershell",
             "type": "DSC",
@@ -118,7 +118,7 @@
       "value": {
         "storageAccountsCount": 1,
         "vmCount": 2,
-        "vmStartIndex": 0
+        "vmStartIndex": 1
       }
     }
   }

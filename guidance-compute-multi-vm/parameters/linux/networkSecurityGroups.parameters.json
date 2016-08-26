@@ -30,8 +30,8 @@
               "protocol": "Tcp"
             },
             {
-              "name": "HTTP",
-              "protocol": "TCP",
+              "name": "default-allow-http",
+              "protocol": "Tcp",
               "sourcePortRange": "*",
               "destinationPortRange": "80",
               "sourceAddressPrefix": "*",
