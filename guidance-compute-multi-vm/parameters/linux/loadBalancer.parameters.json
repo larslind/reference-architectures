@@ -100,7 +100,7 @@
         ],
         "inboundNatRules": [
           {
-            "namePrefix": "rdp",
+            "namePrefix": "ssh",
             "frontendIPConfigurationName": "ra-multi-vm-lb-fe-config1",
             "startingFrontendPort": 50000,
             "backendPort": 22,
