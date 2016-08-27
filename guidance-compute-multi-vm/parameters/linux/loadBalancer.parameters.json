@@ -49,7 +49,7 @@
             "typeHandlerVersion": "1.5",
             "autoUpgradeMinorVersion": true,
             "settingsConfig": {
-              "fileUris": [ "https://raw.githubusercontent.com/mspnp/reference-architectures/kirpas/ra-multi-vm-extend/guidance-compute-multi-vm/extensions/linux/install-apache.sh" ],
+              "fileUris": [ "https://raw.githubusercontent.com/mspnp/reference-architectures/master/guidance-compute-multi-vm/extensions/linux/install-apache.sh" ],
               "commandToExecute": "sh install-apache.sh"
             }
           }
