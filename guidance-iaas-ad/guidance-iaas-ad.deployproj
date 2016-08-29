@@ -33,6 +33,8 @@
     </None>
     <Content Include="Templates\azuredeploy.json" />
     <None Include="extensions\adds-forest.ps1" />
+    <None Include="extensions\adds.ps1" />
+    <None Include="extensions\joindomain.ps1" />
     <None Include="extensions\rras.ps1" />
     <None Include="Parameters\loadBalancer-adfs-proxy.parameters.json" />
     <None Include="Parameters\loadBalancer-adfs.parameters.json" />
@@ -43,9 +45,11 @@
     <None Include="Parameters\networkSecurityGroup.parameters.json" />
     <None Include="Parameters\virtualMachine-jumpbox.parameters.json" />
     <None Include="Parameters\virtualMachine-onprem.parameters.json" />
+    <None Include="Parameters\virtualMachines-ad.parameters.json" />
     <None Include="Parameters\virtualNetwork-onprem.parameters.json" />
     <None Include="Parameters\virtualNetwork.parameters.json" />
     <None Include="Parameters\virtualNetworkGateway.parameters.json" />
+    <None Include="Templates\azuredeploy-ad.json" />
     <None Include="Templates\azuredeploy-onprem.json" />
   </ItemGroup>
   <Target Name="GetReferenceAssemblyPaths" />
