@@ -50,9 +50,11 @@
             "settingsConfigMapperUri": "https://raw.githubusercontent.com/mspnp/template-building-blocks/master/templates/resources/Microsoft.Compute/virtualMachines/extensions/vm-extension-passthrough-settings-mapper.json",
             "settingsConfig": {
               "fileUris": [
+                "https://raw.githubusercontent.com/mspnp/reference-architectures/andrew/ra-ad/guidance-iaas-ad/extensions/joindomain.ps1",
+                "https://raw.githubusercontent.com/mspnp/reference-architectures/andrew/ra-ad/guidance-iaas-ad/extensions/adds-replication-site.ps1",
                 "https://raw.githubusercontent.com/mspnp/reference-architectures/andrew/ra-ad/guidance-iaas-ad/extensions/adds.ps1"
               ],
-              "commandToExecute": "powershell -ExecutionPolicy Unrestricted -Command \"& {.\\adds.ps1 -SafeModePassword \"AweS0me@PW\" -Domain \"contoso.com\" -AdminUser \"testuser\" -AdminPassword \"AweS0me@PW\"}"
+              "commandToExecute": "powershell -ExecutionPolicy Unrestricted -Command \"& {.\\joindomain.ps1 -DomainName \"contoso.com\" -AdminUser \"testuser\" -AdminPassword \"AweS0me@PW\";.\\adds-replication-site.ps1 -DomainName \"contoso.com\" -AdminUser \"testuser\" -AdminPassword \"AweS0me@PW\" -SiteName \"Azure-Vnet-Site\" -OnpremSiteName \"Default-First-Site-Name\" -Cidr \"10.0.0.0/16\" -ReplicationFrequency 240;.\\adds.ps1 -SafeModePassword \"AweS0me@PW\" -DomainName \"contoso.com\" -AdminUser \"testuser\" -AdminPassword \"AweS0me@PW\" -SiteName \"Azure-Vnet-Site\"}"
             }
           }
         ],

@@ -33,8 +33,10 @@
     </None>
     <Content Include="Templates\azuredeploy.json" />
     <None Include="extensions\adds-forest.ps1" />
+    <None Include="extensions\adds-replication-site.ps1" />
     <None Include="extensions\adds.ps1" />
     <None Include="extensions\joindomain.ps1" />
+    <None Include="extensions\New-AzureVpnConnection.ps1" />
     <None Include="extensions\rras.ps1" />
     <None Include="Parameters\loadBalancer-adfs-proxy.parameters.json" />
     <None Include="Parameters\loadBalancer-adfs.parameters.json" />

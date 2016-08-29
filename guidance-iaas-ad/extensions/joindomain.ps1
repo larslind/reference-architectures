@@ -12,7 +12,14 @@ Param(
 #  $AdminUser = "adminUser"
 #  $AdminPassword = "adminP@ssw0rd"
 #  $DomainName = "contoso.com"
-$secAdminPassword = ConvertTo-SecureString $AdminPassword -AsPlainText -Force
-$credential = New-Object System.Management.Automation.PSCredential ("$DomainName\$AdminUser", $secAdminPassword)
-Add-Computer -DomainName $DomainName -Credential $credential
-Restart-Computer
+
+# We shouldn't execute if we are already domain-joined.
+if ((Get-WmiObject -Class Win32_ComputerSystem).PartOfDomain -eq $true) {
+  Write-Information "Already domain joined."
+}
+else {
+  $secAdminPassword = ConvertTo-SecureString $AdminPassword -AsPlainText -Force
+  $credential = New-Object System.Management.Automation.PSCredential ("$DomainName\$AdminUser", $secAdminPassword)
+  Add-Computer -DomainName $DomainName -Credential $credential
+  Restart-Computer
+}
