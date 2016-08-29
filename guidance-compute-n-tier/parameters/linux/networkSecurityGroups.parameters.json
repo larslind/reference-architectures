@@ -161,7 +161,7 @@
           "name": "ra-ntier-mgmt-nsg",
           "subnets": [ ],
           "networkInterfaces": [
-            "ra-ntier-vm9-nic1"
+            "ra-ntier-mgmt-vm9-nic1"
           ],
           "securityRules": [
             {
