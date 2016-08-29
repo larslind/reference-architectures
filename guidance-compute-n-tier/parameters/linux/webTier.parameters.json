@@ -2,6 +2,63 @@
   "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    "virtualMachinesSettings": {
+      "value": {
+        "namePrefix": "ra",
+        "computerNamePrefix": "cn",
+        "size": "Standard_DS1",
+        "adminUsername": "testuser",
+        "adminPassword": "AweS0me@PW",
+        "osType": "linux",
+        "osAuthenticationType": "password",
+        "sshPublicKey": "",
+        "nics": [
+          {
+            "isPublic": "false",
+            "isPrimary": "true",
+            "subnetName": "app1-web-sn",
+            "privateIPAllocationMethod": "dynamic",
+            "enableIPForwarding": false,
+            "dnsServers": [ ]
+          }
+        ],
+        "imageReference": {
+          "publisher": "Canonical",
+          "offer": "UbuntuServer",
+          "sku": "14.04.5-LTS",
+          "version": "latest"
+        },
+        "osDisk": {
+          "caching": "ReadWrite"
+        },
+        "dataDisks": {
+          "count": 1,
+          "properties": {
+            "diskSizeGB": 128,
+            "caching": "None",
+            "createOption": "Empty"
+          }
+        },
+        "availabilitySet": {
+          "useExistingAvailabilitySet": "No",
+          "name": "app1-web-as"
+        },
+        "extensions": [
+          {
+            "name": "apache-config-ext",
+            "settingsConfigMapperUri": "https://raw.githubusercontent.com/mspnp/template-building-blocks/master/templates/resources/Microsoft.Compute/virtualMachines/extensions/vm-extension-passthrough-settings-mapper.json",
+            "publisher": "Microsoft.OSTCExtensions",
+            "type": "CustomScriptForLinux",
+            "typeHandlerVersion": "1.5",
+            "autoUpgradeMinorVersion": true,
+            "settingsConfig": {
+              "fileUris": [ "https://raw.githubusercontent.com/mspnp/reference-architectures/master/guidance-compute-multi-vm/extensions/linux/install-apache.sh" ],
+              "commandToExecute": "sh install-apache.sh"
+            }
+          }
+        ]
+      }
+    },
     "loadBalancerSettings": {
       "value": {
         "name": "app1-web-lb",
@@ -40,51 +97,6 @@
           }
         ],
         "inboundNatRules": [ ]
-      }
-    },
-    "virtualMachinesSettings": {
-      "value": {
-        "namePrefix": "ra",
-        "computerNamePrefix": "cn",
-        "size": "Standard_DS1",
-        "adminUsername": "testuser",
-        "adminPassword": "AweS0me@PW",
-        "osType": "linux",
-        "osAuthenticationType": "password",
-        "sshPublicKey": "",
-        "nics": [
-          {
-            "isPublic": "false",
-            "isPrimary": "true",
-            "subnetName": "app1-web-sn",
-            "privateIPAllocationMethod": "dynamic",
-            "enableIPForwarding": false,
-            "dnsServers": [ ]
-          }
-        ],
-        "imageReference": {
-          "publisher": "Canonical",
-          "offer": "UbuntuServer",
-          "sku": "14.04.5-LTS",
-          "version": "latest"
-        },
-        "osDisk": {
-          "caching": "ReadWrite"
-        },
-        "dataDisks": {
-          "count": 1,
-          "properties": {
-            "diskSizeGB": 128,
-            "caching": "None",
-            "createOption": "Empty"
-          }
-        },
-        "extensions": [ ],
-        "availabilitySet": {
-          "useExistingAvailabilitySet": "No",
-          "name": "app1-web-as"
-        },
-        "extensions": [ ]
       }
     },
     "virtualNetworkSettings": {
