@@ -31,6 +31,17 @@
               "direction": "Inbound"
             },
             {
+              "name": "allow-mgmt-ssh",
+              "direction": "Inbound",
+              "priority": 110,
+              "sourceAddressPrefix": "10.0.3.0/24",
+              "destinationAddressPrefix": "*",
+              "sourcePortRange": "*",
+              "destinationPortRange": "22",
+              "access": "Allow",
+              "protocol": "Tcp"
+            },
+            {
               "name": "deny-other-traffic",
               "description": "Deny all other traffic",
               "protocol": "*",
@@ -41,17 +52,6 @@
               "access": "Deny",
               "priority": 120,
               "direction": "Inbound"
-            },
-            {
-              "name": "allow-mgmt-ssh",
-              "direction": "Inbound",
-              "priority": 110,
-              "sourceAddressPrefix": "10.0.3.0/24",
-              "destinationAddressPrefix": "*",
-              "sourcePortRange": "*",
-              "destinationPortRange": "22",
-              "access": "Allow",
-              "protocol": "Tcp"
             }
           ]
         },

@@ -56,7 +56,7 @@
           {
             "isPublic": "false",
             "isPrimary": "true",
-            "subnetName": "app1-web-sn",
+            "subnetName": "ra-ntier-web-sn",
             "privateIPAllocationMethod": "dynamic",
             "enableIPForwarding": false,
             "dnsServers": [ ]
@@ -79,7 +79,20 @@
             "createOption": "Empty"
           }
         },
-        "extensions": [ ],
+        "extensions": [
+          {
+            "name": "iis-config-ext",
+            "settingsConfigMapperUri": "https://raw.githubusercontent.com/mspnp/template-building-blocks/master/templates/resources/Microsoft.Compute/virtualMachines/extensions/vm-extension-passthrough-settings-mapper.json",
+            "publisher": "Microsoft.Powershell",
+            "type": "DSC",
+            "typeHandlerVersion": "2.20",
+            "autoUpgradeMinorVersion": true,
+            "settingsConfig": {
+              "modulesUrl": "https://raw.githubusercontent.com/mspnp/reference-architectures/master/guidance-compute-multi-vm/extensions/windows/iisaspnet.ps1.zip",
+              "configurationFunction": "iisaspnet.ps1\\iisaspnet"
+            }
+          }
+        ],
         "availabilitySet": {
           "useExistingAvailabilitySet": "No",
           "name": "ra-ntier-web-as"

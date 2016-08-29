@@ -56,7 +56,7 @@
           {
             "isPublic": "false",
             "isPrimary": "true",
-            "subnetName": "app1-biz-sn",
+            "subnetName": "ra-ntier-biz-sn",
             "privateIPAllocationMethod": "dynamic",
             "enableIPForwarding": false,
             "dnsServers": [ ]

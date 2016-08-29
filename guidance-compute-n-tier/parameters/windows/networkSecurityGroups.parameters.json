@@ -31,6 +31,17 @@
               "direction": "Inbound"
             },
             {
+              "name": "allow-mgmt-rdp",
+              "direction": "Inbound",
+              "priority": 110,
+              "sourceAddressPrefix": "10.0.3.0/24",
+              "destinationAddressPrefix": "*",
+              "sourcePortRange": "*",
+              "destinationPortRange": "3389",
+              "access": "Allow",
+              "protocol": "Tcp"
+            },
+            {
               "name": "deny-other-traffic",
               "description": "Deny all other traffic",
               "protocol": "*",
@@ -41,17 +52,6 @@
               "access": "Deny",
               "priority": 120,
               "direction": "Inbound"
-            },
-            {
-              "name": "allow-mgmt-ssh",
-              "direction": "Inbound",
-              "priority": 110,
-              "sourceAddressPrefix": "10.0.3.0/24",
-              "destinationAddressPrefix": "*",
-              "sourcePortRange": "*",
-              "destinationPortRange": "3389",
-              "access": "Allow",
-              "protocol": "Tcp"
             }
           ]
         },
@@ -76,7 +76,7 @@
               "direction": "Inbound"
             },
             {
-              "name": "allow-mgmt-ssh",
+              "name": "allow-mgmt-rdp",
               "direction": "Inbound",
               "priority": 110,
               "sourceAddressPrefix": "10.0.3.0/24",
@@ -133,7 +133,7 @@
               "direction": "Inbound"
             },
             {
-              "name": "allow-mgmt-ssh",
+              "name": "allow-mgmt-rdp",
               "direction": "Inbound",
               "priority": 120,
               "sourceAddressPrefix": "10.0.3.0/24",
