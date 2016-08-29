@@ -22,7 +22,8 @@
             "backendPort": 80,
             "protocol": "Tcp",
             "backendPoolName": "lb-bep1",
-            "frontendIPConfigurationName": "lb-fe-config1"
+            "frontendIPConfigurationName": "lb-fe-config1",
+            "probeName": "lbp1"
           }
         ],
         "probes": [
