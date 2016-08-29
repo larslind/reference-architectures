@@ -4,7 +4,7 @@
   "parameters": {
     "virtualMachinesSettings": {
       "value": {
-        "namePrefix": "ra-multi-vm",
+        "namePrefix": "ra-multi",
         "computerNamePrefix": "cn",
         "size": "Standard_DS1_v2",
         "osType": "windows",
@@ -40,7 +40,20 @@
         "osDisk": {
           "caching": "ReadWrite"
         },
-        "extensions": [ ],
+        "extensions": [
+          {
+            "name": "iis-config-ext",
+            "settingsConfigMapperUri": "https://raw.githubusercontent.com/mspnp/template-building-blocks/master/templates/resources/Microsoft.Compute/virtualMachines/extensions/vm-extension-passthrough-settings-mapper.json",
+            "publisher": "Microsoft.Powershell",
+            "type": "DSC",
+            "typeHandlerVersion": "2.20",
+            "autoUpgradeMinorVersion": true,
+            "settingsConfig": {
+              "modulesUrl": "https://raw.githubusercontent.com/mspnp/reference-architectures/master/guidance-compute-multi-vm/extensions/windows/iisaspnet.ps1.zip",
+              "configurationFunction": "iisaspnet.ps1\\iisaspnet"
+            }
+          }
+        ],
         "availabilitySet": {
           "useExistingAvailabilitySet": "No",
           "name": "ra-multi-vm-as"
@@ -108,7 +121,7 @@
       "value": {
         "storageAccountsCount": 1,
         "vmCount": 2,
-        "vmStartIndex": 0
+        "vmStartIndex": 1
       }
     }
   }
