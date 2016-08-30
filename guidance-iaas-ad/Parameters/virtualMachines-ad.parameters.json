@@ -54,7 +54,9 @@
               "User": "contoso\\testuser",
               "Restart": true,
               "Options": 3,
-              "Password": "AweS0me@PW"
+              "protectedSettings": {
+                "Password": "AweS0me@PW"
+              }
             }
           },
           {
@@ -69,7 +71,8 @@
                 "https://raw.githubusercontent.com/mspnp/reference-architectures/andrew/ra-ad/guidance-iaas-ad/extensions/adds-replication-site.ps1",
                 "https://raw.githubusercontent.com/mspnp/reference-architectures/andrew/ra-ad/guidance-iaas-ad/extensions/adds.ps1"
               ],
-              "commandToExecute": "powershell -ExecutionPolicy Unrestricted -Command \"& {.\\adds-replication-site.ps1 -DomainName \"contoso.com\" -AdminUser \"testuser\" -AdminPassword \"AweS0me@PW\" -SiteName \"Azure-Vnet-Site\" -OnpremSiteName \"Default-First-Site-Name\" -Cidr \"10.0.0.0/16\" -ReplicationFrequency 240;.\\adds.ps1 -SafeModePassword \"AweS0me@PW\" -DomainName \"contoso.com\" -AdminUser \"testuser\" -AdminPassword \"AweS0me@PW\" -SiteName \"Azure-Vnet-Site\"}"
+              "commandToExecute": "powershell -ExecutionPolicy Unrestricted -Command \"& {.\\adds-replication-site.ps1 -DomainName \"contoso.com\" -AdminUser \"testuser\" -AdminPassword \"AweS0me@PW\" -SiteName \"Azure-Vnet-Site\" -OnpremSiteName \"Default-First-Site-Name\" -Cidr \"10.0.0.0/16\" -ReplicationFrequency 240;.\\adds.ps1 -SafeModePassword \"AweS0me@PW\" -DomainName \"contoso.com\" -AdminUser \"testuser\" -AdminPassword \"AweS0me@PW\" -SiteName \"Azure-Vnet-Site\"}",
+              "protectedSettings": { }
             }
           }
         ],
