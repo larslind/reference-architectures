@@ -49,9 +49,9 @@
             "autoUpgradeMinorVersion": true,
             "settingsConfigMapperUri": "https://raw.githubusercontent.com/mspnp/template-building-blocks/andrew/ext-settings/templates/resources/Microsoft.Compute/virtualMachines/extensions/vm-extension-passthrough-settings-mapper.json",
             "settingsConfig": {
-              "Name": "contoso",
+              "Name": "contoso.com",
               "OUPath": "",
-              "User": "contoso\\testuser",
+              "User": "contoso.com\\testuser",
               "Restart": true,
               "Options": 3
             },
