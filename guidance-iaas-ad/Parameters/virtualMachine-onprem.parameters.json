@@ -54,7 +54,9 @@
                 "https://raw.githubusercontent.com/mspnp/reference-architectures/andrew/ra-ad/guidance-iaas-ad/extensions/rras.ps1",
                 "https://raw.githubusercontent.com/mspnp/reference-architectures/andrew/ra-ad/guidance-iaas-ad/extensions/adds-forest.ps1"
               ],
-              "commandToExecute": "powershell -ExecutionPolicy Unrestricted -Command \"& {.\\rras.ps1;.\\adds-forest.ps1 -SafeModePassword \"AweS0me@PW\" -DomainName \"contoso.com\" -DomainNetbiosName \"CONTOSO\"}\""
+              "commandToExecute": "powershell -ExecutionPolicy Unrestricted -Command \"& {.\\rras.ps1;.\\adds-forest.ps1 -SafeModePassword \"AweS0me@PW\" -DomainName \"contoso.com\" -DomainNetbiosName \"CONTOSO\"}"
+            },
+            "protectedSettingsConfig": {
             }
           }
         ],
