@@ -23,7 +23,7 @@
         "virtualNetwork": "[uri(parameters('templateRootUri'), 'templates/buildingBlocks/vnet-n-subnet/azuredeploy.json')]"
       },
       "parameter": {
-        "virtualNetwork": "[uri(parameters('parameterRootUri'), 'guidance-iaas-ad/Parameters/virtualNetwork-with-on-prem-dns.parameters.json')]"
+        "virtualNetwork": "[uri(parameters('parameterRootUri'), 'guidance-iaas-ad/Parameters/virtualNetwork-with-onprem-dns.parameters.json')]"
       }
     }
   },
