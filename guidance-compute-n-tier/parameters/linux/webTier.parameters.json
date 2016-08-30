@@ -45,7 +45,7 @@
     },
     "virtualMachinesSettings": {
       "value": {
-        "namePrefix": "ra",
+        "namePrefix": "ra-ntier-web",
         "computerNamePrefix": "cn",
         "size": "Standard_DS1",
         "adminUsername": "testuser",
