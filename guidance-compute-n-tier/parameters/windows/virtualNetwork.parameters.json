@@ -10,19 +10,19 @@
         ],
         "subnets": [
           {
-            "name": "ra-ntier-web-sn",
+            "name": "web",
             "addressPrefix": "10.0.0.0/24"
           },
           {
-            "name": "ra-ntier-biz-sn",
+            "name": "biz",
             "addressPrefix": "10.0.1.0/24"
           },
           {
-            "name": "ra-ntier-data-sn",
+            "name": "data",
             "addressPrefix": "10.0.2.0/24"
           },
           {
-            "name": "ra-ntier-mgmt-sn",
+            "name": "mgmt",
             "addressPrefix": "10.0.3.0/24"
           }
         ],

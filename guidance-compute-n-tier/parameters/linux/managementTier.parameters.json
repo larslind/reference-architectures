@@ -16,7 +16,7 @@
           {
             "isPublic": "true",
             "isPrimary": "true",
-            "subnetName": "ra-ntier-mgmt-sn",
+            "subnetName": "mgmt",
             "privateIPAllocationMethod": "dynamic",
             "publicIPAllocationMethod": "dynamic",
             "enableIPForwarding": false,
@@ -57,7 +57,7 @@
       "value": {
         "storageAccountsCount": 1,
         "vmCount": 1,
-        "vmStartIndex": 9
+        "vmStartIndex": 1
       }
     }
   }

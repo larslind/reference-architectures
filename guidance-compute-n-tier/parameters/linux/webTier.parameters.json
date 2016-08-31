@@ -7,11 +7,11 @@
         "name": "ra-ntier-web-lb",
         "frontendIPConfigurations": [
           {
-            "name": "lb-fe-config1",
+            "name": "ra-ntier-web-lb-fe-config1",
             "loadBalancerType": "public",
             "internalLoadBalancerSettings": {
               "privateIPAddress": "10.0.0.250",
-              "subnetName": "ra-ntier-web-sn"
+              "subnetName": "web"
             }
           }
         ],
@@ -22,7 +22,7 @@
             "backendPort": 80,
             "protocol": "Tcp",
             "backendPoolName": "lb-bep1",
-            "frontendIPConfigurationName": "lb-fe-config1",
+            "frontendIPConfigurationName": "ra-ntier-web-lb-fe-config1",
             "probeName": "lbp1"
           }
         ],
@@ -57,7 +57,7 @@
           {
             "isPublic": "false",
             "isPrimary": "true",
-            "subnetName": "ra-ntier-web-sn",
+            "subnetName": "web",
             "privateIPAllocationMethod": "dynamic",
             "enableIPForwarding": false,
             "dnsServers": [ ]

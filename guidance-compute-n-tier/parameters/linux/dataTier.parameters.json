@@ -4,14 +4,14 @@
   "parameters": {
     "loadBalancerSettings": {
       "value": {
-        "name": "ra-ntier-data-ilb",
+        "name": "ra-ntier-data-lb",
         "frontendIPConfigurations": [
           {
-            "name": "lb-fe-config1",
+            "name": "ra-ntier-data-lb-fe-config1",
             "loadBalancerType": "internal",
             "internalLoadBalancerSettings": {
               "privateIPAddress": "10.0.2.250",
-              "subnetName": "ra-ntier-data-sn"
+              "subnetName": "data"
             }
           }
         ],
@@ -22,7 +22,7 @@
             "backendPort": 80,
             "protocol": "Tcp",
             "backendPoolName": "lb-bep1",
-            "frontendIPConfigurationName": "lb-fe-config1",
+            "frontendIPConfigurationName": "ra-ntier-data-lb-fe-config1",
             "probeName": "lbp1"
           }
         ],
@@ -57,7 +57,7 @@
           {
             "isPublic": "false",
             "isPrimary": "true",
-            "subnetName": "ra-ntier-data-sn",
+            "subnetName": "data",
             "privateIPAllocationMethod": "dynamic",
             "enableIPForwarding": false,
             "dnsServers": [ ]
@@ -97,7 +97,7 @@
       "value": {
         "storageAccountsCount": 1,
         "vmCount": 2,
-        "vmStartIndex": 7
+        "vmStartIndex": 1
       }
     }
   }

@@ -13,7 +13,7 @@
         {
           "name": "ra-ntier-biz-nsg",
           "subnets": [
-            "ra-ntier-biz-sn"
+            "biz"
           ],
           "networkInterfaces": [
           ],
@@ -58,7 +58,7 @@
         {
           "name": "ra-ntier-data-nsg",
           "subnets": [
-            "ra-ntier-data-sn"
+            "data"
           ],
           "networkInterfaces": [
           ],
@@ -103,7 +103,7 @@
         {
           "name": "ra-ntier-web-nsg",
           "subnets": [
-            "ra-ntier-web-sn"
+            "web"
           ],
           "networkInterfaces": [
           ],
@@ -161,7 +161,7 @@
           "name": "ra-ntier-mgmt-nsg",
           "subnets": [ ],
           "networkInterfaces": [
-            "ra-ntier-mgmt-vm9-nic1"
+            "ra-ntier-mgmt-vm1-nic1"
           ],
           "securityRules": [
             {
