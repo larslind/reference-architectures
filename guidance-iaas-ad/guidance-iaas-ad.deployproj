@@ -35,9 +35,11 @@
     <None Include="extensions\adds-forest.ps1" />
     <None Include="extensions\adds-replication-site.ps1" />
     <None Include="extensions\adds.ps1" />
+    <None Include="extensions\CreateGmsaAndDnsRecord.ps1" />
     <None Include="extensions\joindomain.ps1" />
     <None Include="extensions\New-AzureVpnConnection.ps1" />
     <None Include="extensions\rras.ps1" />
+    <None Include="Parameters\adfs\configure-ad-for-adfs.parameters.json" />
     <None Include="Parameters\loadBalancer-adfs-proxy.parameters.json" />
     <None Include="Parameters\loadBalancer-adfs.parameters.json" />
     <None Include="Parameters\networkSecurityGroup-mgmt.parameters.json" />
@@ -54,6 +56,7 @@
     <None Include="Parameters\virtualNetwork.parameters.json" />
     <None Include="Parameters\virtualNetworkGateway.parameters.json" />
     <None Include="Templates\azuredeploy-ad.json" />
+    <None Include="Templates\azuredeploy-adfs.json" />
     <None Include="Templates\azuredeploy-onprem.json" />
     <None Include="Templates\azuredeploy-update-dns-with-onprem-and-azure.json" />
     <None Include="Templates\azuredeploy-update-dns-with-onprem.json" />

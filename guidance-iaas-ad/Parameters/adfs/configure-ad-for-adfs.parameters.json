@@ -1,0 +1,32 @@
+﻿{
+  "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "virtualMachinesExtensionSettings": {
+      "value": [
+        {
+          "vms": [ "ra-ad-ad-vm0" ],
+          "extensions": [
+            {
+              "name": "install-adds",
+              "publisher": "Microsoft.Compute",
+              "type": "CustomScriptExtension",
+              "typeHandlerVersion": "1.8",
+              "autoUpgradeMinorVersion": false,
+              "settingsConfigMapperUri": "https://raw.githubusercontent.com/mspnp/template-building-blocks/master/templates/resources/Microsoft.Compute/virtualMachines/extensions/vm-extension-passthrough-settings-mapper.json",
+              "settingsConfig": {
+                "fileUris": [
+                  "https://raw.githubusercontent.com/mspnp/reference-architectures/andrew/ra-ad/guidance-iaas-ad/extensions/CreateGmsaAndDnsRecord.ps1"
+                ],
+                "commandToExecute": "powershell -ExecutionPolicy Unrestricted -Command \"& {.\\CreateGmsaAndDnsRecord.ps1 -AdminUser \"testuser\" -AdminPassword \"AweS0me@PW\" -NetBiosDomainName \"CONTOSO\" -FqDomainName \"contoso.com\" -GmsaName \"adfsgmsa\" -FederationName \"adfs.contoso.com\" -HostName \"adfs\" -HostIp \"10.0.255.190\"}"
+              },
+              "protectedSettingsConfig": {
+              }
+            }
+          ]
+        }
+      ]
+    }
+  }
+}
+

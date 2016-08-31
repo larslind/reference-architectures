@@ -7,7 +7,7 @@
         "name": "adfs-lb",
         "frontendIPConfigurations": [
           {
-            "name": "lbfe1",
+            "name": "adfs-lb-fe",
             "loadBalancerType": "internal",
             "internalLoadBalancerSettings": {
               "privateIPAddress": "10.0.255.190",
@@ -21,8 +21,8 @@
             "frontendPort": 80,
             "backendPort": 80,
             "protocol": "Tcp",
-            "backendPoolName": "lb-bep1",
-            "frontendIPConfigurationName": "lbfe1",
+            "backendPoolName": "adfs-lb-bep",
+            "frontendIPConfigurationName": "adfs-lb-fe",
             "probeName": "http-probe"
           },
           {
@@ -30,8 +30,8 @@
             "frontendPort": 443,
             "backendPort": 443,
             "protocol": "Tcp",
-            "backendPoolName": "lb-bep1",
-            "frontendIPConfigurationName": "lbfe1",
+            "backendPoolName": "adfs-lb-bep",
+            "frontendIPConfigurationName": "adfs-lb-fe",
             "probeName": "https-probe"
           }
         ],
@@ -51,7 +51,7 @@
         ],
         "backendPools": [
           {
-            "name": "lb-bep1",
+            "name": "adfs-lb-bep",
             "nicIndex": 0
           }
         ],

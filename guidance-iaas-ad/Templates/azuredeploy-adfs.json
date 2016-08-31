@@ -20,10 +20,10 @@
   "variables": {
     "templates": {
       "deployment": {
-        "virtualMachines": "[uri(parameters('templateRootUri'), 'templates/buildingBlocks/multi-vm-n-nic-m-storage/azuredeploy.json')]"
+        "loadBalancer": "[uri(parameters('templateRootUri'), 'templates/buildingBlocks/loadBalancer-backend-n-vm/azuredeploy.json')]"
       },
       "parameter": {
-        "virtualMachines": "[uri(parameters('parameterRootUri'), 'guidance-iaas-ad/Parameters/virtualMachines-ad.parameters.json')]"
+        "loadBalancer": "[uri(parameters('parameterRootUri'), 'guidance-iaas-ad/Parameters/loadBalancer-adfs.parameters.json')]"
       }
     }
   },
@@ -31,14 +31,14 @@
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2015-01-01",
-      "name": "ra-iaas-ad-ad-deployment",
+      "name": "ra-iaas-ad-adfs-lb-deployment",
       "properties": {
         "mode": "Incremental",
         "templateLink": {
-          "uri": "[variables('templates').deployment.virtualMachines]"
+          "uri": "[variables('templates').deployment.loadBalancer]"
         },
         "parametersLink": {
-          "uri": "[variables('templates').parameter.virtualMachines]"
+          "uri": "[variables('templates').parameter.loadBalancer]"
         }
       }
     }
