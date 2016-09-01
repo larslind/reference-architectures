@@ -38,9 +38,10 @@ $adfsResourceGroupName = "ra-ad-adfs-rg"
 # Login to Azure and select your subscription
 Login-AzureRmAccount -SubscriptionId $SubscriptionId | Out-Null
 
-Write-Host "Configuring AD for ADFS..."
-New-AzureRmResourceGroupDeployment -Name "ra-ad-configure-ad-for-adfs-deployment" -ResourceGroupName $adResourceGroupName `
-    -TemplateUri $virtualMachineExtensionsTemplate.AbsoluteUri -TemplateParameterFile $virtualMachineExtensionsParametersFile
+#This works, but commented out for now so we can test the ADFS deployment.
+#Write-Host "Configuring AD for ADFS..."
+#New-AzureRmResourceGroupDeployment -Name "ra-ad-configure-ad-for-adfs-deployment" -ResourceGroupName $adResourceGroupName `
+#    -TemplateUri $virtualMachineExtensionsTemplate.AbsoluteUri -TemplateParameterFile $virtualMachineExtensionsParametersFile
 
 # Create the resource group
 Write-Host "Creating ADFS resource group..."
