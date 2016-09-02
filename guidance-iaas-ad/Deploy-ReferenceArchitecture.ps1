@@ -31,6 +31,7 @@ $loadBalancerParametersFile = [System.IO.Path]::Combine($PSScriptRoot, "paramete
 
 # Template to configure ADFS
 $virtualMachineExtensionsTemplate = New-Object System.Uri -ArgumentList @($templateRootUri, "templates/buildingBlocks/virtualMachine-extensions/azuredeploy.json")
+$configureAdForAdfsExtensionsParametersFile = [System.IO.Path]::Combine($PSScriptRoot, "parameters\adfs\configure-ad-for-adfs.parameters.json")
 $installAdfsExtensionsParametersFile = [System.IO.Path]::Combine($PSScriptRoot, "parameters\adfs\install-adfs-farm.parameters.json")
 $addAdfsExtensionsParametersFile = [System.IO.Path]::Combine($PSScriptRoot, "parameters\adfs\add-adfs-farm-node.parameters.json")
 
@@ -40,10 +41,9 @@ $adfsResourceGroupName = "ra-ad-adfs-rg"
 # Login to Azure and select your subscription
 Login-AzureRmAccount -SubscriptionId $SubscriptionId | Out-Null
 
-#This works, but commented out for now so we can test the ADFS deployment.
-#Write-Host "Configuring AD for ADFS..."
-#New-AzureRmResourceGroupDeployment -Name "ra-ad-configure-ad-for-adfs-deployment" -ResourceGroupName $adResourceGroupName `
-#    -TemplateUri $virtualMachineExtensionsTemplate.AbsoluteUri -TemplateParameterFile $virtualMachineExtensionsParametersFile
+Write-Host "Configuring AD for ADFS..."
+New-AzureRmResourceGroupDeployment -Name "ra-ad-configure-ad-for-adfs-deployment" -ResourceGroupName $adResourceGroupName `
+    -TemplateUri $virtualMachineExtensionsTemplate.AbsoluteUri -TemplateParameterFile $configureAdForAdfsExtensionsParametersFile
 
 # Create the resource group
 Write-Host "Creating ADFS resource group..."
@@ -53,9 +53,10 @@ Write-Host "Deploying load balancer..."
 New-AzureRmResourceGroupDeployment -Name "ra-ad-adfs-deployment" -ResourceGroupName $adfsResourceGroup.ResourceGroupName `
     -TemplateUri $loadBalancerTemplate.AbsoluteUri -TemplateParameterFile $loadBalancerParametersFile
 
-Write-Host "Configuring ADFS..."
+Write-Host "Installing ADFS Primary Server..."
 New-AzureRmResourceGroupDeployment -Name "ra-ad-install-adfs-deployment" -ResourceGroupName $adfsResourceGroup.ResourceGroupName `
     -TemplateUri $virtualMachineExtensionsTemplate.AbsoluteUri -TemplateParameterFile $installAdfsExtensionsParametersFile
 
+Write-Host "Adding ADFS Servers..."
 New-AzureRmResourceGroupDeployment -Name "ra-ad-add-adfs-deployment" -ResourceGroupName $adfsResourceGroup.ResourceGroupName `
     -TemplateUri $virtualMachineExtensionsTemplate.AbsoluteUri -TemplateParameterFile $addAdfsExtensionsParametersFile

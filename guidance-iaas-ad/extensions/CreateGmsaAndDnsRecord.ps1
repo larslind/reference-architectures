@@ -39,15 +39,6 @@
 $secAdminPassword = ConvertTo-SecureString $AdminPassword -AsPlainText -Force
 $credential = New-Object System.Management.Automation.PSCredential ("$NetBiosDomainName\$AdminUser", $secAdminPassword)
 
-# We need to install some Powershell modules so we can add the service account and DNS entry.
-
-Import-Module ServerManager
-Install-WindowsFeature RSAT-AD-PowerShell
-Install-WindowsFeature RSAT-DNS-Server
-Import-Module ActiveDirectory
-Import-Module DnsServer
-Import-Module Kds
-
 ###############################################
 # Create group managed service accout (you can use ADSI Edit to verify)
 #Invoke-Command -ComputerName . -Credential $user -ScriptBlock {Add-KdsRootKey –EffectiveTime (Get-Date).AddHours(-10)}

@@ -18,7 +18,7 @@
                 "fileUris": [
                   "https://raw.githubusercontent.com/mspnp/reference-architectures/andrew/ra-ad/guidance-iaas-ad/extensions/CreateGmsaAndDnsRecord.ps1"
                 ],
-                "commandToExecute": "powershell -ExecutionPolicy Unrestricted -Command \"& {.\\CreateGmsaAndDnsRecord.ps1 -AdminUser \"testuser\" -AdminPassword \"AweS0me@PW\" -NetBiosDomainName \"CONTOSO\" -FqDomainName \"contoso.com\" -GmsaName \"adfsgmsa\" -FederationName \"adfs.contoso.com\" -HostName \"adfs\" -HostIp \"10.0.255.190\"}"
+                "commandToExecute": "powershell -ExecutionPolicy Unrestricted -Command \"& {.\\CreateGmsaAndDnsRecord.ps1 -AdminUser \\\"testuser\\\" -AdminPassword \\\"AweS0me@PW\\\" -NetBiosDomainName \\\"CONTOSO\\\" -FqDomainName \\\"contoso.com\\\" -GmsaName \\\"adfsgmsa\\\" -FederationName \\\"adfs.contoso.com\\\" -HostName \\\"adfs\\\" -HostIp \\\"10.0.255.190\\\"}"
               },
               "protectedSettingsConfig": {
               }
