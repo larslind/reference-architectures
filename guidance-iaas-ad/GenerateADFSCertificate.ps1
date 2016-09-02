@@ -17,7 +17,7 @@ finally {
 $encodedCertBytes = [System.Convert]::ToBase64String([byte[]]$(Get-Content -Path $pfxFilename -Encoding byte));
 #[pscustomobject]@{bytes=$encodedCertBytes} | Format-Table -Wrap -Property @{Expression={$_.bytes};Label="Pfx Encoded Bytes"}
 
-Out-File -FilePath "$pfxFilename.txt" -InputObject $encodedCertBytes
+Out-File -FilePath "$pfxFilename.txt" -InputObject $encodedCertBytes -NoNewline
 
 #Write-Host "Pfx Encoded Bytes"
 #Write-Host "-----------------"
@@ -25,7 +25,7 @@ Out-File -FilePath "$pfxFilename.txt" -InputObject $encodedCertBytes
 
 $encodedCertBytes = [System.Convert]::ToBase64String([byte[]]$(Get-Content -Path $cerFilename -Encoding byte));
 
-Out-File -FilePath "$cerFilename.txt" -InputObject $encodedCertBytes
+Out-File -FilePath "$cerFilename.txt" -InputObject $encodedCertBytes -NoNewline
 
 #Write-Host "Cer Encoded Bytes"
 #Write-Host "-----------------"
