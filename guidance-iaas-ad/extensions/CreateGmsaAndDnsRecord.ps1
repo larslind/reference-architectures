@@ -50,7 +50,7 @@ Import-Module Kds
 
 ###############################################
 # Create group managed service accout (you can use ADSI Edit to verify)
-Add-KdsRootKey –EffectiveTime (Get-Date).AddHours(-10) 
+Invoke-Command -ComputerName . -Credential $user -ScriptBlock {Add-KdsRootKey –EffectiveTime (Get-Date).AddHours(-10)}
 #New-ADServiceAccount adfsgmsa -DNSHostName adfs.contoso.com -AccountExpirationDate $null -ServicePrincipalNames host/adfs.contoso.com -Credential $credential
 New-ADServiceAccount $GmsaName -DNSHostName $FederationName -AccountExpirationDate $null -ServicePrincipalNames "host/$FederationName" -Credential $credential
 
