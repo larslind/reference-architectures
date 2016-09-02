@@ -39,7 +39,6 @@
     <None Include="extensions\Configure-AdfsServer.ps1" />
     <None Include="extensions\CreateGmsaAndDnsRecord.ps1" />
     <None Include="extensions\Import-ADFSCertificate.ps1" />
-    <None Include="extensions\joindomain.ps1" />
     <None Include="extensions\New-AzureVpnConnection.ps1" />
     <None Include="extensions\rras.ps1" />
     <None Include="Parameters\adfs\add-adfs-farm-node.parameters.json" />

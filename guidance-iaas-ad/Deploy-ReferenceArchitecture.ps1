@@ -57,5 +57,5 @@ Write-Host "Configuring ADFS..."
 New-AzureRmResourceGroupDeployment -Name "ra-ad-install-adfs-deployment" -ResourceGroupName $adfsResourceGroup.ResourceGroupName `
     -TemplateUri $virtualMachineExtensionsTemplate.AbsoluteUri -TemplateParameterFile $installAdfsExtensionsParametersFile
 
-New-AzureRmResourceGroupDeployment -Name "ra-ad-install-adfs-deployment" -ResourceGroupName $adfsResourceGroup.ResourceGroupName `
+New-AzureRmResourceGroupDeployment -Name "ra-ad-add-adfs-deployment" -ResourceGroupName $adfsResourceGroup.ResourceGroupName `
     -TemplateUri $virtualMachineExtensionsTemplate.AbsoluteUri -TemplateParameterFile $addAdfsExtensionsParametersFile

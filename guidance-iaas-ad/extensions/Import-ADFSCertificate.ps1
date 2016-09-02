@@ -12,6 +12,8 @@
   [switch]$InstallTrustedRoot
 )
 
+$ErrorActionPreference = "Stop"
+
 $certificateFilename = "$PSScriptRoot\temp.$($CertificateType.ToLower())"
 [System.IO.File]::WriteAllBytes($certificateFilename, [System.Convert]::FromBase64String($Base64EncodedCertificate))
 $pwd = ConvertTo-SecureString -String $CertificatePassword -AsPlainText -Force
