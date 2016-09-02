@@ -24,13 +24,15 @@ Write-Host "Using $templateRootUriString to locate templates"
 Write-Host
 
 $templateRootUri = New-Object System.Uri -ArgumentList @($templateRootUriString)
-# Template to configure AD for ADFS
-$virtualMachineExtensionsTemplate = New-Object System.Uri -ArgumentList @($templateRootUri, "templates/buildingBlocks/virtualMachine-extensions/azuredeploy.json")
-$virtualMachineExtensionsParametersFile = [System.IO.Path]::Combine($PSScriptRoot, "parameters\adfs\configure-ad-for-adfs.parameters.json")
 
 # ADFS Templates
 $loadBalancerTemplate = New-Object System.Uri -ArgumentList @($templateRootUri, "templates/buildingBlocks/loadBalancer-backend-n-vm/azuredeploy.json")
 $loadBalancerParametersFile = [System.IO.Path]::Combine($PSScriptRoot, "parameters\loadBalancer-adfs.parameters.json")
+
+# Template to configure ADFS
+$virtualMachineExtensionsTemplate = New-Object System.Uri -ArgumentList @($templateRootUri, "templates/buildingBlocks/virtualMachine-extensions/azuredeploy.json")
+$installAdfsExtensionsParametersFile = [System.IO.Path]::Combine($PSScriptRoot, "parameters\adfs\install-adfs-farm.parameters.json")
+$addAdfsExtensionsParametersFile = [System.IO.Path]::Combine($PSScriptRoot, "parameters\adfs\add-adfs-farm-node.parameters.json")
 
 $adResourceGroupName = "ra-ad-ad-rg"
 $adfsResourceGroupName = "ra-ad-adfs-rg"
@@ -50,3 +52,10 @@ $adfsResourceGroup = New-AzureRmResourceGroup -Name $adfsResourceGroupName -Loca
 Write-Host "Deploying load balancer..."
 New-AzureRmResourceGroupDeployment -Name "ra-ad-adfs-deployment" -ResourceGroupName $adfsResourceGroup.ResourceGroupName `
     -TemplateUri $loadBalancerTemplate.AbsoluteUri -TemplateParameterFile $loadBalancerParametersFile
+
+Write-Host "Configuring ADFS..."
+New-AzureRmResourceGroupDeployment -Name "ra-ad-install-adfs-deployment" -ResourceGroupName $adfsResourceGroup.ResourceGroupName `
+    -TemplateUri $virtualMachineExtensionsTemplate.AbsoluteUri -TemplateParameterFile $installAdfsExtensionsParametersFile
+
+New-AzureRmResourceGroupDeployment -Name "ra-ad-install-adfs-deployment" -ResourceGroupName $adfsResourceGroup.ResourceGroupName `
+    -TemplateUri $virtualMachineExtensionsTemplate.AbsoluteUri -TemplateParameterFile $addAdfsExtensionsParametersFile

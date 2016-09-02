@@ -36,11 +36,15 @@
     <None Include="extensions\adds-forest.ps1" />
     <None Include="extensions\adds-replication-site.ps1" />
     <None Include="extensions\adds.ps1" />
+    <None Include="extensions\Configure-AdfsServer.ps1" />
     <None Include="extensions\CreateGmsaAndDnsRecord.ps1" />
+    <None Include="extensions\Import-ADFSCertificate.ps1" />
     <None Include="extensions\joindomain.ps1" />
     <None Include="extensions\New-AzureVpnConnection.ps1" />
     <None Include="extensions\rras.ps1" />
+    <None Include="Parameters\adfs\add-adfs-farm-node.parameters.json" />
     <None Include="Parameters\adfs\configure-ad-for-adfs.parameters.json" />
+    <None Include="Parameters\adfs\install-adfs-farm.parameters.json" />
     <None Include="Parameters\loadBalancer-adfs-proxy.parameters.json" />
     <None Include="Parameters\loadBalancer-adfs.parameters.json" />
     <None Include="Parameters\networkSecurityGroup-mgmt.parameters.json" />

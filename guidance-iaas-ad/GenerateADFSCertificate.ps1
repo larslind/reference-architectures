@@ -15,10 +15,23 @@ finally {
 }
 
 $encodedCertBytes = [System.Convert]::ToBase64String([byte[]]$(Get-Content -Path $pfxFilename -Encoding byte));
-[pscustomobject]@{bytes=$encodedCertBytes} | Format-Table -Wrap -Property @{Expression={$_.bytes};Label="Pfx Encoded Bytes"}
+#[pscustomobject]@{bytes=$encodedCertBytes} | Format-Table -Wrap -Property @{Expression={$_.bytes};Label="Pfx Encoded Bytes"}
+
+Out-File -FilePath "$pfxFilename.txt" -InputObject $encodedCertBytes
+
+#Write-Host "Pfx Encoded Bytes"
+#Write-Host "-----------------"
+#Write-Host $encodedCertBytes
 
 $encodedCertBytes = [System.Convert]::ToBase64String([byte[]]$(Get-Content -Path $cerFilename -Encoding byte));
-[pscustomobject]@{bytes=$encodedCertBytes} | Format-Table -Wrap -Property @{Expression={$_.bytes};Label="Cer Encoded Bytes"}
+
+Out-File -FilePath "$cerFilename.txt" -InputObject $encodedCertBytes
+
+#Write-Host "Cer Encoded Bytes"
+#Write-Host "-----------------"
+#Write-Host $encodedCertBytes
+
+#[pscustomobject]@{bytes=$encodedCertBytes} | Format-Table -Wrap -Property @{Expression={$_.bytes};Label="Cer Encoded Bytes"}
 
 #[System.IO.File]::WriteAllBytes("$PSScriptRoot\adfs.pfx", [System.Convert]::FromBase64String($encodedCertBytes))
 #$pwd = ConvertTo-SecureString -String "AweS0meC3rt@PW" -AsPlainText -Force
