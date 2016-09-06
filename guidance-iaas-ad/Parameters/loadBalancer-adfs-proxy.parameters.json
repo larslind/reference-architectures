@@ -7,7 +7,7 @@
         "name": "adfs-proxy-lb",
         "frontendIPConfigurations": [
           {
-            "name": "lbfe1",
+            "name": "adfs-proxy-lb-fe",
             "loadBalancerType": "internal",
             "internalLoadBalancerSettings": {
               "privateIPAddress": "10.0.255.158",
@@ -21,8 +21,8 @@
             "frontendPort": 80,
             "backendPort": 80,
             "protocol": "Tcp",
-            "backendPoolName": "lb-bep1",
-            "frontendIPConfigurationName": "lbfe1",
+            "backendPoolName": "adfs-proxy-lb-bep",
+            "frontendIPConfigurationName": "adfs-proxy-lb-fe",
             "probeName": "http-probe"
           },
           {
@@ -30,8 +30,8 @@
             "frontendPort": 443,
             "backendPort": 443,
             "protocol": "Tcp",
-            "backendPoolName": "lb-bep1",
-            "frontendIPConfigurationName": "lbfe1",
+            "backendPoolName": "adfs-proxy-lb-bep",
+            "frontendIPConfigurationName": "adfs-proxy-lb-fe",
             "probeName": "https-probe"
           }
         ],
@@ -51,7 +51,7 @@
         ],
         "backendPools": [
           {
-            "name": "lb-bep1",
+            "name": "adfs-proxy-lb-bep",
             "nicIndex": 0
           }
         ],
@@ -92,7 +92,26 @@
         "osDisk": {
           "caching": "ReadWrite"
         },
-        "extensions": [ ],
+        "extensions": [
+          {
+            "name": "join-ad-domain",
+            "publisher": "Microsoft.Compute",
+            "type": "JsonADDomainExtension",
+            "typeHandlerVersion": "1.3",
+            "autoUpgradeMinorVersion": true,
+            "settingsConfigMapperUri": "https://raw.githubusercontent.com/mspnp/template-building-blocks/master/templates/resources/Microsoft.Compute/virtualMachines/extensions/vm-extension-passthrough-settings-mapper.json",
+            "settingsConfig": {
+              "Name": "contoso.com",
+              "OUPath": "",
+              "User": "contoso.com\\testuser",
+              "Restart": true,
+              "Options": 3
+            },
+            "protectedSettingsConfig": {
+              "Password": "AweS0me@PW"
+            }
+          }
+        ],
         "availabilitySet": {
           "useExistingAvailabilitySet": "No",
           "name": "adfs-proxy-as"
