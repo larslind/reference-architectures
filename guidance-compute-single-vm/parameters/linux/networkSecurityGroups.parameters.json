@@ -21,7 +21,7 @@
             {
               "name": "default-allow-ssh",
               "direction": "Inbound",
-              "priority": 1000,
+              "priority": 100,
               "sourceAddressPrefix": "*",
               "destinationAddressPrefix": "*",
               "sourcePortRange": "*",
