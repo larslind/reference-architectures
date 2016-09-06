@@ -10,7 +10,7 @@
             "name": "ra-ntier-biz-lb-fe-config1",
             "loadBalancerType": "internal",
             "internalLoadBalancerSettings": {
-              "privateIPAddress": "10.0.1.250",
+              "privateIPAddress": "10.0.2.250",
               "subnetName": "biz"
             }
           }
@@ -95,7 +95,7 @@
     },
     "buildingBlockSettings": {
       "value": {
-        "storageAccountsCount": 1,
+        "storageAccountsCount": 3,
         "vmCount": 3,
         "vmStartIndex": 1
       }

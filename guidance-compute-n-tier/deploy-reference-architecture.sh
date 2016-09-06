@@ -154,7 +154,7 @@ azure group deployment create --resource-group $RESOURCE_GROUP_NAME --name $BIZ_
 
 echo "Deploying data tier..."
 azure group deployment create --resource-group $RESOURCE_GROUP_NAME --name $DATA_TIER_DEPLOYMENT_NAME \
---template-uri $LOAD_BALANCER_TEMPLATE_URI --parameters-file $DATA_TIER_PARAMETERS_PATH \
+--template-uri $VIRTUAL_MACHINE_TEMPLATE_URI --parameters-file $DATA_TIER_PARAMETERS_PATH \
 --subscription $SUBSCRIPTION_ID || exit 1
 
 echo "Deploying management tier..."

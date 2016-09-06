@@ -9,10 +9,7 @@
           {
             "name": "ra-ntier-web-lb-fe-config1",
             "loadBalancerType": "public",
-            "internalLoadBalancerSettings": {
-              "privateIPAddress": "10.0.0.250",
-              "subnetName": "web"
-            }
+            "internalLoadBalancerSettings": { }
           }
         ],
         "loadBalancingRules": [
@@ -109,7 +106,7 @@
     },
     "buildingBlockSettings": {
       "value": {
-        "storageAccountsCount": 1,
+        "storageAccountsCount": 3,
         "vmCount": 3,
         "vmStartIndex": 1
       }
