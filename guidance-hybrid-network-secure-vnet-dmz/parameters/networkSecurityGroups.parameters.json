@@ -1,0 +1,243 @@
+﻿{
+  "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "virtualNetworkSettings": {
+      "value": {
+        "name": "ra-vnet",
+        "resourceGroup": "ra-public-dmz-rg1"
+      }
+    },
+    "networkSecurityGroupsSettings": {
+      "value": [
+        {
+          "name": "mgmt-nsg",
+          "subnets": [ "mgmt" ],
+          "networkInterfaces": [ ],
+          "securityRules": [
+            {
+              "name": "on-prem-rdp-allow",
+              "direction": "Inbound",
+              "priority": 100,
+              "sourceAddressPrefix": "192.168.0.0/16",
+              "sourcePortRange": "*",
+              "destinationAddressPrefix": "*",
+              "destinationPortRange": "3389",
+              "access": "Allow",
+              "protocol": "*"
+            },
+            {
+              "name": "on-prem-ssh-allow",
+              "direction": "Inbound",
+              "priority": 200,
+              "sourceAddressPrefix": "192.168.0.0/16",
+              "sourcePortRange": "*",
+              "destinationAddressPrefix": "*",
+              "destinationPortRange": "22",
+              "access": "Allow",
+              "protocol": "*"
+            },
+            {
+              "name": "gateway-allow",
+              "direction": "Inbound",
+              "priority": 300,
+              "sourceAddressPrefix": "10.0.255.224/27",
+              "destinationAddressPrefix": "*",
+              "sourcePortRange": "*",
+              "destinationPortRange": "*",
+              "access": "Allow",
+              "protocol": "*"
+            },
+            {
+              "name": "self-allow",
+              "direction": "Inbound",
+              "priority": 400,
+              "sourceAddressPrefix": "10.0.0.0/24",
+              "destinationAddressPrefix": "*",
+              "sourcePortRange": "*",
+              "destinationPortRange": "*",
+              "access": "Allow",
+              "protocol": "*"
+            },
+            {
+              "name": "vnet-deny",
+              "direction": "Inbound",
+              "priority": 500,
+              "sourceAddressPrefix": "*",
+              "destinationAddressPrefix": "*",
+              "sourcePortRange": "*",
+              "destinationPortRange": "*",
+              "access": "Deny",
+              "protocol": "*"
+            }
+          ]
+        },
+        {
+          "name": "web-nsg",
+          "subnets": [ "web" ],
+          "networkInterfaces": [ ],
+          "securityRules": [
+            {
+              "name": "on-prem-allow",
+              "direction": "Inbound",
+              "priority": 100,
+              "sourceAddressPrefix": "192.168.0.0/16",
+              "sourcePortRange": "*",
+              "destinationAddressPrefix": "*",
+              "destinationPortRange": "80",
+              "access": "Allow",
+              "protocol": "TCP"
+            },
+            {
+              "name": "vnet-allow",
+              "direction": "Inbound",
+              "priority": 200,
+              "sourceAddressPrefix": "10.0.0.0/16",
+              "sourcePortRange": "*",
+              "destinationAddressPrefix": "*",
+              "destinationPortRange": "80",
+              "access": "Allow",
+              "protocol": "TCP"
+            },
+            {
+              "name": "mgmt-rdp-allow",
+              "direction": "Inbound",
+              "priority": 300,
+              "sourceAddressPrefix": "10.0.0.0/24",
+              "sourcePortRange": "*",
+              "destinationAddressPrefix": "*",
+              "destinationPortRange": "3389",
+              "access": "Allow",
+              "protocol": "*"
+            },
+            {
+              "name": "mgmt-ssh-allow",
+              "direction": "Inbound",
+              "priority": 400,
+              "sourceAddressPrefix": "10.0.0.0/24",
+              "sourcePortRange": "*",
+              "destinationAddressPrefix": "*",
+              "destinationPortRange": "22",
+              "access": "Allow",
+              "protocol": "*"
+            },
+            {
+              "name": "vnet-deny",
+              "direction": "Inbound",
+              "priority": 500,
+              "sourceAddressPrefix": "*",
+              "sourcePortRange": "*",
+              "destinationAddressPrefix": "*",
+              "destinationPortRange": "*",
+              "access": "Deny",
+              "protocol": "*"
+            }
+          ]
+        },
+        {
+          "name": "biz-nsg",
+          "subnets": [ "biz" ],
+          "networkInterfaces": [ ],
+          "securityRules": [
+            {
+              "name": "web-allow",
+              "direction": "Inbound",
+              "priority": 100,
+              "sourceAddressPrefix": "10.0.3.0/24",
+              "sourcePortRange": "*",
+              "destinationAddressPrefix": "*",
+              "destinationPortRange": "*",
+              "access": "Allow",
+              "protocol": "*"
+            },
+            {
+              "name": "mgmt-rdp-allow",
+              "direction": "Inbound",
+              "priority": 200,
+              "sourceAddressPrefix": "10.0.0.0/24",
+              "sourcePortRange": "*",
+              "destinationAddressPrefix": "*",
+              "destinationPortRange": "3389",
+              "access": "Allow",
+              "protocol": "*"
+            },
+            {
+              "name": "mgmt-ssh-allow",
+              "direction": "Inbound",
+              "priority": 300,
+              "sourceAddressPrefix": "10.0.0.0/24",
+              "sourcePortRange": "*",
+              "destinationAddressPrefix": "*",
+              "destinationPortRange": "22",
+              "access": "Allow",
+              "protocol": "*"
+            },
+            {
+              "name": "vnet-deny",
+              "direction": "Inbound",
+              "priority": 400,
+              "sourceAddressPrefix": "*",
+              "sourcePortRange": "*",
+              "destinationAddressPrefix": "*",
+              "destinationPortRange": "*",
+              "access": "Deny",
+              "protocol": "*"
+            }
+          ]
+        },
+        {
+          "name": "data-nsg",
+          "subnets": [ "data" ],
+          "networkInterfaces": [ ],
+          "securityRules": [
+            {
+              "name": "data-allow",
+              "direction": "Inbound",
+              "priority": 100,
+              "sourceAddressPrefix": "10.0.4.0/24",
+              "sourcePortRange": "*",
+              "destinationAddressPrefix": "*",
+              "destinationPortRange": "*",
+              "access": "Allow",
+              "protocol": "*"
+            },
+            {
+              "name": "mgmt-rdp-allow",
+              "direction": "Inbound",
+              "priority": 200,
+              "sourceAddressPrefix": "10.0.0.0/24",
+              "sourcePortRange": "*",
+              "destinationAddressPrefix": "*",
+              "destinationPortRange": "3389",
+              "access": "Allow",
+              "protocol": "*"
+            },
+            {
+              "name": "mgmt-ssh-allow",
+              "direction": "Inbound",
+              "priority": 300,
+              "sourceAddressPrefix": "10.0.0.0/24",
+              "sourcePortRange": "*",
+              "destinationAddressPrefix": "*",
+              "destinationPortRange": "22",
+              "access": "Allow",
+              "protocol": "*"
+            },
+            {
+              "name": "vnet-deny",
+              "direction": "Inbound",
+              "priority": 400,
+              "sourceAddressPrefix": "*",
+              "sourcePortRange": "*",
+              "destinationAddressPrefix": "*",
+              "destinationPortRange": "*",
+              "access": "Deny",
+              "protocol": "*"
+            }
+          ]
+        }
+      ]
+    }
+  }
+}
+

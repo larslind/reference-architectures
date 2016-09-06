@@ -1,0 +1,198 @@
+﻿{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "buildingBlocksRootUri": {
+      "type": "string",
+      "defaultValue": "https://raw.githubusercontent.com/mspnp/template-building-blocks/master/",
+      "metadata": {
+        "description": "Root path for templates"
+      }
+    },
+    "parameterRootUri": {
+      "type": "string",
+      "defaultValue": "https://raw.githubusercontent.com/mspnp/reference-architectures/master/",
+      "metadata": {
+        "decription": "Root path for parameters"
+      }
+    }
+  },
+  "variables": {
+    "templates": {
+      "deployment": {
+        "virtualNetwork": "[concat(parameters('buildingBlocksRootUri'), 'templates/buildingBlocks/vnet-n-subnet/azuredeploy.json')]",
+        "loadBalancer": "[concat(parameters('buildingBlocksRootUri'), 'templates/buildingBlocks/loadBalancer-backend-n-vm/azuredeploy.json')]",
+        "multiVMs": "[concat(parameters('buildingBlocksRootUri'), 'templates/buildingBlocks/multi-vm-n-nic-m-storage/azuredeploy.json')]",
+        "dmz": "[concat(parameters('buildingBlocksRootUri'), 'templates/buildingBlocks/dmz/azuredeploy.json')]",
+        "vpn": "[concat(parameters('buildingBlocksRootUri'), 'templates/buildingBlocks/vpn-gateway-vpn-connection/azuredeploy.json')]",
+        "networkSecurityGroups": "[concat(parameters('buildingBlocksRootUri'), 'templates/buildingBlocks/networkSecurityGroups/azuredeploy.json')]"
+      },
+      "parameter": {
+        "virtualNetwork": "[concat(parameters('parameterRootUri'), 'guidance-hybrid-network-secure-vnet-dmz/parameters/virtualNetwork.parameters.json')]",
+        "webSubnetLoadBalancerAndVMs": "[concat(parameters('parameterRootUri'), 'guidance-hybrid-network-secure-vnet-dmz/parameters/loadBalancer-web-subnet.parameters.json')]",
+        "bizSubnetLoadBalancerAndVMs": "[concat(parameters('parameterRootUri'), 'guidance-hybrid-network-secure-vnet-dmz/parameters/loadBalancer-biz-subnet.parameters.json')]",
+        "dataSubnetLoadBalancerAndVMs": "[concat(parameters('parameterRootUri'), 'guidance-hybrid-network-secure-vnet-dmz/parameters/loadBalancer-data-subnet.parameters.json')]",
+        "mgmtSubnetVMs": "[concat(parameters('parameterRootUri'), 'guidance-hybrid-network-secure-vnet-dmz/parameters/virtualMachines-mgmt-subnet.parameters.json')]",
+        "dmz": "[concat(parameters('parameterRootUri'), 'guidance-hybrid-network-secure-vnet-dmz/parameters/dmz.parameters.json')]",
+        "internetDmz": "[concat(parameters('parameterRootUri'), 'guidance-hybrid-network-secure-vnet-dmz/parameters/internet-dmz.parameters.json')]",
+        "vpn": "[concat(parameters('parameterRootUri'), 'guidance-hybrid-network-secure-vnet-dmz/parameters/vpn.parameters.json')]",
+        "networkSecurityGroups": "[concat(parameters('parameterRootUri'), 'guidance-hybrid-network-secure-vnet-dmz/parameters/networkSecurityGroups.parameters.json')]"
+      }
+    }
+  },
+  "resources": [
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2015-01-01",
+      "name": "ra-vnet-deployment",
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[variables('templates').deployment.virtualNetwork]"
+        },
+        "parametersLink": {
+          "uri": "[variables('templates').parameter.virtualNetwork]"
+        }
+      }
+    },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2015-01-01",
+      "name": "ra-web-lb-vms-deployment",
+      "dependsOn": [
+        "ra-vnet-deployment"
+      ],
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[variables('templates').deployment.loadBalancer]"
+        },
+        "parametersLink": {
+          "uri": "[variables('templates').parameter.webSubnetLoadBalancerAndVMs]"
+        }
+      }
+    },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2015-01-01",
+      "name": "ra-biz-lb-vms-deployment",
+      "dependsOn": [
+        "ra-vnet-deployment"
+      ],
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[variables('templates').deployment.loadBalancer]"
+        },
+        "parametersLink": {
+          "uri": "[variables('templates').parameter.bizSubnetLoadBalancerAndVMs]"
+        }
+      }
+    },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2015-01-01",
+      "name": "ra-data-lb-vms-deployment",
+      "dependsOn": [
+        "ra-vnet-deployment"
+      ],
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[variables('templates').deployment.loadBalancer]"
+        },
+        "parametersLink": {
+          "uri": "[variables('templates').parameter.dataSubnetLoadBalancerAndVMs]"
+        }
+      }
+    },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2015-01-01",
+      "name": "ra-mgmt-vms-deployment",
+      "dependsOn": [
+        "ra-vnet-deployment"
+      ],
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[variables('templates').deployment.multiVMs]"
+        },
+        "parametersLink": {
+          "uri": "[variables('templates').parameter.mgmtSubnetVMs]"
+        }
+      }
+    },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2015-01-01",
+      "name": "ra-dmz-deployment",
+      "dependsOn": [
+        "ra-vnet-deployment"
+      ],
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[variables('templates').deployment.dmz]"
+        },
+        "parametersLink": {
+          "uri": "[variables('templates').parameter.dmz]"
+        }
+      }
+    },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2015-01-01",
+      "name": "ra-internet-dmz-deployment",
+      "dependsOn": [
+        "ra-vnet-deployment"
+      ],
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[variables('templates').deployment.dmz]"
+        },
+        "parametersLink": {
+          "uri": "[variables('templates').parameter.internetDmz]"
+        }
+      }
+    },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2015-01-01",
+      "name": "ra-vpn-deployment",
+      "dependsOn": [
+        "ra-vnet-deployment"
+      ],
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[variables('templates').deployment.vpn]"
+        },
+        "parametersLink": {
+          "uri": "[variables('templates').parameter.vpn]"
+        }
+      }
+    },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2015-01-01",
+      "name": "ra-nsg-deployment",
+      "dependsOn": [
+        "ra-vnet-deployment"
+      ],
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[variables('templates').deployment.networkSecurityGroups]"
+        },
+        "parametersLink": {
+          "uri": "[variables('templates').parameter.networkSecurityGroups]"
+        }
+      }
+    }
+  ],
+  "outputs": {
+  }
+}
+
