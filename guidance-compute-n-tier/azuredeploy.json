@@ -42,7 +42,8 @@
         "webTier": "[concat(parameters('parameterRootUri'), 'guidance-compute-n-tier/parameters/', parameters('osType'), '/webTier.parameters.json')]",
         "dataTier": "[concat(parameters('parameterRootUri'), 'guidance-compute-n-tier/parameters/', parameters('osType'), '/dataTier.parameters.json')]",
         "businessTier": "[concat(parameters('parameterRootUri'), 'guidance-compute-n-tier/parameters/', parameters('osType'), '/businessTier.parameters.json')]",
-        "managementTier": "[concat(parameters('parameterRootUri'), 'guidance-compute-n-tier/parameters/', parameters('osType'), '/managementTier.parameters.json')]"
+        "managementTierJumpbox": "[concat(parameters('parameterRootUri'), 'guidance-compute-n-tier/parameters/', parameters('osType'), '/managementTierJumpbox.parameters.json')]",
+        "managementTierMonitor": "[concat(parameters('parameterRootUri'), 'guidance-compute-n-tier/parameters/', parameters('osType'), '/managementTierMonitor.parameters.json')]"
       }
     }
   },
@@ -50,7 +51,7 @@
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2015-01-01",
-      "name": "deploy-network",
+      "name": "ra-ntier-vnet-deployment",
       "properties": {
         "mode": "Incremental",
         "templateLink": {
@@ -65,9 +66,9 @@
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2015-01-01",
-      "name": "deploy-web-tier",
+      "name": "ra-ntier-web-deployment",
       "dependsOn": [
-        "Microsoft.Resources/deployments/deploy-network"
+        "Microsoft.Resources/deployments/ra-ntier-vnet-deployment"
       ],
       "properties": {
         "mode": "Incremental",
@@ -83,9 +84,9 @@
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2015-01-01",
-      "name": "deploy-biz-tier",
+      "name": "ra-ntier-biz-deployment",
       "dependsOn": [
-        "Microsoft.Resources/deployments/deploy-network"
+        "Microsoft.Resources/deployments/ra-ntier-vnet-deployment"
       ],
       "properties": {
         "mode": "Incremental",
@@ -101,9 +102,9 @@
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2015-01-01",
-      "name": "deploy-data-tier",
+      "name": "ra-ntier-data-deployment",
       "dependsOn": [
-        "Microsoft.Resources/deployments/deploy-network"
+        "Microsoft.Resources/deployments/ra-ntier-vnet-deployment"
       ],
       "properties": {
         "mode": "Incremental",
@@ -119,9 +120,9 @@
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2015-01-01",
-      "name": "deploy-mgmt-tier",
+      "name": "ra-ntier-mgmt-jumpbox-deployment",
       "dependsOn": [
-        "Microsoft.Resources/deployments/deploy-network"
+        "Microsoft.Resources/deployments/ra-ntier-vnet-deployment"
       ],
       "properties": {
         "mode": "Incremental",
@@ -129,21 +130,40 @@
           "uri": "[variables('templates').deployment.virtualMachine]"
         },
         "parametersLink": {
-          "uri": "[variables('templates').parameter.managementTier]",
+          "uri": "[variables('templates').parameter.managementTierJumpbox]",
           "contentVersion": "1.0.0.0"
         }
       }
     },
     {
       "type": "Microsoft.Resources/deployments",
-      "name": "deploy-nsg",
+      "apiVersion": "2015-01-01",
+      "name": "ra-ntier-mgmt-monitor-deployment",
+      "dependsOn": [
+        "Microsoft.Resources/deployments/ra-ntier-vnet-deployment"
+      ],
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[variables('templates').deployment.virtualMachine]"
+        },
+        "parametersLink": {
+          "uri": "[variables('templates').parameter.managementTierMonitor]",
+          "contentVersion": "1.0.0.0"
+        }
+      }
+    },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "name": "ra-ntier-nsg-deployment",
       "apiVersion": "2015-01-01",
       "dependsOn": [
-        "Microsoft.Resources/deployments/deploy-network",
-        "Microsoft.Resources/deployments/deploy-web-tier",
-        "Microsoft.Resources/deployments/deploy-data-tier",
-        "Microsoft.Resources/deployments/deploy-biz-tier",
-        "Microsoft.Resources/deployments/deploy-mgmt-tier"
+        "Microsoft.Resources/deployments/ra-ntier-vnet-deployment",
+        "Microsoft.Resources/deployments/ra-ntier-mgmt-monitor-deployment",
+        "Microsoft.Resources/deployments/ra-ntier-mgmt-jumpbox-deployment",
+        "Microsoft.Resources/deployments/ra-ntier-data-deployment",
+        "Microsoft.Resources/deployments/ra-ntier-biz-deployment",
+        "Microsoft.Resources/deployments/ra-ntier-web-deployment"
       ],
       "properties": {
         "mode": "Incremental",

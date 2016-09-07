@@ -87,6 +87,18 @@
               "protocol": "Tcp"
             },
             {
+              "name": "allow-ops-center-web-traffic",
+              "description": "Allow web traffic to ops center.",
+              "protocol": "*",
+              "sourcePortRange": "*",
+              "destinationPortRange": "8888",
+              "sourceAddressPrefix": "*",
+              "destinationAddressPrefix": "*",
+              "access": "Allow",
+              "priority": 120,
+              "direction": "Inbound"
+            },
+            {
               "name": "deny-other-traffic",
               "description": "Deny all other traffic",
               "protocol": "*",
@@ -95,7 +107,7 @@
               "sourceAddressPrefix": "*",
               "destinationAddressPrefix": "*",
               "access": "Deny",
-              "priority": 120,
+              "priority": 130,
               "direction": "Inbound"
             }
           ]
@@ -206,6 +218,18 @@
               "destinationPortRange": "22",
               "access": "Allow",
               "protocol": "Tcp"
+            },
+            {
+              "name": "deny-other-traffic",
+              "description": "Deny all other traffic",
+              "protocol": "*",
+              "sourcePortRange": "*",
+              "destinationPortRange": "*",
+              "sourceAddressPrefix": "*",
+              "destinationAddressPrefix": "*",
+              "access": "Deny",
+              "priority": 120,
+              "direction": "Inbound"
             }
           ]
         }

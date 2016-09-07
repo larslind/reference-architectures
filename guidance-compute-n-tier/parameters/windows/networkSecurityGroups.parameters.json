@@ -207,6 +207,18 @@
               "destinationPortRange": "3389",
               "access": "Allow",
               "protocol": "Tcp"
+            },
+            {
+              "name": "deny-other-traffic",
+              "description": "Deny all other traffic",
+              "protocol": "*",
+              "sourcePortRange": "*",
+              "destinationPortRange": "*",
+              "sourceAddressPrefix": "*",
+              "destinationAddressPrefix": "*",
+              "access": "Deny",
+              "priority": 120,
+              "direction": "Inbound"
             }
           ]
         }
