@@ -17,15 +17,6 @@
         ],
         "loadBalancingRules": [
           {
-            "name": "http-rule",
-            "frontendPort": 80,
-            "backendPort": 80,
-            "protocol": "Tcp",
-            "backendPoolName": "adfs-proxy-lb-bep",
-            "frontendIPConfigurationName": "adfs-proxy-lb-fe",
-            "probeName": "http-probe"
-          },
-          {
             "name": "https-rule",
             "frontendPort": 443,
             "backendPort": 443,
@@ -37,16 +28,9 @@
         ],
         "probes": [
           {
-            "name": "http-probe",
-            "port": 80,
-            "protocol": "Http",
-            "requestPath": "/"
-          },
-          {
             "name": "https-probe",
             "port": 443,
-            "protocol": "Http",
-            "requestPath": "/"
+            "protocol": "Tcp"
           }
         ],
         "backendPools": [
