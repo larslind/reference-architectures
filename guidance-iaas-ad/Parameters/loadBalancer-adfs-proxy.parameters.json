@@ -30,7 +30,8 @@
           {
             "name": "https-probe",
             "port": 443,
-            "protocol": "Tcp"
+            "protocol": "Tcp",
+            "requestPath": "/"
           }
         ],
         "backendPools": [
