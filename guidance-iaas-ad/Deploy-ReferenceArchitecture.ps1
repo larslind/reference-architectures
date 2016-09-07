@@ -5,7 +5,10 @@ param(
   [Parameter(Mandatory=$true)]
   $SubscriptionId,
   [Parameter(Mandatory=$false)]
-  $Location = "West US 2"
+  $Location = "West US 2",
+  [switch]$InstallActiveDirectory,
+  [switch]$InstallAdfs,
+  [switch]$InstallAdfsProxy
 )
 
 $ErrorActionPreference = "Stop"
@@ -48,37 +51,40 @@ $adfsProxyResourceGroupName = "ra-ad-adfs-proxy-rg"
 # Login to Azure and select your subscription
 Login-AzureRmAccount -SubscriptionId $SubscriptionId | Out-Null
 
-Write-Host "Configuring AD for ADFS..."
-New-AzureRmResourceGroupDeployment -Name "ra-ad-configure-ad-for-adfs-deployment" -ResourceGroupName $adResourceGroupName `
-    -TemplateUri $virtualMachineExtensionsTemplate.AbsoluteUri -TemplateParameterFile $configureAdForAdfsExtensionsParametersFile
+if ($InstallAdfs) {
+    Write-Host "Configuring AD for ADFS..."
+    New-AzureRmResourceGroupDeployment -Name "ra-ad-configure-ad-for-adfs-deployment" -ResourceGroupName $adResourceGroupName `
+        -TemplateUri $virtualMachineExtensionsTemplate.AbsoluteUri -TemplateParameterFile $configureAdForAdfsExtensionsParametersFile
 
-Write-Host "Creating ADFS resource group..."
-$adfsResourceGroup = New-AzureRmResourceGroup -Name $adfsResourceGroupName -Location $Location
+    Write-Host "Creating ADFS resource group..."
+    $adfsResourceGroup = New-AzureRmResourceGroup -Name $adfsResourceGroupName -Location $Location
 
-Write-Host "Deploying ADFS load balancer..."
-New-AzureRmResourceGroupDeployment -Name "ra-ad-adfs-deployment" -ResourceGroupName $adfsResourceGroup.ResourceGroupName `
-    -TemplateUri $loadBalancerTemplate.AbsoluteUri -TemplateParameterFile $adfsLoadBalancerParametersFile
+    Write-Host "Deploying ADFS load balancer..."
+    New-AzureRmResourceGroupDeployment -Name "ra-ad-adfs-deployment" -ResourceGroupName $adfsResourceGroup.ResourceGroupName `
+        -TemplateUri $loadBalancerTemplate.AbsoluteUri -TemplateParameterFile $adfsLoadBalancerParametersFile
 
-Write-Host "Installing Primary ADFS Server..."
-New-AzureRmResourceGroupDeployment -Name "ra-ad-install-adfs-deployment" -ResourceGroupName $adfsResourceGroup.ResourceGroupName `
-    -TemplateUri $virtualMachineExtensionsTemplate.AbsoluteUri -TemplateParameterFile $installAdfsExtensionsParametersFile
+    Write-Host "Installing Primary ADFS Server..."
+    New-AzureRmResourceGroupDeployment -Name "ra-ad-install-adfs-deployment" -ResourceGroupName $adfsResourceGroup.ResourceGroupName `
+        -TemplateUri $virtualMachineExtensionsTemplate.AbsoluteUri -TemplateParameterFile $installAdfsExtensionsParametersFile
 
-Write-Host "Adding ADFS Servers..."
-New-AzureRmResourceGroupDeployment -Name "ra-ad-add-adfs-deployment" -ResourceGroupName $adfsResourceGroup.ResourceGroupName `
-    -TemplateUri $virtualMachineExtensionsTemplate.AbsoluteUri -TemplateParameterFile $addAdfsExtensionsParametersFile
+    Write-Host "Adding ADFS Servers..."
+    New-AzureRmResourceGroupDeployment -Name "ra-ad-add-adfs-deployment" -ResourceGroupName $adfsResourceGroup.ResourceGroupName `
+        -TemplateUri $virtualMachineExtensionsTemplate.AbsoluteUri -TemplateParameterFile $addAdfsExtensionsParametersFile
+}
 
+if ($InstallAdfsProxy) {
+    Write-Host "Creating ADFS Proxy resource group..."
+    $adfsProxyResourceGroup = New-AzureRmResourceGroup -Name $adfsProxyResourceGroupName -Location $Location
 
-Write-Host "Creating ADFS Proxy resource group..."
-$adfsProxyResourceGroup = New-AzureRmResourceGroup -Name $adfsProxyResourceGroupName -Location $Location
+    Write-Host "Deploying ADFS Proxy load balancer..."
+    New-AzureRmResourceGroupDeployment -Name "ra-ad-adfs-deployment" -ResourceGroupName $adfsProxyResourceGroup.ResourceGroupName `
+        -TemplateUri $loadBalancerTemplate.AbsoluteUri -TemplateParameterFile $adfsProxyLoadBalancerParametersFile
 
-Write-Host "Deploying ADFS Proxy load balancer..."
-New-AzureRmResourceGroupDeployment -Name "ra-ad-adfs-deployment" -ResourceGroupName $adfsProxyResourceGroup.ResourceGroupName `
-    -TemplateUri $loadBalancerTemplate.AbsoluteUri -TemplateParameterFile $adfsProxyLoadBalancerParametersFile
+    Write-Host "Installing Primary ADFS Proxy Server..."
+    New-AzureRmResourceGroupDeployment -Name "ra-ad-install-adfs-proxy-deployment" -ResourceGroupName $adfsProxyResourceGroupName.ResourceGroupName `
+        -TemplateUri $virtualMachineExtensionsTemplate.AbsoluteUri -TemplateParameterFile $installAdfsProxyExtensionsParametersFile
 
-Write-Host "Installing Primary ADFS Proxy Server..."
-New-AzureRmResourceGroupDeployment -Name "ra-ad-install-adfs-proxy-deployment" -ResourceGroupName $adfsProxyResourceGroupName.ResourceGroupName `
-    -TemplateUri $virtualMachineExtensionsTemplate.AbsoluteUri -TemplateParameterFile $installAdfsProxyExtensionsParametersFile
-
-Write-Host "Adding ADFS Proxy Servers..."
-New-AzureRmResourceGroupDeployment -Name "ra-ad-add-adfs-proxy-deployment" -ResourceGroupName $adfsProxyResourceGroupName.ResourceGroupName `
-    -TemplateUri $virtualMachineExtensionsTemplate.AbsoluteUri -TemplateParameterFile $addAdfsProxyExtensionsParametersFile
+    Write-Host "Adding ADFS Proxy Servers..."
+    New-AzureRmResourceGroupDeployment -Name "ra-ad-add-adfs-proxy-deployment" -ResourceGroupName $adfsProxyResourceGroupName.ResourceGroupName `
+        -TemplateUri $virtualMachineExtensionsTemplate.AbsoluteUri -TemplateParameterFile $addAdfsProxyExtensionsParametersFile
+}
