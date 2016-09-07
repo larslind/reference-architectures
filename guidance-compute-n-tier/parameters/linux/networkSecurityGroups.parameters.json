@@ -202,7 +202,7 @@
           ]
         },
         {
-          "name": "ra-ntier-mgmt-monitoring-nsg",
+          "name": "ra-ntier-mgmt-monitor-nsg",
           "subnets": [ ],
           "networkInterfaces": [
             "ra-ntier-mgmt-vm2-nic1"
