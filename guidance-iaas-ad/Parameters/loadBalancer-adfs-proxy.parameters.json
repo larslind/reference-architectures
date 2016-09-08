@@ -111,8 +111,8 @@
     },
     "buildingBlockSettings": {
       "value": {
-        "storageAccountsCount": 2,
-        "vmCount": 2,
+        "storageAccountsCount": 1,
+        "vmCount": 1,
         "vmStartIndex": 0
       }
     }

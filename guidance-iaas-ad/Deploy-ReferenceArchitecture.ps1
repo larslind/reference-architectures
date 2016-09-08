@@ -84,7 +84,7 @@ if ($InstallAdfsProxy) {
     New-AzureRmResourceGroupDeployment -Name "ra-ad-install-adfs-proxy-deployment" -ResourceGroupName $adfsProxyResourceGroup.ResourceGroupName `
         -TemplateUri $virtualMachineExtensionsTemplate.AbsoluteUri -TemplateParameterFile $installAdfsProxyExtensionsParametersFile
 
-    Write-Host "Adding ADFS Proxy Servers..."
-    New-AzureRmResourceGroupDeployment -Name "ra-ad-add-adfs-proxy-deployment" -ResourceGroupName $adfsProxyResourceGroup.ResourceGroupName `
-        -TemplateUri $virtualMachineExtensionsTemplate.AbsoluteUri -TemplateParameterFile $addAdfsProxyExtensionsParametersFile
+    #Write-Host "Adding ADFS Proxy Servers..."
+    #New-AzureRmResourceGroupDeployment -Name "ra-ad-add-adfs-proxy-deployment" -ResourceGroupName $adfsProxyResourceGroup.ResourceGroupName `
+    #    -TemplateUri $virtualMachineExtensionsTemplate.AbsoluteUri -TemplateParameterFile $addAdfsProxyExtensionsParametersFile
 }
