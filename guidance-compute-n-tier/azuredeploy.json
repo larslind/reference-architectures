@@ -108,7 +108,7 @@
       "properties": {
         "mode": "Incremental",
         "templateLink": {
-          "uri": "[variables('templates').deployment.loadBalancer]"
+          "uri": "[variables('templates').deployment.virtualMachine]"
         },
         "parametersLink": {
           "uri": "[variables('templates').parameter.dataTier]",
