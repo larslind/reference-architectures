@@ -158,7 +158,7 @@
           ]
         },
         {
-          "name": "ra-ntier-mgmt-jumpbox-nsg",
+          "name": "ra-ntier-mgmt-nsg",
           "subnets": [ ],
           "networkInterfaces": [
             "ra-ntier-mgmt-vm1-nic1"
@@ -175,38 +175,6 @@
               "access": "Allow",
               "priority": 100,
               "direction": "Inbound"
-            },
-            {
-              "name": "deny-other-traffic",
-              "description": "Deny all other traffic",
-              "protocol": "*",
-              "sourcePortRange": "*",
-              "destinationPortRange": "*",
-              "sourceAddressPrefix": "*",
-              "destinationAddressPrefix": "*",
-              "access": "Deny",
-              "priority": 120,
-              "direction": "Inbound"
-            }
-          ]
-        },
-        {
-          "name": "ra-ntier-mgmt-monitor-nsg",
-          "subnets": [ ],
-          "networkInterfaces": [
-            "ra-ntier-mgmt-vm2-nic1"
-          ],
-          "securityRules": [
-            {
-              "name": "allow-mgmt-rdp",
-              "direction": "Inbound",
-              "priority": 100,
-              "sourceAddressPrefix": "10.0.0.128/25",
-              "destinationAddressPrefix": "*",
-              "sourcePortRange": "*",
-              "destinationPortRange": "3389",
-              "access": "Allow",
-              "protocol": "Tcp"
             },
             {
               "name": "deny-other-traffic",

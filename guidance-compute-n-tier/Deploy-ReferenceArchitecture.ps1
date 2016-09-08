@@ -42,8 +42,7 @@ $virtualNetworkParametersFile = [System.IO.Path]::Combine($PSScriptRoot, 'parame
 $businessTierParametersFile = [System.IO.Path]::Combine($PSScriptRoot, 'parameters', $OSType.ToLower(), 'businessTier.parameters.json')
 $dataTierParametersFile = [System.IO.Path]::Combine($PSScriptRoot, 'parameters', $OSType.ToLower(), 'dataTier.parameters.json')
 $webTierParametersFile = [System.IO.Path]::Combine($PSScriptRoot, 'parameters', $OSType.ToLower(), 'webTier.parameters.json')
-$managementTierJumpboxParametersFile = [System.IO.Path]::Combine($PSScriptRoot, 'parameters', $OSType.ToLower(), 'managementTierJumpbox.parameters.json')
-$managementTierMonitorParametersFile = [System.IO.Path]::Combine($PSScriptRoot, 'parameters', $OSType.ToLower(), 'managementTierMonitor.parameters.json')
+$managementTierParametersFile = [System.IO.Path]::Combine($PSScriptRoot, 'parameters', $OSType.ToLower(), 'managementTier.parameters.json')
 $networkSecurityGroupParametersFile = [System.IO.Path]::Combine($PSScriptRoot, 'parameters', $OSType.ToLower(), 'networkSecurityGroups.parameters.json')
 
 $resourceGroupName = "ra-ntier-vm-rg"
@@ -70,13 +69,9 @@ Write-Host "Deploying web tier..."
 New-AzureRmResourceGroupDeployment -Name "ra-ntier-web-deployment" -ResourceGroupName $resourceGroup.ResourceGroupName `
     -TemplateUri $loadBalancedVmSetTemplate.AbsoluteUri -TemplateParameterFile $webTierParametersFile
 
-Write-Host "Deploying jumpbox in management tier..."
-New-AzureRmResourceGroupDeployment -Name "ra-ntier-mgmt-jumpbox-deployment" -ResourceGroupName $resourceGroup.ResourceGroupName `
-    -TemplateUri $virtualMachineTemplate.AbsoluteUri -TemplateParameterFile $managementTierJumpboxParametersFile
-
-Write-Host "Deploying monitor in management tier..."
-New-AzureRmResourceGroupDeployment -Name "ra-ntier-mgmt-monitor-deployment" -ResourceGroupName $resourceGroup.ResourceGroupName `
-    -TemplateUri $virtualMachineTemplate.AbsoluteUri -TemplateParameterFile $managementTierMonitorParametersFile
+Write-Host "Deploying management tier..."
+New-AzureRmResourceGroupDeployment -Name "ra-ntier-mgmt-deployment" -ResourceGroupName $resourceGroup.ResourceGroupName `
+    -TemplateUri $virtualMachineTemplate.AbsoluteUri -TemplateParameterFile $managementTierParametersFile
 
 Write-Host "Deploying network security group"
 New-AzureRmResourceGroupDeployment -Name "ra-ntier-nsg-deployment" -ResourceGroupName $resourceGroup.ResourceGroupName `

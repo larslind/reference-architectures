@@ -42,8 +42,7 @@
         "webTier": "[concat(parameters('parameterRootUri'), 'guidance-compute-n-tier/parameters/', parameters('osType'), '/webTier.parameters.json')]",
         "dataTier": "[concat(parameters('parameterRootUri'), 'guidance-compute-n-tier/parameters/', parameters('osType'), '/dataTier.parameters.json')]",
         "businessTier": "[concat(parameters('parameterRootUri'), 'guidance-compute-n-tier/parameters/', parameters('osType'), '/businessTier.parameters.json')]",
-        "managementTierJumpbox": "[concat(parameters('parameterRootUri'), 'guidance-compute-n-tier/parameters/', parameters('osType'), '/managementTierJumpbox.parameters.json')]",
-        "managementTierMonitor": "[concat(parameters('parameterRootUri'), 'guidance-compute-n-tier/parameters/', parameters('osType'), '/managementTierMonitor.parameters.json')]"
+        "managementTier": "[concat(parameters('parameterRootUri'), 'guidance-compute-n-tier/parameters/', parameters('osType'), '/managementTier.parameters.json')]",
       }
     }
   },
@@ -120,7 +119,7 @@
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2015-01-01",
-      "name": "ra-ntier-mgmt-jumpbox-deployment",
+      "name": "ra-ntier-mgmt-deployment",
       "dependsOn": [
         "Microsoft.Resources/deployments/ra-ntier-vnet-deployment"
       ],
@@ -130,25 +129,7 @@
           "uri": "[variables('templates').deployment.virtualMachine]"
         },
         "parametersLink": {
-          "uri": "[variables('templates').parameter.managementTierJumpbox]",
-          "contentVersion": "1.0.0.0"
-        }
-      }
-    },
-    {
-      "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
-      "name": "ra-ntier-mgmt-monitor-deployment",
-      "dependsOn": [
-        "Microsoft.Resources/deployments/ra-ntier-vnet-deployment"
-      ],
-      "properties": {
-        "mode": "Incremental",
-        "templateLink": {
-          "uri": "[variables('templates').deployment.virtualMachine]"
-        },
-        "parametersLink": {
-          "uri": "[variables('templates').parameter.managementTierMonitor]",
+          "uri": "[variables('templates').parameter.managementTier]",
           "contentVersion": "1.0.0.0"
         }
       }
@@ -159,8 +140,7 @@
       "apiVersion": "2015-01-01",
       "dependsOn": [
         "Microsoft.Resources/deployments/ra-ntier-vnet-deployment",
-        "Microsoft.Resources/deployments/ra-ntier-mgmt-monitor-deployment",
-        "Microsoft.Resources/deployments/ra-ntier-mgmt-jumpbox-deployment",
+        "Microsoft.Resources/deployments/ra-ntier-mgmt-deployment",
         "Microsoft.Resources/deployments/ra-ntier-data-deployment",
         "Microsoft.Resources/deployments/ra-ntier-biz-deployment",
         "Microsoft.Resources/deployments/ra-ntier-web-deployment"

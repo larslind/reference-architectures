@@ -113,11 +113,8 @@ VIRTUAL_NETWORK_DEPLOYMENT_NAME="ra-ntier-vnet-deployment"
 
 VIRTUAL_MACHINE_TEMPLATE_URI="${TEMPLATE_ROOT_URI}templates/buildingBlocks/multi-vm-n-nic-m-storage/azuredeploy.json"
 
-MGMT_TIER_JUMPBOX_PARAMETERS_PATH="${SCRIPT_DIR}/parameters/${OS_TYPE}/managementTierJumpbox.parameters.json"
-MGMT_TIER_JUMPBOX_DEPLOYMENT_NAME="ra-ntier-mgmt-jumpbox-deployment"
-
-MGMT_TIER_MONITOR_PARAMETERS_PATH="${SCRIPT_DIR}/parameters/${OS_TYPE}/managementTierMonitor.parameters.json"
-MGMT_TIER_MONITOR_DEPLOYMENT_NAME="ra-ntier-mgmt-monitor-deployment"
+MGMT_TIER_PARAMETERS_PATH="${SCRIPT_DIR}/parameters/${OS_TYPE}/managementTier.parameters.json"
+MGMT_TIER_DEPLOYMENT_NAME="ra-ntier-mgmt-deployment"
 
 LOAD_BALANCER_TEMPLATE_URI="${TEMPLATE_ROOT_URI}templates/buildingBlocks/loadBalancer-backend-n-vm/azuredeploy.json"
 
@@ -160,14 +157,9 @@ azure group deployment create --resource-group $RESOURCE_GROUP_NAME --name $DATA
 --template-uri $VIRTUAL_MACHINE_TEMPLATE_URI --parameters-file $DATA_TIER_PARAMETERS_PATH \
 --subscription $SUBSCRIPTION_ID || exit 1
 
-echo "Deploying jumpbox in management tier..."
-azure group deployment create --resource-group $RESOURCE_GROUP_NAME --name $MGMT_TIER_JUMPBOX_DEPLOYMENT_NAME \
---template-uri $VIRTUAL_MACHINE_TEMPLATE_URI --parameters-file $MGMT_TIER_JUMPBOX_PARAMETERS_PATH \
---subscription $SUBSCRIPTION_ID || exit 1
-
-echo "Deploying monitor in management tier..."
-azure group deployment create --resource-group $RESOURCE_GROUP_NAME --name $MGMT_TIER_MONITOR_DEPLOYMENT_NAME \
---template-uri $VIRTUAL_MACHINE_TEMPLATE_URI --parameters-file $MGMT_TIER_MONITOR_PARAMETERS_PATH \
+echo "Deploying management tier..."
+azure group deployment create --resource-group $RESOURCE_GROUP_NAME --name $MGMT_TIER_DEPLOYMENT_NAME \
+--template-uri $VIRTUAL_MACHINE_TEMPLATE_URI --parameters-file $MGMT_TIER_PARAMETERS_PATH \
 --subscription $SUBSCRIPTION_ID || exit 1
 
 echo "Deploying network security group..."
