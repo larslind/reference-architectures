@@ -1,0 +1,96 @@
+﻿{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "buildingBlocksRootUri": {
+      "type": "string",
+      "defaultValue": "https://raw.githubusercontent.com/mspnp/template-building-blocks/master/",
+      "metadata": {
+        "description": "Root path for templates"
+      }
+    },
+    "parameterRootUri": {
+      "type": "string",
+      "defaultValue": "https://raw.githubusercontent.com/mspnp/reference-architectures/master/",
+      "metadata": {
+        "decription": "Root path for parameters"
+      }
+    }
+  },
+  "variables": {
+    "templates": {
+      "deployment": {
+        "multiVMs": "[concat(parameters('buildingBlocksRootUri'), 'templates/buildingBlocks/multi-vm-n-nic-m-storage/azuredeploy.json')]",
+        "dmz": "[concat(parameters('buildingBlocksRootUri'), 'templates/buildingBlocks/dmz/azuredeploy.json')]",
+        "networkSecurityGroups": "[concat(parameters('buildingBlocksRootUri'), 'templates/buildingBlocks/networkSecurityGroups/azuredeploy.json')]"
+      },
+      "parameter": {
+        "mgmtSubnetVMs": "[concat(parameters('parameterRootUri'), 'guidance-hybrid-network-secure-vnet-dmz/parameters/virtualMachines-mgmt-subnet.parameters.json')]",
+        "dmz": "[concat(parameters('parameterRootUri'), 'guidance-hybrid-network-secure-vnet-dmz/parameters/dmz.parameters.json')]",
+        "internetDmz": "[concat(parameters('parameterRootUri'), 'guidance-hybrid-network-secure-vnet-dmz/parameters/internet-dmz.parameters.json')]",
+        "networkSecurityGroups": "[concat(parameters('parameterRootUri'), 'guidance-hybrid-network-secure-vnet-dmz/parameters/networkSecurityGroups.parameters.json')]"
+      }
+    }
+  },
+  "resources": [
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2015-01-01",
+      "name": "ra-mgmt-vms-deployment",
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[variables('templates').deployment.multiVMs]"
+        },
+        "parametersLink": {
+          "uri": "[variables('templates').parameter.mgmtSubnetVMs]"
+        }
+      }
+    },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2015-01-01",
+      "name": "ra-dmz-deployment",
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[variables('templates').deployment.dmz]"
+        },
+        "parametersLink": {
+          "uri": "[variables('templates').parameter.dmz]"
+        }
+      }
+    },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2015-01-01",
+      "name": "ra-internet-dmz-deployment",
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[variables('templates').deployment.dmz]"
+        },
+        "parametersLink": {
+          "uri": "[variables('templates').parameter.internetDmz]"
+        }
+      }
+    },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2015-01-01",
+      "name": "ra-nsg-deployment",
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[variables('templates').deployment.networkSecurityGroups]"
+        },
+        "parametersLink": {
+          "uri": "[variables('templates').parameter.networkSecurityGroups]"
+        }
+      }
+    }
+  ],
+  "outputs": {
+  }
+}
+

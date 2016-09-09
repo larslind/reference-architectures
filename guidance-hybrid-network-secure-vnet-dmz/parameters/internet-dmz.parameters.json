@@ -4,12 +4,10 @@
   "parameters": {
     "dmzSettings": {
       "value": {
-        "namePrefix": "intranet-dmz",
+        "namePrefix": "internet-dmz",
         "endpoint": {
-          "hasPublicEndpoint": "no",
+          "hasPublicEndpoint": "yes",
           "internalLoadBalancerSettings": {
-            "privateIPAddress": "10.0.1.100",
-            "subnetName": "dmz-in"
           }
         },
         "applianceSettings": {
@@ -60,15 +58,15 @@
             ]
           }
         },
-        "securedAddressSpace": [ "10.0.3.0/24", "10.0.4.0/24", "10.0.5.0/24" ],
+        "securedAddressSpace": [ "10.0.1.0/24", "10.0.2.0/24", "10.0.3.0/24" ],
         "subnets": {
           "useExistingSubnets": "yes",
           "inSubnet": {
-            "name": "dmz-in",
+            "name": "public-dmz-in",
             "addressPrefix": ""
           },
           "outSubnet": {
-            "name": "dmz-out",
+            "name": "public-dmz-out",
             "addressPrefix": ""
           }
         }
@@ -78,7 +76,7 @@
     "virtualNetworkSettings": {
       "value": {
         "name": "ra-vnet",
-        "resourceGroup": "ra-private-dmz-rg1"
+        "resourceGroup": "ra-public-dmz-network-rg"
       }
     }
   }
