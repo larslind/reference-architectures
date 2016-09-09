@@ -50,7 +50,7 @@
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2015-01-01",
-      "name": "deploy-network",
+      "name": "ra-ntier-vnet-deployment",
       "properties": {
         "mode": "Incremental",
         "templateLink": {
@@ -65,9 +65,9 @@
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2015-01-01",
-      "name": "deploy-web-tier",
+      "name": "ra-ntier-web-deployment",
       "dependsOn": [
-        "Microsoft.Resources/deployments/deploy-network"
+        "Microsoft.Resources/deployments/ra-ntier-vnet-deployment"
       ],
       "properties": {
         "mode": "Incremental",
@@ -83,9 +83,9 @@
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2015-01-01",
-      "name": "deploy-biz-tier",
+      "name": "ra-ntier-biz-deployment",
       "dependsOn": [
-        "Microsoft.Resources/deployments/deploy-network"
+        "Microsoft.Resources/deployments/ra-ntier-vnet-deployment"
       ],
       "properties": {
         "mode": "Incremental",
@@ -101,14 +101,14 @@
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2015-01-01",
-      "name": "deploy-data-tier",
+      "name": "ra-ntier-data-deployment",
       "dependsOn": [
-        "Microsoft.Resources/deployments/deploy-network"
+        "Microsoft.Resources/deployments/ra-ntier-vnet-deployment"
       ],
       "properties": {
         "mode": "Incremental",
         "templateLink": {
-          "uri": "[variables('templates').deployment.loadBalancer]"
+          "uri": "[variables('templates').deployment.virtualMachine]"
         },
         "parametersLink": {
           "uri": "[variables('templates').parameter.dataTier]",
@@ -119,9 +119,9 @@
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2015-01-01",
-      "name": "deploy-mgmt-tier",
+      "name": "ra-ntier-mgmt-deployment",
       "dependsOn": [
-        "Microsoft.Resources/deployments/deploy-network"
+        "Microsoft.Resources/deployments/ra-ntier-vnet-deployment"
       ],
       "properties": {
         "mode": "Incremental",
@@ -136,14 +136,14 @@
     },
     {
       "type": "Microsoft.Resources/deployments",
-      "name": "deploy-nsg",
+      "name": "ra-ntier-nsg-deployment",
       "apiVersion": "2015-01-01",
       "dependsOn": [
-        "Microsoft.Resources/deployments/deploy-network",
-        "Microsoft.Resources/deployments/deploy-web-tier",
-        "Microsoft.Resources/deployments/deploy-data-tier",
-        "Microsoft.Resources/deployments/deploy-biz-tier",
-        "Microsoft.Resources/deployments/deploy-mgmt-tier"
+        "Microsoft.Resources/deployments/ra-ntier-vnet-deployment",
+        "Microsoft.Resources/deployments/ra-ntier-mgmt-deployment",
+        "Microsoft.Resources/deployments/ra-ntier-data-deployment",
+        "Microsoft.Resources/deployments/ra-ntier-biz-deployment",
+        "Microsoft.Resources/deployments/ra-ntier-web-deployment"
       ],
       "properties": {
         "mode": "Incremental",

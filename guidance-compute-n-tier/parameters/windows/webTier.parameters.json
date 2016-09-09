@@ -4,15 +4,12 @@
   "parameters": {
     "loadBalancerSettings": {
       "value": {
-        "name": "app1-web-lb",
+        "name": "ra-ntier-web-lb",
         "frontendIPConfigurations": [
           {
-            "name": "lb-fe-config1",
+            "name": "ra-ntier-web-lb-fe-config1",
             "loadBalancerType": "public",
-            "internalLoadBalancerSettings": {
-              "privateIPAddress": "10.0.0.250",
-              "subnetName": "app1-web-sn"
-            }
+            "internalLoadBalancerSettings": { }
           }
         ],
         "loadBalancingRules": [
@@ -22,7 +19,8 @@
             "backendPort": 80,
             "protocol": "Tcp",
             "backendPoolName": "lb-bep1",
-            "frontendIPConfigurationName": "lb-fe-config1"
+            "frontendIPConfigurationName": "ra-ntier-web-lb-fe-config1",
+            "probeName": "lbp1"
           }
         ],
         "probes": [
@@ -44,7 +42,7 @@
     },
     "virtualMachinesSettings": {
       "value": {
-        "namePrefix": "ra",
+        "namePrefix": "ra-ntier-web",
         "computerNamePrefix": "cn",
         "size": "Standard_DS1",
         "adminUsername": "testuser",
@@ -56,7 +54,7 @@
           {
             "isPublic": "false",
             "isPrimary": "true",
-            "subnetName": "app1-web-sn",
+            "subnetName": "web",
             "privateIPAllocationMethod": "dynamic",
             "enableIPForwarding": false,
             "dnsServers": [ ]
@@ -79,23 +77,36 @@
             "createOption": "Empty"
           }
         },
-        "extensions": [ ],
+        "extensions": [
+          {
+            "name": "iis-config-ext",
+            "settingsConfigMapperUri": "https://raw.githubusercontent.com/mspnp/template-building-blocks/master/templates/resources/Microsoft.Compute/virtualMachines/extensions/vm-extension-passthrough-settings-mapper.json",
+            "publisher": "Microsoft.Powershell",
+            "type": "DSC",
+            "typeHandlerVersion": "2.20",
+            "autoUpgradeMinorVersion": true,
+            "settingsConfig": {
+              "modulesUrl": "https://raw.githubusercontent.com/mspnp/reference-architectures/master/guidance-compute-multi-vm/extensions/windows/iisaspnet.ps1.zip",
+              "configurationFunction": "iisaspnet.ps1\\iisaspnet"
+            },
+            "protectedSettingsConfig": { }
+          }
+        ],
         "availabilitySet": {
           "useExistingAvailabilitySet": "No",
-          "name": "app1-web-as"
-        },
-        "extensions": [ ]
+          "name": "ra-ntier-web-as"
+        }
       }
     },
     "virtualNetworkSettings": {
       "value": {
-        "name": "ra-vnet",
+        "name": "ra-ntier-vnet",
         "resourceGroup": "ra-ntier-vm-rg"
       }
     },
     "buildingBlockSettings": {
       "value": {
-        "storageAccountsCount": 1,
+        "storageAccountsCount": 3,
         "vmCount": 3,
         "vmStartIndex": 1
       }

@@ -2,49 +2,9 @@
   "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
-    "loadBalancerSettings": {
-      "value": {
-        "name": "app1-data-ilb",
-        "frontendIPConfigurations": [
-          {
-            "name": "lb-fe-config1",
-            "loadBalancerType": "internal",
-            "internalLoadBalancerSettings": {
-              "privateIPAddress": "10.0.2.250",
-              "subnetName": "app1-data-sn"
-            }
-          }
-        ],
-        "loadBalancingRules": [
-          {
-            "name": "lbr1",
-            "frontendPort": 80,
-            "backendPort": 80,
-            "protocol": "Tcp",
-            "backendPoolName": "lb-bep1",
-            "frontendIPConfigurationName": "lb-fe-config1"
-          }
-        ],
-        "probes": [
-          {
-            "name": "lbp1",
-            "port": 80,
-            "protocol": "Http",
-            "requestPath": "/"
-          }
-        ],
-        "backendPools": [
-          {
-            "name": "lb-bep1",
-            "nicIndex": 0
-          }
-        ],
-        "inboundNatRules": [ ]
-      }
-    },
     "virtualMachinesSettings": {
       "value": {
-        "namePrefix": "ra",
+        "namePrefix": "ra-ntier-data",
         "computerNamePrefix": "cn",
         "size": "Standard_DS1",
         "adminUsername": "testuser",
@@ -56,7 +16,7 @@
           {
             "isPublic": "false",
             "isPrimary": "true",
-            "subnetName": "app1-data-sn",
+            "subnetName": "data",
             "privateIPAllocationMethod": "dynamic",
             "enableIPForwarding": false,
             "dnsServers": [ ]
@@ -82,22 +42,21 @@
         "extensions": [ ],
         "availabilitySet": {
           "useExistingAvailabilitySet": "No",
-          "name": "app1-data-as"
-        },
-        "extensions": [ ]
+          "name": "ra-ntier-data-as"
+        }
       }
     },
     "virtualNetworkSettings": {
       "value": {
-        "name": "ra-vnet",
+        "name": "ra-ntier-vnet",
         "resourceGroup": "ra-ntier-vm-rg"
       }
     },
     "buildingBlockSettings": {
       "value": {
-        "storageAccountsCount": 1,
+        "storageAccountsCount": 2,
         "vmCount": 2,
-        "vmStartIndex": 7
+        "vmStartIndex": 1
       }
     }
   }
