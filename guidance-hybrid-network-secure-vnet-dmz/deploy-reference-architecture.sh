@@ -2,7 +2,6 @@
 
 NETWORK_RESOURCE_GROUP_NAME="ra-public-dmz-network-rg"
 WORKLOAD_RESOURCE_GROUP_NAME="ra-public-dmz-wl-rg"
-SECURITY_RESOURCE_GROUP_NAME="ra-public-dmz-security-rg"
 LOCATION="centralus"
 
 BUILDINGBLOCKS_ROOT_URI=${BUILDINGBLOCKS_ROOT_URI:="https://raw.githubusercontent.com/mspnp/template-building-blocks/master/"}
@@ -117,8 +116,6 @@ azure config mode arm
 # Create the resource group, saving the output for later.
 NETWORK_RESOURCE_GROUP_OUTPUT=$(azure group create --name $NETWORK_RESOURCE_GROUP_NAME --location $LOCATION --subscription $SUBSCRIPTION_ID --json) || exit 1
 WORKLOAD_RESOURCE_GROUP_OUTPUT=$(azure group create --name $WORKLOAD_RESOURCE_GROUP_NAME --location $LOCATION --subscription $SUBSCRIPTION_ID --json) || exit 1
-SECURITY_RESOURCE_GROUP_OUTPUT=$(azure group create --name $SECURITY_RESOURCE_GROUP_NAME --location $LOCATION --subscription $SUBSCRIPTION_ID --json) || exit 1
-
 
 # Create the virtual network
 echo "Deploying virtual network..."
@@ -142,17 +139,17 @@ azure group deployment create --resource-group $WORKLOAD_RESOURCE_GROUP_NAME --n
 --subscription $SUBSCRIPTION_ID || exit 1
 
 echo "Deploying jumpbox in mgmt subnet..."
-azure group deployment create --resource-group $SECURITY_RESOURCE_GROUP_NAME --name "ra-mgmt-vms-deployment" \
+azure group deployment create --resource-group $NETWORK_RESOURCE_GROUP_NAME --name "ra-mgmt-vms-deployment" \
 --template-uri $MULTI_VMS_TEMPLATE_URI --parameters-file $MGMT_SUBNET_VMS_PARAMETERS_FILE \
 --subscription $SUBSCRIPTION_ID || exit 1
 
 echo "Deploying dmz..."
-azure group deployment create --resource-group $SECURITY_RESOURCE_GROUP_NAME --name "ra-dmz-deployment" \
+azure group deployment create --resource-group $NETWORK_RESOURCE_GROUP_NAME --name "ra-dmz-deployment" \
 --template-uri $DMZ_TEMPLATE_URI --parameters-file $DMZ_PARAMETERS_FILE \
 --subscription $SUBSCRIPTION_ID || exit 1
 
 echo "Deploying internet dmz..."
-azure group deployment create --resource-group $SECURITY_RESOURCE_GROUP_NAME --name "ra-internet-dmz-deployment" \
+azure group deployment create --resource-group $NETWORK_RESOURCE_GROUP_NAME --name "ra-internet-dmz-deployment" \
 --template-uri $DMZ_TEMPLATE_URI --parameters-file $INTERNET_DMZ_PARAMETERS_FILE \
 --subscription $SUBSCRIPTION_ID || exit 1
 

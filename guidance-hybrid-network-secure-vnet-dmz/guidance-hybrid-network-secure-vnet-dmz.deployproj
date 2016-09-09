@@ -11,7 +11,6 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <None Include="networkSecurityGroups.azuredeploy.json" />
     <None Include="security.azuredeploy.json" />
     <None Include="workload.azuredeploy.json" />
     <None Include="virtualNetwork.azuredeploy.json" />

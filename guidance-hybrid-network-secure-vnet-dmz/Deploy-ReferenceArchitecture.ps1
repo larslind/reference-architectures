@@ -43,7 +43,6 @@ $networkSecurityGroupsParametersFile = [System.IO.Path]::Combine($PSScriptRoot, 
 
 $networkResourceGroupName = "ra-public-dmz-network-rg"
 $workloadResourceGroupName = "ra-public-dmz-wl-rg"
-$securityResourceGroupName = "ra-public-dmz-security-rg"
 
 # Login to Azure and select your subscription
 Login-AzureRmAccount -SubscriptionId $SubscriptionId | Out-Null
@@ -51,7 +50,6 @@ Login-AzureRmAccount -SubscriptionId $SubscriptionId | Out-Null
 # Create the resource group
 $networkResourceGroup = New-AzureRmResourceGroup -Name $networkResourceGroupName -Location $Location
 $workloadResourceGroup = New-AzureRmResourceGroup -Name $workloadResourceGroupName -Location $Location
-$securityResourceGroup = New-AzureRmResourceGroup -Name $securityResourceGroupName -Location $Location
 
 Write-Host "Deploying virtual network..."
 New-AzureRmResourceGroupDeployment -Name "ra-vnet-deployment" -ResourceGroupName $networkResourceGroup.ResourceGroupName `
@@ -70,15 +68,15 @@ New-AzureRmResourceGroupDeployment -Name "ra-data-lb-vms-deployment" -ResourceGr
     -TemplateUri $loadBalancerTemplate.AbsoluteUri -TemplateParameterFile $dataSubnetLoadBalancerAndVMsParametersFile
 
 Write-Host "Deploying jumpbox in mgmt subnet..."
-New-AzureRmResourceGroupDeployment -Name "ra-mgmt-vms-deployment" -ResourceGroupName $securityResourceGroup.ResourceGroupName `
+New-AzureRmResourceGroupDeployment -Name "ra-mgmt-vms-deployment" -ResourceGroupName $networkResourceGroup.ResourceGroupName `
     -TemplateUri $multiVMsTemplate.AbsoluteUri -TemplateParameterFile $mgmtSubnetVMsParametersFile
 
 Write-Host "Deploying private dmz..."
-New-AzureRmResourceGroupDeployment -Name "ra-private-dmz-deployment" -ResourceGroupName $securityResourceGroup.ResourceGroupName `
+New-AzureRmResourceGroupDeployment -Name "ra-private-dmz-deployment" -ResourceGroupName $networkResourceGroup.ResourceGroupName `
     -TemplateUri $dmzTemplate.AbsoluteUri -TemplateParameterFile $dmzParametersFile
 
 Write-Host "Deploying public dmz..."
-New-AzureRmResourceGroupDeployment -Name "ra-public-dmz-deployment" -ResourceGroupName $securityResourceGroup.ResourceGroupName `
+New-AzureRmResourceGroupDeployment -Name "ra-public-dmz-deployment" -ResourceGroupName $networkResourceGroup.ResourceGroupName `
     -TemplateUri $dmzTemplate.AbsoluteUri -TemplateParameterFile $internetDmzParametersFile
 
 Write-Host "Deploying vpn..."
