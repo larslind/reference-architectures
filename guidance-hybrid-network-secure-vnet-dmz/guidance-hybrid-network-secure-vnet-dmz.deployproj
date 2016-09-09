@@ -11,7 +11,10 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <None Include="azuredeploy.json" />
+    <None Include="networkSecurityGroups.azuredeploy.json" />
+    <None Include="security.azuredeploy.json" />
+    <None Include="workload.azuredeploy.json" />
+    <None Include="virtualNetwork.azuredeploy.json" />
     <None Include="deploy-reference-architecture.sh" />
     <None Include="Deploy-ReferenceArchitecture.ps1" />
     <None Include="extensions\linux\install-apache.sh" />

@@ -4,6 +4,7 @@
   "parameters": {
     "dmzSettings": {
       "value": {
+        "namePrefix": "internet-dmz",
         "endpoint": {
           "hasPublicEndpoint": "yes",
           "internalLoadBalancerSettings": {
@@ -75,7 +76,7 @@
     "virtualNetworkSettings": {
       "value": {
         "name": "ra-vnet",
-        "resourceGroup": "ra-public-dmz-rg1"
+        "resourceGroup": "ra-public-dmz-network-rg"
       }
     }
   }

@@ -48,7 +48,7 @@
             "typeHandlerVersion": "1.5",
             "autoUpgradeMinorVersion": true,
             "settingsConfig": {
-              "fileUris": [ "https://raw.githubusercontent.com/mspnp/reference-architectures/master/guidance-hybrid-network-secure-vnet-dmz/extensions/linux/install-apache.sh" ],
+              "fileUris": [ "https://raw.githubusercontent.com/mspnp/reference-architectures/master/guidance-hybrid-network-secure-vnet/extensions/linux/install-apache.sh" ],
               "commandToExecute": "sh install-apache.sh"
             },
             "protectedSettingsConfig": { }
@@ -114,7 +114,7 @@
     "virtualNetworkSettings": {
       "value": {
         "name": "ra-vnet",
-        "resourceGroup": "ra-public-dmz-rg1"
+        "resourceGroup": "ra-public-dmz-network-rg"
       }
     },
     "buildingBlockSettings": {

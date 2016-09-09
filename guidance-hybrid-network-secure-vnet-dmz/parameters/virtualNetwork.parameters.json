@@ -5,7 +5,7 @@
     "virtualNetworkSettings": {
       "value": {
         "name": "ra-vnet",
-        "resourceGroup": "ra-public-dmz-rg1",
+        "resourceGroup": "ra-public-dmz-network-rg",
         "addressPrefixes": [
           "10.0.0.0/16"
         ],

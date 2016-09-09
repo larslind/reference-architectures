@@ -1,6 +1,8 @@
 #!/bin/bash
 
-RESOURCE_GROUP_NAME="ra-public-dmz-rg1"
+NETWORK_RESOURCE_GROUP_NAME="ra-public-dmz-network-rg"
+WORKLOAD_RESOURCE_GROUP_NAME="ra-public-dmz-wl-rg"
+SECURITY_RESOURCE_GROUP_NAME="ra-public-dmz-security-rg"
 LOCATION="centralus"
 
 BUILDINGBLOCKS_ROOT_URI=${BUILDINGBLOCKS_ROOT_URI:="https://raw.githubusercontent.com/mspnp/template-building-blocks/master/"}
@@ -104,7 +106,7 @@ VIRTUAL_NETWORK_PARAMETERS_FILE="${SCRIPT_DIR}/parameters/virtualNetwork.paramet
 WEB_SUBNET_LOADBALANCER_AND_VMS_PARAMETERS_FILE="${SCRIPT_DIR}/parameters/loadBalancer-web-subnet.parameters.json"
 BIZ_SUBNET_LOADBALANCER_AND_VMS_PARAMETERS_FILE="${SCRIPT_DIR}/parameters/loadBalancer-biz-subnet.parameters.json"
 DATA_SUBNET_LOADBALANCER_AND_VMS_PARAMETERS_FILE="${SCRIPT_DIR}/parameters/loadBalancer-data-subnet.parameters.json"
-MGMT_SUBNET_VMS_PARAMETERS_FILE="${SCRIPT_DIR}/parameters/loadBalancer-mgmt-subnet.parameters.json"
+MGMT_SUBNET_VMS_PARAMETERS_FILE="${SCRIPT_DIR}/parameters/virtualMachines-mgmt-subnet.parameters.json"
 DMZ_PARAMETERS_FILE="${SCRIPT_DIR}/parameters/dmz.parameters.json"
 INTERNET_DMZ_PARAMETERS_FILE="${SCRIPT_DIR}/parameters/internet-dmz.parameters.json"
 VPN_PARAMETERS_FILE="${SCRIPT_DIR}/parameters/vpn.parameters.json"
@@ -113,51 +115,54 @@ NETWORK_SECURITY_GROUPS_PARAMETERS_FILE="${SCRIPT_DIR}/parameters/networkSecurit
 azure config mode arm
 
 # Create the resource group, saving the output for later.
-RESOURCE_GROUP_OUTPUT=$(azure group create --name $RESOURCE_GROUP_NAME --location $LOCATION --subscription $SUBSCRIPTION_ID --json) || exit 1
+NETWORK_RESOURCE_GROUP_OUTPUT=$(azure group create --name $NETWORK_RESOURCE_GROUP_NAME --location $LOCATION --subscription $SUBSCRIPTION_ID --json) || exit 1
+WORKLOAD_RESOURCE_GROUP_OUTPUT=$(azure group create --name $WORKLOAD_RESOURCE_GROUP_NAME --location $LOCATION --subscription $SUBSCRIPTION_ID --json) || exit 1
+SECURITY_RESOURCE_GROUP_OUTPUT=$(azure group create --name $SECURITY_RESOURCE_GROUP_NAME --location $LOCATION --subscription $SUBSCRIPTION_ID --json) || exit 1
+
 
 # Create the virtual network
 echo "Deploying virtual network..."
-azure group deployment create --resource-group $RESOURCE_GROUP_NAME --name "ra-vnet-deployment" \
+azure group deployment create --resource-group $NETWORK_RESOURCE_GROUP_NAME --name "ra-vnet-deployment" \
 --template-uri $VIRTUAL_NETWORK_TEMPLATE_URI --parameters-file $VIRTUAL_NETWORK_PARAMETERS_FILE \
 --subscription $SUBSCRIPTION_ID || exit 1
 
 echo "Deploying load balancer and virtual machines in web subnet..."
-azure group deployment create --resource-group $RESOURCE_GROUP_NAME --name "ra-web-lb-vms-deployment" \
+azure group deployment create --resource-group $WORKLOAD_RESOURCE_GROUP_NAME --name "ra-web-lb-vms-deployment" \
 --template-uri $LOAD_BALANCER_TEMPLATE_URI --parameters-file $WEB_SUBNET_LOADBALANCER_AND_VMS_PARAMETERS_FILE \
 --subscription $SUBSCRIPTION_ID || exit 1
 
 echo "Deploying load balancer and virtual machines in biz subnet..."
-azure group deployment create --resource-group $RESOURCE_GROUP_NAME --name "ra-biz-lb-vms-deployment" \
+azure group deployment create --resource-group $WORKLOAD_RESOURCE_GROUP_NAME --name "ra-biz-lb-vms-deployment" \
 --template-uri $LOAD_BALANCER_TEMPLATE_URI --parameters-file $BIZ_SUBNET_LOADBALANCER_AND_VMS_PARAMETERS_FILE \
 --subscription $SUBSCRIPTION_ID || exit 1
 
 echo "Deploying load balancer and virtual machines in data subnet..."
-azure group deployment create --resource-group $RESOURCE_GROUP_NAME --name "ra-data-lb-vms-deployment" \
+azure group deployment create --resource-group $WORKLOAD_RESOURCE_GROUP_NAME --name "ra-data-lb-vms-deployment" \
 --template-uri $LOAD_BALANCER_TEMPLATE_URI --parameters-file $DATA_SUBNET_LOADBALANCER_AND_VMS_PARAMETERS_FILE \
 --subscription $SUBSCRIPTION_ID || exit 1
 
 echo "Deploying jumpbox in mgmt subnet..."
-azure group deployment create --resource-group $RESOURCE_GROUP_NAME --name "ra-mgmt-vms-deployment" \
+azure group deployment create --resource-group $SECURITY_RESOURCE_GROUP_NAME --name "ra-mgmt-vms-deployment" \
 --template-uri $MULTI_VMS_TEMPLATE_URI --parameters-file $MGMT_SUBNET_VMS_PARAMETERS_FILE \
 --subscription $SUBSCRIPTION_ID || exit 1
 
 echo "Deploying dmz..."
-azure group deployment create --resource-group $RESOURCE_GROUP_NAME --name "ra-dmz-deployment" \
+azure group deployment create --resource-group $SECURITY_RESOURCE_GROUP_NAME --name "ra-dmz-deployment" \
 --template-uri $DMZ_TEMPLATE_URI --parameters-file $DMZ_PARAMETERS_FILE \
 --subscription $SUBSCRIPTION_ID || exit 1
 
 echo "Deploying internet dmz..."
-azure group deployment create --resource-group $RESOURCE_GROUP_NAME --name "ra-internet-dmz-deployment" \
+azure group deployment create --resource-group $SECURITY_RESOURCE_GROUP_NAME --name "ra-internet-dmz-deployment" \
 --template-uri $DMZ_TEMPLATE_URI --parameters-file $INTERNET_DMZ_PARAMETERS_FILE \
 --subscription $SUBSCRIPTION_ID || exit 1
 
 echo "Deploying vpn..."
-azure group deployment create --resource-group $RESOURCE_GROUP_NAME --name "ra-vpn-deployment" \
+azure group deployment create --resource-group $NETWORK_RESOURCE_GROUP_NAME --name "ra-vpn-deployment" \
 --template-uri $VPN_TEMPLATE_URI --parameters-file $VPN_PARAMETERS_FILE \
 --subscription $SUBSCRIPTION_ID || exit 1
 
 echo "Deploying network security group..."
-azure group deployment create --resource-group $RESOURCE_GROUP_NAME --name "ra-nsg-deployment" \
+azure group deployment create --resource-group $NETWORK_RESOURCE_GROUP_NAME --name "ra-nsg-deployment" \
 --template-uri $NETWORK_SECURITY_GROUPS_TEMPLATE_URI --parameters-file $NETWORK_SECURITY_GROUPS_PARAMETERS_FILE \
 --subscription $SUBSCRIPTION_ID || exit 1
 
