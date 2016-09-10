@@ -32,8 +32,15 @@
       <Visible>False</Visible>
     </None>
     <Content Include="Deploy-ReferenceArchitecture.ps1" />
-    <Content Include="parameters\azuredeploy.parameters.json" />
+    <Content Include="parameters\virtualNetwork.parameters.json" />
     <Content Include="templates\azuredeploy.json" />
+    <None Include="parameters\dmz-private.parameters.json" />
+    <None Include="parameters\dmz-public.parameters.json" />
+    <None Include="parameters\loadBalancer-data.parameters.json" />
+    <None Include="parameters\loadBalancer-biz.parameters.json" />
+    <None Include="parameters\loadBalancer-web.parameters.json" />
+    <None Include="parameters\virtualMachines-mgmt.parameters.json" />
+    <None Include="parameters\virtualNetworkGateway.parameters.json" />
   </ItemGroup>
   <Target Name="GetReferenceAssemblyPaths" />
 </Project>
