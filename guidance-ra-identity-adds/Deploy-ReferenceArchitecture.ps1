@@ -33,6 +33,7 @@ $virtualNetworkGatewayTemplate = New-Object System.Uri -ArgumentList @($template
 
 $virtualNetworkGatewayParametersFile = [System.IO.Path]::Combine($PSScriptRoot, "parameters\virtualNetworkGateway.parameters.json")
 $virtualNetworkParametersFile = [System.IO.Path]::Combine($PSScriptRoot, "parameters\virtualNetwork.parameters.json")
+$virtualNetworkOnpremiseDnsParametersFile = [System.IO.Path]::Combine($PSScriptRoot, "parameters\virtualNetwork-with-onpremise-dns.parameters.json")
 $webLoadBalancerParametersFile = [System.IO.Path]::Combine($PSScriptRoot, "parameters\loadBalancer-web.parameters.json")
 $bizLoadBalancerParametersFile = [System.IO.Path]::Combine($PSScriptRoot, "parameters\loadBalancer-biz.parameters.json")
 $dataLoadBalancerParametersFile = [System.IO.Path]::Combine($PSScriptRoot, "parameters\loadBalancer-data.parameters.json")
@@ -68,6 +69,11 @@ Login-AzureRmAccount -SubscriptionId $SubscriptionId | Out-Null
 #Write-Host "Deploying Virtual Network Gateway..."
 #New-AzureRmResourceGroupDeployment -Name "ra-adds-dmz-public-deployment" -ResourceGroupName $networkResourceGroup.ResourceGroupName `
 #    -TemplateUri $virtualNetworkGatewayTemplate.AbsoluteUri -TemplateParameterFile $virtualNetworkGatewayParametersFile
+
+# Deploy network infrastructure
+Write-Host "Updating virtual network DNS..."
+New-AzureRmResourceGroupDeployment -Name "ra-adds-vnet-onpremise-dns-deployment" -ResourceGroupName "ra-adds-network-rg" `
+    -TemplateUri $virtualNetworkTemplate.AbsoluteUri -TemplateParameterFile $virtualNetworkOnpremiseDnsParametersFile
 
 ## Deploy workload tiers
 #Write-Host "Creating workload resource group..."
