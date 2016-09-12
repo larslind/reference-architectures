@@ -25,22 +25,23 @@
   <Import Condition=" Exists('$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Deployment\1.1\DeploymentProject.targets') " Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Deployment\1.1\DeploymentProject.targets" />
   <!-- vertag<:>end -->
   <ItemGroup>
-    <Folder Include="templates\" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Deployment.targets">
       <Visible>False</Visible>
     </None>
     <Content Include="Deploy-ReferenceArchitecture.ps1" />
     <Content Include="parameters\virtualNetwork.parameters.json" />
     <Content Include="templates\azuredeploy.json" />
+    <None Include="extensions\adds-replication-site.ps1" />
+    <None Include="extensions\adds.ps1" />
     <None Include="parameters\dmz-private.parameters.json" />
     <None Include="parameters\dmz-public.parameters.json" />
     <None Include="parameters\loadBalancer-data.parameters.json" />
     <None Include="parameters\loadBalancer-biz.parameters.json" />
     <None Include="parameters\loadBalancer-web.parameters.json" />
+    <None Include="parameters\virtualMachines-adds.parameters.json" />
     <None Include="parameters\virtualMachines-mgmt.parameters.json" />
     <None Include="parameters\virtualNetworkGateway.parameters.json" />
+    <None Include="templates\ad-extension-settings-mapper.json" />
   </ItemGroup>
   <Target Name="GetReferenceAssemblyPaths" />
 </Project>
