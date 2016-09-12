@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.25123.0
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{151D2E53-A2C4-4D7D-83FE-D05416EBD58E}") = "guidance-compute-multi-vm", "guidance-compute-multi-vm\guidance-compute-multi-vm.deployproj", "{58119F1A-4CF6-46F9-AD16-444E3B873F03}"
 EndProject
@@ -18,6 +18,8 @@ EndProject
 Project("{151D2E53-A2C4-4D7D-83FE-D05416EBD58E}") = "guidance-hybrid-network-vpn-er", "guidance-hybrid-network-vpn-er\guidance-hybrid-network-vpn-er.deployproj", "{CFEB9DA3-A1F6-495D-8027-D58CBE1BD4CD}"
 EndProject
 Project("{151D2E53-A2C4-4D7D-83FE-D05416EBD58E}") = "guidance-iaas-ad", "guidance-iaas-ad\guidance-iaas-ad.deployproj", "{AEBDAE84-0E70-4E7A-AD5F-2E05007F30A6}"
+EndProject
+Project("{151D2E53-A2C4-4D7D-83FE-D05416EBD58E}") = "guidance-ntier-resiliency", "guidance-ntier-resiliency\guidance-ntier-resiliency.deployproj", "{D15FDB12-DE08-4E8E-B024-D4EE552747A1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -57,6 +59,10 @@ Global
 		{AEBDAE84-0E70-4E7A-AD5F-2E05007F30A6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AEBDAE84-0E70-4E7A-AD5F-2E05007F30A6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AEBDAE84-0E70-4E7A-AD5F-2E05007F30A6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D15FDB12-DE08-4E8E-B024-D4EE552747A1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D15FDB12-DE08-4E8E-B024-D4EE552747A1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D15FDB12-DE08-4E8E-B024-D4EE552747A1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D15FDB12-DE08-4E8E-B024-D4EE552747A1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

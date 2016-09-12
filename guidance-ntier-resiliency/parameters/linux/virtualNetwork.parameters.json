@@ -1,0 +1,41 @@
+﻿{
+  "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "virtualNetworkSettings": {
+      "value": {
+        "name": "ra-ntier-res-vnet",
+        "addressPrefixes": [
+          "10.0.0.0/16"
+        ],
+        "subnets": [
+          {
+            "name": "data",
+            "addressPrefix": "10.0.3.0/24"
+          },
+          {
+            "name": "svcA",
+            "addressPrefix": "10.0.2.0/24"
+          },
+          {
+            "name": "svcB",
+            "addressPrefix": "10.0.1.0/24"
+          },
+          {
+            "name": "mgmt",
+            "addressPrefix": "10.0.0.128/25"
+          },
+          {
+            "name": "dmzIn",
+            "addressPrefix": "10.0.0.64/27"
+          },
+          {
+            "name": "dmzOut",
+            "addressPrefix": "10.0.0.96/27"
+          }
+        ],
+        "dnsServers": [ ]
+      }
+    }
+  }
+}

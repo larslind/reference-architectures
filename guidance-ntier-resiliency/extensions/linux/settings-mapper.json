@@ -1,0 +1,27 @@
+﻿{
+  "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "deploymentContext": { "type": "object" },
+    "source": { "type": "object" },
+    "context": { "type": "object" }
+  },
+  "variables": {
+    "apacheInstallerUri": "[uri(deployment().properties.templateLink.uri, 'configure-datastax.sh')]",
+    "uniqueString": "[uniqueString(resourceGroup().id, deployment().name)]",
+    "location": "[resourceGroup().location]",
+    "instance": {
+      "settings": {
+        "fileUris": [ "[variables('apacheInstallerUri')]" ],
+        "commandToExecute": "[concat('bash configure-datastax.sh ', variables('location'),' ', variables('uniqueString'), ' dc0-', variables('location'))]"
+      },
+      "protectedSettings": { }
+    }
+  },
+  "outputs": {
+    "settings": {
+      "type": "object",
+      "value": "[variables('instance')]"
+    }
+  }
+}

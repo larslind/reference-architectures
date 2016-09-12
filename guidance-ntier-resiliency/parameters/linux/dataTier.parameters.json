@@ -1,0 +1,74 @@
+﻿{
+  "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "virtualMachinesSettings": {
+      "value": {
+        "namePrefix": "ra-ntier-res-data",
+        "computerNamePrefix": "cn",
+        "size": "Standard_DS1",
+        "adminUsername": "testuser",
+        "adminPassword": "AweS0me@PW",
+        "osType": "linux",
+        "osAuthenticationType": "password",
+        "sshPublicKey": "",
+        "nics": [
+          {
+            "isPublic": "true",
+            "isPrimary": "true",
+            "subnetName": "data",
+            "publicIPAllocationMethod": "static",
+            "privateIPAllocationMethod": "dynamic",
+            "enableIPForwarding": false,
+            "dnsServers": [ ]
+          }
+        ],
+        "imageReference": {
+          "publisher": "Canonical",
+          "offer": "UbuntuServer",
+          "sku": "14.04.5-LTS",
+          "version": "latest"
+        },
+        "dataDisks": {
+          "count": 1,
+          "properties": {
+            "diskSizeGB": 128,
+            "caching": "None",
+            "createOption": "Empty"
+          }
+        },
+        "osDisk": {
+          "caching": "ReadWrite"
+        },
+        "extensions": [
+          {
+            "name": "ra-ntier-res-datastax-config-ext",
+            "settingsMapperUri": "https://raw.githubusercontent.com/mspnp/reference-architectures/kirpas/ra-cassandra/guidance-ntier-resiliency/extensions/linux/settings-mapper.json",
+            "publisher": "Microsoft.OSTCExtensions",
+            "type": "CustomScriptForLinux",
+            "typeHandlerVersion": "1.5",
+            "autoUpgradeMinorVersion": true,
+            "properties": { }
+          }
+        ],
+        "availabilitySet": {
+          "useExistingAvailabilitySet": "No",
+          "name": "ra-ntier-res-data-as"
+        }
+      }
+    },
+    "virtualNetworkSettings": {
+      "value": {
+        "name": "ra-ntier-res-vnet",
+        "resourceGroup": "ra-ntier-res-rg"
+      }
+    },
+    "buildingBlockSettings": {
+      "value": {
+        "storageAccountsCount": 6,
+        "vmCount": 6,
+        "vmStartIndex": 1
+      }
+    }
+  }
+}
