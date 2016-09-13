@@ -40,11 +40,13 @@
     <None Include="parameters\loadBalancer-web.parameters.json" />
     <None Include="parameters\onpremise\add-adds-domain-controller.parameters.json" />
     <None Include="parameters\onpremise\create-adds-forest-extension.parameters.json" />
+    <None Include="parameters\onpremise\virtualMachines-rras.parameters.json" />
+    <None Include="parameters\onpremise\virtualMachines-adds.parameters.json" />
+    <None Include="parameters\onpremise\virtualNetwork-one-dns.parameters.json" />
+    <None Include="parameters\onpremise\virtualNetwork-two-dns.parameters.json" />
+    <None Include="parameters\onpremise\virtualNetwork.parameters.json" />
     <None Include="parameters\virtualMachines-adds.parameters.json" />
     <None Include="parameters\virtualMachines-mgmt.parameters.json" />
-    <None Include="parameters\virtualMachines-onpremise-rras.parameters.json" />
-    <None Include="parameters\virtualMachines-onpremise.parameters.json" />
-    <None Include="parameters\virtualNetwork-onpremise.parameters.json" />
     <None Include="parameters\virtualNetwork-with-onpremise-and-azure-dns.parameters.json" />
     <None Include="parameters\virtualNetwork-with-onpremise-dns.parameters.json" />
     <None Include="parameters\virtualNetworkGateway.parameters.json" />
