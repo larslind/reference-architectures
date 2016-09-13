@@ -14,9 +14,10 @@
         "sshPublicKey": "",
         "nics": [
           {
-            "isPublic": "false",
+            "isPublic": "true",
             "isPrimary": "true",
             "subnetName": "data",
+            "publicIPAllocationMethod": "static",
             "privateIPAllocationMethod": "dynamic",
             "enableIPForwarding": false,
             "dnsServers": [ ]
@@ -39,7 +40,17 @@
         "osDisk": {
           "caching": "ReadWrite"
         },
-        "extensions": [ ],
+        "extensions": [
+          {
+            "name": "ra-ntier-install-cassandra-ext",
+            "settingsMapperUri": "https://raw.githubusercontent.com/mspnp/reference-architectures/kirpas/ra-cassandra/guidance-ntier-resiliency/extensions/linux/cassandra-mapper.json",
+            "publisher": "Microsoft.OSTCExtensions",
+            "type": "CustomScriptForLinux",
+            "typeHandlerVersion": "1.5",
+            "autoUpgradeMinorVersion": true,
+            "properties": { }
+          }
+        ],
         "availabilitySet": {
           "useExistingAvailabilitySet": "No",
           "name": "ra-ntier-data-as"
@@ -54,8 +65,8 @@
     },
     "buildingBlockSettings": {
       "value": {
-        "storageAccountsCount": 2,
-        "vmCount": 2,
+        "storageAccountsCount": 6,
+        "vmCount": 6,
         "vmStartIndex": 1
       }
     }
