@@ -74,8 +74,8 @@
     },
     "virtualNetworkSettings": {
       "value": {
-        "name": "ra-ntier-res-vnet",
-        "resourceGroup": "ra-ntier-res-rg"
+        "name": "ra-ntier-rel-vnet",
+        "resourceGroup": "ra-ntier-rel-rg"
       }
     }
   }

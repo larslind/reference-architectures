@@ -4,7 +4,7 @@
   "parameters": {
     "virtualMachinesSettings": {
       "value": {
-        "namePrefix": "ra-ntier-res-mgmt",
+        "namePrefix": "ra-ntier-rel-mgmt",
         "computerNamePrefix": "cn",
         "size": "Standard_DS1",
         "adminUsername": "testuser",
@@ -49,8 +49,8 @@
     },
     "virtualNetworkSettings": {
       "value": {
-        "name": "ra-ntier-res-vnet",
-        "resourceGroup": "ra-ntier-res-rg"
+        "name": "ra-ntier-rel-vnet",
+        "resourceGroup": "ra-ntier-rel-rg"
       }
     },
     "buildingBlockSettings": {

@@ -4,10 +4,10 @@
   "parameters": {
     "loadBalancerSettings": {
       "value": {
-        "name": "ra-ntier-res-svc-a-lb",
+        "name": "ra-ntier-rel-svc-a-lb",
         "frontendIPConfigurations": [
           {
-            "name": "ra-ntier-res-svc-a-lb-fe-config1",
+            "name": "ra-ntier-rel-svc-a-lb-fe-config1",
             "loadBalancerType": "internal",
             "internalLoadBalancerSettings": {
               "privateIPAddress": "10.0.2.250",
@@ -22,7 +22,7 @@
             "backendPort": 80,
             "protocol": "Tcp",
             "backendPoolName": "lb-bep1",
-            "frontendIPConfigurationName": "ra-ntier-res-svc-a-lb-fe-config1",
+            "frontendIPConfigurationName": "ra-ntier-rel-svc-a-lb-fe-config1",
             "probeName": "lbp1"
           }
         ],
@@ -45,7 +45,7 @@
     },
     "virtualMachinesSettings": {
       "value": {
-        "namePrefix": "ra-ntier-res-svc-a",
+        "namePrefix": "ra-ntier-rel-svc-a",
         "computerNamePrefix": "cn",
         "size": "Standard_DS1",
         "adminUsername": "testuser",
@@ -83,14 +83,14 @@
         "extensions": [ ],
         "availabilitySet": {
           "useExistingAvailabilitySet": "No",
-          "name": "ra-ntier-res-svc-a-as"
+          "name": "ra-ntier-rel-svc-a-as"
         }
       }
     },
     "virtualNetworkSettings": {
       "value": {
-        "name": "ra-ntier-res-vnet",
-        "resourceGroup": "ra-ntier-res-rg"
+        "name": "ra-ntier-rel-vnet",
+        "resourceGroup": "ra-ntier-rel-rg"
       }
     },
     "buildingBlockSettings": {

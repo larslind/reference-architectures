@@ -4,7 +4,7 @@
   "parameters": {
     "virtualMachinesSettings": {
       "value": {
-        "namePrefix": "ra-ntier-res-data",
+        "namePrefix": "ra-ntier-rel-data",
         "computerNamePrefix": "cn",
         "size": "Standard_DS1",
         "adminUsername": "testuser",
@@ -42,7 +42,7 @@
         },
         "extensions": [
           {
-            "name": "ra-ntier-res-datastax-config-ext",
+            "name": "ra-ntier-rel-datastax-config-ext",
             "settingsMapperUri": "https://raw.githubusercontent.com/mspnp/reference-architectures/kirpas/ra-cassandra/guidance-ntier-resiliency/extensions/linux/settings-mapper.json",
             "publisher": "Microsoft.OSTCExtensions",
             "type": "CustomScriptForLinux",
@@ -53,14 +53,14 @@
         ],
         "availabilitySet": {
           "useExistingAvailabilitySet": "No",
-          "name": "ra-ntier-res-data-as"
+          "name": "ra-ntier-rel-data-as"
         }
       }
     },
     "virtualNetworkSettings": {
       "value": {
-        "name": "ra-ntier-res-vnet",
-        "resourceGroup": "ra-ntier-res-rg"
+        "name": "ra-ntier-rel-vnet",
+        "resourceGroup": "ra-ntier-rel-rg"
       }
     },
     "buildingBlockSettings": {
