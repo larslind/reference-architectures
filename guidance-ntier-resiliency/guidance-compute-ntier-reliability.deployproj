@@ -1,0 +1,51 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|AnyCPU">
+      <Configuration>Debug</Configuration>
+      <Platform>AnyCPU</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|AnyCPU">
+      <Configuration>Release</Configuration>
+      <Platform>AnyCPU</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>d15fdb12-de08-4e8e-b024-d4ee552747a1</ProjectGuid>
+  </PropertyGroup>
+  <PropertyGroup>
+    <TargetFrameworkIdentifier>Deployment</TargetFrameworkIdentifier>
+    <TargetFrameworkVersion>1.0</TargetFrameworkVersion>
+    <PrepareForBuildDependsOn>
+    </PrepareForBuildDependsOn>
+  </PropertyGroup>
+  <Import Condition=" Exists('Deployment.targets') " Project="Deployment.targets" />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.Common.targets" />
+  <!-- vertag<:>start tokens<:>maj.min -->
+  <Import Condition=" Exists('$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Deployment\1.1\DeploymentProject.targets') " Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Deployment\1.1\DeploymentProject.targets" />
+  <!-- vertag<:>end -->
+  <ItemGroup>
+    <None Include="deploy-reference-architecture.sh" />
+    <None Include="Deploy-ReferenceArchitecture.ps1" />
+    <None Include="Deployment.targets">
+      <Visible>False</Visible>
+    </None>
+    <None Include="extensions\linux\configure-datastax.sh" />
+    <None Include="extensions\linux\settings-mapper.json" />
+    <None Include="parameters\linux\dmzTier.json" />
+    <None Include="parameters\linux\serviceTierB.parameters.json" />
+    <None Include="parameters\linux\serviceTierA.parameters.json" />
+    <None Include="parameters\linux\dataTier.parameters.json" />
+    <None Include="parameters\linux\managementTier.parameters.json" />
+    <None Include="parameters\linux\networkSecurityGroups.parameters.json" />
+    <None Include="parameters\linux\virtualNetwork.parameters.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="azuredeploy.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="extensions\windows\" />
+    <Folder Include="parameters\windows\" />
+  </ItemGroup>
+  <Target Name="GetReferenceAssemblyPaths" />
+</Project>
