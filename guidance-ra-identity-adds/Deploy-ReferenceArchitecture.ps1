@@ -39,7 +39,8 @@ $virtualMachineExtensionsTemplate = New-Object System.Uri -ArgumentList @($templ
 $onpremiseVirtualNetworkParametersFile = [System.IO.Path]::Combine($PSScriptRoot, "parameters\virtualNetwork-onpremise.parameters.json")
 $onpremiseADDSVirtualMachinesParametersFile = [System.IO.Path]::Combine($PSScriptRoot, "parameters\virtualMachines-onpremise.parameters.json")
 $onpremiseRRASVirtualMachinesParametersFile = [System.IO.Path]::Combine($PSScriptRoot, "parameters\virtualMachines-onpremise-rras.parameters.json")
-$onpremiseInstallAddsExtensionParametersFile = [System.IO.Path]::Combine($PSScriptRoot, "parameters\create-adds-forest-extension.parameters.json")
+$onpremiseCreateAddsForestExtensionParametersFile = [System.IO.Path]::Combine($PSScriptRoot, "parameters\onpremise\create-adds-forest-extension.parameters.json")
+$onpremiseAddAddsDomainControllerExtensionParametersFile = [System.IO.Path]::Combine($PSScriptRoot, "parameters\onpremise\add-adds-domain-controller.parameters.json")
 
 # Azure ADDS Parameter Files
 $virtualNetworkGatewayParametersFile = [System.IO.Path]::Combine($PSScriptRoot, "parameters\virtualNetworkGateway.parameters.json")
@@ -86,7 +87,12 @@ if ($Mode -eq "Onpremise") {
     Write-Host "Creating ADDS forest..."
     New-AzureRmResourceGroupDeployment -Name "ra-adds-onpremise-adds-forest-deployment" `
         -ResourceGroupName $onpremiseNetworkResourceGroup.ResourceGroupName `
-        -TemplateUri $virtualMachineTemplate.AbsoluteUri -TemplateParameterFile $onpremiseInstallAddsExtensionParametersFile
+        -TemplateUri $virtualMachineExtensionsTemplate.AbsoluteUri -TemplateParameterFile $onpremiseCreateAddsForestExtensionParametersFile
+
+    Write-Host "Creating ADDS domain controller..."
+    New-AzureRmResourceGroupDeployment -Name "ra-adds-onpremise-adds-dc-deployment" `
+        -ResourceGroupName $onpremiseNetworkResourceGroup.ResourceGroupName `
+        -TemplateUri $virtualMachineExtensionsTemplate.AbsoluteUri -TemplateParameterFile $onpremiseAddAddsDomainControllerExtensionParametersFile
 }
 elseif ($Mode -eq "Infrastructure") {
     Write-Host "Creating ADDS resource group..."
