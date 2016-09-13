@@ -33,6 +33,7 @@
     <Content Include="templates\azuredeploy.json" />
     <None Include="extensions\adds-replication-site.ps1" />
     <None Include="extensions\adds.ps1" />
+    <None Include="parameters\create-adds-forest-extension.parameters.json" />
     <None Include="parameters\dmz-private.parameters.json" />
     <None Include="parameters\dmz-public.parameters.json" />
     <None Include="parameters\loadBalancer-data.parameters.json" />
@@ -40,9 +41,14 @@
     <None Include="parameters\loadBalancer-web.parameters.json" />
     <None Include="parameters\virtualMachines-adds.parameters.json" />
     <None Include="parameters\virtualMachines-mgmt.parameters.json" />
+    <None Include="parameters\virtualMachines-onpremise-rras.parameters.json" />
+    <None Include="parameters\virtualMachines-onpremise.parameters.json" />
+    <None Include="parameters\virtualNetwork-onpremise.parameters.json" />
+    <None Include="parameters\virtualNetwork-with-onpremise-and-azure-dns.parameters.json" />
     <None Include="parameters\virtualNetwork-with-onpremise-dns.parameters.json" />
     <None Include="parameters\virtualNetworkGateway.parameters.json" />
     <None Include="templates\ad-extension-settings-mapper.json" />
+    <None Include="templates\ad-forest-extension-settings-mapper.json" />
   </ItemGroup>
   <Target Name="GetReferenceAssemblyPaths" />
 </Project>
