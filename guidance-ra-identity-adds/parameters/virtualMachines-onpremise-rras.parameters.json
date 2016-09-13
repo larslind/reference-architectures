@@ -4,7 +4,7 @@
   "parameters": {
     "virtualMachinesSettings": {
       "value": {
-        "namePrefix": "ra-adds-onpremise",
+        "namePrefix": "ra-adds-onpremise-rras",
         "computerNamePrefix": "rras",
         "size": "Standard_DS2_v2",
         "osType": "Windows",

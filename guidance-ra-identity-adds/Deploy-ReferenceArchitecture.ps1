@@ -39,7 +39,7 @@ $virtualMachineExtensionsTemplate = New-Object System.Uri -ArgumentList @($templ
 $onpremiseVirtualNetworkParametersFile = [System.IO.Path]::Combine($PSScriptRoot, "parameters\virtualNetwork-onpremise.parameters.json")
 $onpremiseADDSVirtualMachinesParametersFile = [System.IO.Path]::Combine($PSScriptRoot, "parameters\virtualMachines-onpremise.parameters.json")
 $onpremiseRRASVirtualMachinesParametersFile = [System.IO.Path]::Combine($PSScriptRoot, "parameters\virtualMachines-onpremise-rras.parameters.json")
-$installAddsExtensionParametersFile = [System.IO.Path]::Combine($PSScriptRoot, "parameters\create-adds-forest-extension.parameters.json")
+$onpremiseInstallAddsExtensionParametersFile = [System.IO.Path]::Combine($PSScriptRoot, "parameters\create-adds-forest-extension.parameters.json")
 
 # Azure ADDS Parameter Files
 $virtualNetworkGatewayParametersFile = [System.IO.Path]::Combine($PSScriptRoot, "parameters\virtualNetworkGateway.parameters.json")
@@ -76,7 +76,7 @@ if ($Mode -eq "Onpremise") {
     Write-Host "Deploying ADDS servers..."
     New-AzureRmResourceGroupDeployment -Name "ra-adds-onpremise-adds-deployment" `
         -ResourceGroupName $onpremiseNetworkResourceGroup.ResourceGroupName `
-        -TemplateUri $virtualMachineTemplate.AbsoluteUri -TemplateParameterFile $onpremiseVirtualNetworkParametersFile
+        -TemplateUri $virtualMachineTemplate.AbsoluteUri -TemplateParameterFile $onpremiseADDSVirtualMachinesParametersFile
 
     Write-Host "Deploying RRAS server..."
     New-AzureRmResourceGroupDeployment -Name "ra-adds-onpremise-rras-deployment" `
@@ -86,7 +86,7 @@ if ($Mode -eq "Onpremise") {
     Write-Host "Creating ADDS forest..."
     New-AzureRmResourceGroupDeployment -Name "ra-adds-onpremise-adds-forest-deployment" `
         -ResourceGroupName $onpremiseNetworkResourceGroup.ResourceGroupName `
-        -TemplateUri $virtualMachineTemplate.AbsoluteUri -TemplateParameterFile $onpremiseRRASVirtualMachinesParametersFile
+        -TemplateUri $virtualMachineTemplate.AbsoluteUri -TemplateParameterFile $onpremiseInstallAddsExtensionParametersFile
 }
 elseif ($Mode -eq "Infrastructure") {
     Write-Host "Creating ADDS resource group..."
