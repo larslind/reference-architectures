@@ -5,7 +5,7 @@ location=$1 #this is the location of the seed, not necessarily of this node
 unique_string=$2
 data_center_name=$3
 
-seed_node_dns_name="dc0vm0$unique_string.$location.cloudapp.azure.com"
+seed_node_dns_name="dc0vm1$unique_string.$location.cloudapp.azure.com"
 
 echo "Configuring nodes with the settings:"
 echo cloud_type $cloud_type

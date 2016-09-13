@@ -35,6 +35,7 @@ $templateRootUri = New-Object System.Uri -ArgumentList @($templateRootUriString)
 $virtualNetworkTemplate = New-Object System.Uri -ArgumentList @($templateRootUri, 'templates/buildingBlocks/vnet-n-subnet/azuredeploy.json')
 $loadBalancedVmSetTemplate = New-Object System.Uri -ArgumentList @($templateRootUri, 'templates/buildingBlocks/loadBalancer-backend-n-vm/azuredeploy.json')
 $virtualMachineTemplate = New-Object System.Uri -ArgumentList @($templateRootUri, 'templates/buildingBlocks/multi-vm-n-nic-m-storage/azuredeploy.json')
+$dmzTemplate = New-Object System.Uri -ArgumentList @($templateRootUri, 'templates/buildingBlocks/dmz/azuredeploy.json')
 $networkSecurityGroupTemplate = New-Object System.Uri -ArgumentList @($templateRootUri, 'templates/buildingBlocks/networkSecurityGroups/azuredeploy.json')
 
 # Template parameters for respective deployments
@@ -42,6 +43,7 @@ $virtualNetworkParametersFile = [System.IO.Path]::Combine($PSScriptRoot, 'parame
 $businessTierParametersFile = [System.IO.Path]::Combine($PSScriptRoot, 'parameters', $OSType.ToLower(), 'businessTier.parameters.json')
 $dataTierParametersFile = [System.IO.Path]::Combine($PSScriptRoot, 'parameters', $OSType.ToLower(), 'dataTier.parameters.json')
 $webTierParametersFile = [System.IO.Path]::Combine($PSScriptRoot, 'parameters', $OSType.ToLower(), 'webTier.parameters.json')
+$dmzTierParametersFile = [System.IO.Path]::Combine($PSScriptRoot, 'parameters', $OSType.ToLower(), 'dmzTier.parameters.json')
 $managementTierParametersFile = [System.IO.Path]::Combine($PSScriptRoot, 'parameters', $OSType.ToLower(), 'managementTier.parameters.json')
 $networkSecurityGroupParametersFile = [System.IO.Path]::Combine($PSScriptRoot, 'parameters', $OSType.ToLower(), 'networkSecurityGroups.parameters.json')
 
@@ -72,6 +74,10 @@ New-AzureRmResourceGroupDeployment -Name "ra-ntier-web-deployment" -ResourceGrou
 Write-Host "Deploying management tier..."
 New-AzureRmResourceGroupDeployment -Name "ra-ntier-mgmt-deployment" -ResourceGroupName $resourceGroup.ResourceGroupName `
     -TemplateUri $virtualMachineTemplate.AbsoluteUri -TemplateParameterFile $managementTierParametersFile
+
+Write-Host "Deploying dmz tier..."
+New-AzureRmResourceGroupDeployment -Name "ra-ntier-dmz-deployment" -ResourceGroupName $resourceGroup.ResourceGroupName `
+    -TemplateUri $dmzTemplate.AbsoluteUri -TemplateParameterFile $dmzTierParametersFile
 
 Write-Host "Deploying network security group"
 New-AzureRmResourceGroupDeployment -Name "ra-ntier-nsg-deployment" -ResourceGroupName $resourceGroup.ResourceGroupName `

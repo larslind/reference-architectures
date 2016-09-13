@@ -1,0 +1,54 @@
+﻿{
+  "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "virtualNetworkSettings": {
+      "value": {
+        "name": "ra-vnet",
+        "resourceGroup": "ra-public-dmz-network-rg",
+        "addressPrefixes": [
+          "10.0.0.0/16"
+        ],
+        "subnets": [
+          {
+            "name": "GatewaySubnet",
+            "addressPrefix": "10.0.255.224/27"
+          },
+          {
+            "name": "mgmt",
+            "addressPrefix": "10.0.0.128/25"
+          },
+          {
+            "name": "private-dmz-in",
+            "addressPrefix": "10.0.0.0/27"
+          },
+          {
+            "name": "private-dmz-out",
+            "addressPrefix": "10.0.0.32/27"
+          },
+          {
+            "name": "public-dmz-in",
+            "addressPrefix": "10.0.0.64/27"
+          },
+          {
+            "name": "public-dmz-out",
+            "addressPrefix": "10.0.0.96/27"
+          },
+          {
+            "name": "web",
+            "addressPrefix": "10.0.1.0/24"
+          },
+          {
+            "name": "biz",
+            "addressPrefix": "10.0.2.0/24"
+          },
+          {
+            "name": "data",
+            "addressPrefix": "10.0.3.0/24"
+          }
+        ],
+        "dnsServers": [ ]
+      }
+    }
+  }
+}

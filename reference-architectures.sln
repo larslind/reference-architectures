@@ -21,6 +21,8 @@ Project("{151D2E53-A2C4-4D7D-83FE-D05416EBD58E}") = "guidance-iaas-ad", "guidanc
 EndProject
 Project("{151D2E53-A2C4-4D7D-83FE-D05416EBD58E}") = "guidance-ntier-resiliency", "guidance-ntier-resiliency\guidance-ntier-resiliency.deployproj", "{D15FDB12-DE08-4E8E-B024-D4EE552747A1}"
 EndProject
+Project("{151D2E53-A2C4-4D7D-83FE-D05416EBD58E}") = "guidance-hybrid-network-secure-vnet-dmz", "guidance-hybrid-network-secure-vnet-dmz\guidance-hybrid-network-secure-vnet-dmz.deployproj", "{004E8121-2B17-4946-B8E8-11B0C8642FD7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -63,6 +65,10 @@ Global
 		{D15FDB12-DE08-4E8E-B024-D4EE552747A1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D15FDB12-DE08-4E8E-B024-D4EE552747A1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D15FDB12-DE08-4E8E-B024-D4EE552747A1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{004E8121-2B17-4946-B8E8-11B0C8642FD7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{004E8121-2B17-4946-B8E8-11B0C8642FD7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{004E8121-2B17-4946-B8E8-11B0C8642FD7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{004E8121-2B17-4946-B8E8-11B0C8642FD7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,0 +1,36 @@
+﻿{
+  "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "virtualNetworkSettings": {
+      "value": {
+        "name": "ra-vnet",
+        "resourceGroup": "ra-public-dmz-network-rg"
+      }
+    },
+    "virtualNetworkGatewaySettings": {
+      "value": {
+        "name": "ra-vpn-vgw",
+        "gatewayType": "Vpn",
+        "vpnType": "RouteBased",
+        "sku": "Standard"
+      }
+    },
+    "connectionSettings": {
+      "value": {
+        "name": "ra-vpn-cn",
+        "connectionType": "IPsec",
+        "sharedKey": "123secret",
+        "virtualNetworkGateway1": {
+          "name": "ra-vpn-vgw"
+        },
+        "localNetworkGateway": {
+          "name": "ra-vpn-lgw",
+          "ipAddress": "40.50.60.70",
+          "addressPrefixes": [ "192.168.0.0/16" ]
+        }
+      }
+    }
+  }
+}
+

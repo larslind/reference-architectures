@@ -63,7 +63,7 @@ New-AzureRmResourceGroupDeployment -Name "ra-ntier-biz-deployment" -ResourceGrou
 
 Write-Host "Deploying data tier..."
 New-AzureRmResourceGroupDeployment -Name "ra-ntier-data-deployment" -ResourceGroupName $resourceGroup.ResourceGroupName `
-    -TemplateUri $loadBalancedVmSetTemplate.AbsoluteUri -TemplateParameterFile $dataTierParametersFile
+    -TemplateUri $virtualMachineTemplate.AbsoluteUri -TemplateParameterFile $dataTierParametersFile
 
 Write-Host "Deploying web tier..."
 New-AzureRmResourceGroupDeployment -Name "ra-ntier-web-deployment" -ResourceGroupName $resourceGroup.ResourceGroupName `
