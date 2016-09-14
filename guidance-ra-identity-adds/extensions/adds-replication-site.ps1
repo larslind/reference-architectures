@@ -26,8 +26,6 @@ $Description="azure vnet ad site"
 $Location="azure subnet location"
 $SitelinkName = "AzureToOnpremLink"
 
-Install-windowsfeature -name AD-Domain-Services -IncludeAllSubFeature -IncludeManagementTools
-
 Import-Module ADDSDeployment
 
 $secAdminPassword = ConvertTo-SecureString $AdminPassword -AsPlainText -Force
