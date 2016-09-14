@@ -9,6 +9,7 @@
           {
             "name": "ra-ntier-web-lb-fe-config1",
             "loadBalancerType": "public",
+            "domainNameLabel": "",
             "internalLoadBalancerSettings": { }
           }
         ],

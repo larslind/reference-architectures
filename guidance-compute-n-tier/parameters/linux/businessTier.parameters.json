@@ -9,6 +9,7 @@
           {
             "name": "ra-ntier-biz-lb-fe-config1",
             "loadBalancerType": "internal",
+            "domainNameLabel": "",
             "internalLoadBalancerSettings": {
               "privateIPAddress": "10.0.2.250",
               "subnetName": "biz"

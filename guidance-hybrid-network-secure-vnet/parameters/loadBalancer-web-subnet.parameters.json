@@ -67,6 +67,7 @@
           {
             "name": "fe-config1",
             "loadBalancerType": "internal",
+            "domainNameLabel": "",
             "internalLoadBalancerSettings": {
               "privateIPAddress": "10.0.3.100",
               "subnetName": "web"
