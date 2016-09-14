@@ -81,6 +81,7 @@
             "protocol": "Tcp",
             "backendPoolName": "bep1",
             "frontendIPConfigurationName": "fe-config1",
+            "enableFloatingIP": false,
             "probeName": "lbp1"
           }
         ],

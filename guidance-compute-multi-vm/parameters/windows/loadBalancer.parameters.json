@@ -81,6 +81,7 @@
             "protocol": "Tcp",
             "backendPoolName": "ra-multi-vm-lb-bep1",
             "frontendIPConfigurationName": "ra-multi-vm-lb-fe-config1",
+            "enableFloatingIP": false,
             "probeName": "lbp1"
           }
         ],
