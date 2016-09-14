@@ -45,17 +45,19 @@ $onpremiseCreateAddsForestExtensionParametersFile = [System.IO.Path]::Combine($P
 $onpremiseAddAddsDomainControllerExtensionParametersFile = [System.IO.Path]::Combine($PSScriptRoot, "parameters\onpremise\add-adds-domain-controller.parameters.json")
 
 # Azure ADDS Parameter Files
+$virtualNetworkOnpremiseDnsParametersFile = [System.IO.Path]::Combine($PSScriptRoot, "parameters\azure\virtualNetwork-with-onpremise-dns.parameters.json")
+$virtualNetworkOnpremiseAndAzureDnsParametersFile = [System.IO.Path]::Combine($PSScriptRoot, "parameters\azure\virtualNetwork-with-onpremise-and-azure-dns.parameters.json")
+$addsVirtualMachinesParametersFile = [System.IO.Path]::Combine($PSScriptRoot, "parameters\azure\virtualMachines-adds.parameters.json")
+
 $virtualNetworkGatewayParametersFile = [System.IO.Path]::Combine($PSScriptRoot, "parameters\virtualNetworkGateway.parameters.json")
 $virtualNetworkParametersFile = [System.IO.Path]::Combine($PSScriptRoot, "parameters\virtualNetwork.parameters.json")
-$virtualNetworkOnpremiseDnsParametersFile = [System.IO.Path]::Combine($PSScriptRoot, "parameters\virtualNetwork-with-onpremise-dns.parameters.json")
-$virtualNetworkOnpremiseAndAzureDnsParametersFile = [System.IO.Path]::Combine($PSScriptRoot, "parameters\virtualNetwork-with-onpremise-and-azure-dns.parameters.json")
 $webLoadBalancerParametersFile = [System.IO.Path]::Combine($PSScriptRoot, "parameters\loadBalancer-web.parameters.json")
 $bizLoadBalancerParametersFile = [System.IO.Path]::Combine($PSScriptRoot, "parameters\loadBalancer-biz.parameters.json")
 $dataLoadBalancerParametersFile = [System.IO.Path]::Combine($PSScriptRoot, "parameters\loadBalancer-data.parameters.json")
 $managementParametersFile = [System.IO.Path]::Combine($PSScriptRoot, "parameters\virtualMachines-mgmt.parameters.json")
 $privateDmzParametersFile = [System.IO.Path]::Combine($PSScriptRoot, "parameters\dmz-private.parameters.json")
 $publicDmzParametersFile = [System.IO.Path]::Combine($PSScriptRoot, "parameters\dmz-public.parameters.json")
-$addsVirtualMachinesParametersFile = [System.IO.Path]::Combine($PSScriptRoot, "parameters\virtualMachines-adds.parameters.json")
+
 
 # Azure Onpremise Deployments
 $onpremiseNetworkResourceGroupName = "ra-adds-onpremise-rg"
@@ -70,26 +72,27 @@ $addsResourceGroupName = "ra-adds-adds-rg"
 Login-AzureRmAccount -SubscriptionId $SubscriptionId | Out-Null
 
 if ($Mode -eq "Onpremise") {
-    $onpremiseNetworkResourceGroup = New-AzureRmResourceGroup -Name $onpremiseNetworkResourceGroupName -Location $Location
-    Write-Host "Creating Onpremise virtual network..."
-    New-AzureRmResourceGroupDeployment -Name "ra-adds-onpremise-vnet-deployment" `
-        -ResourceGroupName $onpremiseNetworkResourceGroup.ResourceGroupName -TemplateUri $virtualNetworkTemplate.AbsoluteUri `
-        -TemplateParameterFile $onpremiseVirtualNetworkParametersFile
+    $onpremiseNetworkResourceGroup = Get-AzureRmResourceGroup -Name $onpremiseNetworkResourceGroupName
+    #$onpremiseNetworkResourceGroup = New-AzureRmResourceGroup -Name $onpremiseNetworkResourceGroupName -Location $Location
+    #Write-Host "Creating Onpremise virtual network..."
+    #New-AzureRmResourceGroupDeployment -Name "ra-adds-onpremise-vnet-deployment" `
+    #    -ResourceGroupName $onpremiseNetworkResourceGroup.ResourceGroupName -TemplateUri $virtualNetworkTemplate.AbsoluteUri `
+    #    -TemplateParameterFile $onpremiseVirtualNetworkParametersFile
 
-    Write-Host "Deploying ADDS servers..."
-    New-AzureRmResourceGroupDeployment -Name "ra-adds-onpremise-adds-deployment" `
-        -ResourceGroupName $onpremiseNetworkResourceGroup.ResourceGroupName `
-        -TemplateUri $virtualMachineTemplate.AbsoluteUri -TemplateParameterFile $onpremiseADDSVirtualMachinesParametersFile
+    #Write-Host "Deploying ADDS servers..."
+    #New-AzureRmResourceGroupDeployment -Name "ra-adds-onpremise-adds-deployment" `
+    #    -ResourceGroupName $onpremiseNetworkResourceGroup.ResourceGroupName `
+    #    -TemplateUri $virtualMachineTemplate.AbsoluteUri -TemplateParameterFile $onpremiseADDSVirtualMachinesParametersFile
 
-    Write-Host "Deploying RRAS server..."
-    New-AzureRmResourceGroupDeployment -Name "ra-adds-onpremise-rras-deployment" `
-        -ResourceGroupName $onpremiseNetworkResourceGroup.ResourceGroupName `
-        -TemplateUri $virtualMachineTemplate.AbsoluteUri -TemplateParameterFile $onpremiseRRASVirtualMachinesParametersFile
+    #Write-Host "Deploying RRAS server..."
+    #New-AzureRmResourceGroupDeployment -Name "ra-adds-onpremise-rras-deployment" `
+    #    -ResourceGroupName $onpremiseNetworkResourceGroup.ResourceGroupName `
+    #    -TemplateUri $virtualMachineTemplate.AbsoluteUri -TemplateParameterFile $onpremiseRRASVirtualMachinesParametersFile
 
-    Write-Host "Creating ADDS forest..."
-    New-AzureRmResourceGroupDeployment -Name "ra-adds-onpremise-adds-forest-deployment" `
-        -ResourceGroupName $onpremiseNetworkResourceGroup.ResourceGroupName `
-        -TemplateUri $virtualMachineExtensionsTemplate.AbsoluteUri -TemplateParameterFile $onpremiseCreateAddsForestExtensionParametersFile
+    #Write-Host "Creating ADDS forest..."
+    #New-AzureRmResourceGroupDeployment -Name "ra-adds-onpremise-adds-forest-deployment" `
+    #    -ResourceGroupName $onpremiseNetworkResourceGroup.ResourceGroupName `
+    #    -TemplateUri $virtualMachineExtensionsTemplate.AbsoluteUri -TemplateParameterFile $onpremiseCreateAddsForestExtensionParametersFile
 
     Write-Host "Updating virtual network DNS for one ADDS server..."
     New-AzureRmResourceGroupDeployment -Name "ra-adds-onpremise-one-dns-vnet-deployment" `
