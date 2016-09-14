@@ -5,7 +5,7 @@
     "virtualMachinesSettings": {
       "value": {
         "namePrefix": "ra-adds",
-        "computerNamePrefix": "ad",
+        "computerNamePrefix": "aad",
         "size": "Standard_DS3_v2",
         "osType": "Windows",
         "adminUsername": "testuser",
