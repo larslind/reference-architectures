@@ -18,6 +18,7 @@
       "protectedSettings": { }
     }
   },
+  "resources": [ ],
   "outputs": {
     "settings": {
       "type": "object",
