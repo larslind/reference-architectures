@@ -23,7 +23,8 @@
             "protocol": "Tcp",
             "backendPoolName": "lb-bep1",
             "frontendIPConfigurationName": "ra-ntier-biz-lb-fe-config1",
-            "probeName": "lbp1"
+            "probeName": "lbp1",
+            "enableFloatingIP": false
           }
         ],
         "probes": [
