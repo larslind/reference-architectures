@@ -34,7 +34,8 @@
         "loadBalancer": "[concat(parameters('templateRootUri'), 'templates/buildingBlocks/loadBalancer-backend-n-vm/azuredeploy.json')]",
         "virtualNetwork": "[concat(parameters('templateRootUri'), 'templates/buildingBlocks/vnet-n-subnet/azuredeploy.json')]",
         "virtualMachine": "[concat(parameters('templateRootUri'), 'templates/buildingBlocks/multi-vm-n-nic-m-storage/azuredeploy.json')]",
-        "networkSecurityGroup": "[concat(parameters('templateRootUri'), 'templates/buildingBlocks/networkSecurityGroups/azuredeploy.json')]"
+        "networkSecurityGroup": "[concat(parameters('templateRootUri'), 'templates/buildingBlocks/networkSecurityGroups/azuredeploy.json')]",
+        "availabilitySet": "[concat(parameters('templateRootUri'), 'templates/resources/Microsoft.Compute/virtualMachines/availabilitySet-new.json')]"
       },
       "parameter": {
         "virtualNetwork": "[concat(parameters('parameterRootUri'), 'guidance-compute-n-tier/parameters/', parameters('osType'), '/virtualNetwork.parameters.json')]",
@@ -47,6 +48,30 @@
     }
   },
   "resources": [
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2015-01-01",
+      "name": "ra-ntier-data-avset-deployment",
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[variables('templates').deployment.availabilitySet]"
+        },
+        "parameters": {
+          "platformFaultDomainCount": {
+            "value": 3
+          },
+          "platformUpdateDomainCount": {
+            "value": 18
+          },
+          "availabilitySetSettings": {
+            "value": {
+              "name": "ra-ntier-data-as"
+            }
+          }
+        }
+      }
+    },
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2015-01-01",
@@ -103,7 +128,8 @@
       "apiVersion": "2015-01-01",
       "name": "ra-ntier-data-deployment",
       "dependsOn": [
-        "Microsoft.Resources/deployments/ra-ntier-vnet-deployment"
+        "Microsoft.Resources/deployments/ra-ntier-vnet-deployment",
+        "Microsoft.Resources/deployments/ra-ntier-data-avset-deployment"
       ],
       "properties": {
         "mode": "Incremental",

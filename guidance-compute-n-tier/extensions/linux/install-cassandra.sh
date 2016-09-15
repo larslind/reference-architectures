@@ -1,22 +1,38 @@
 #!/usr/bin/env bash
 
 cloud_type="azure"
-location=$1 #this is the location of the seed, not necessarily of this node
+seed_node_location=$1
 unique_string=$2
 data_center_name=$3
+opscenter_location=$4
+seed_vm_name=$5
+opscenter_vm_name=$6
 
-seed_node_dns_name="dc0vm1$unique_string.$location.cloudapp.azure.com"
-
-echo "Configuring nodes with the settings:"
+echo "Input to install-cassandra.sh is:"
 echo cloud_type $cloud_type
-echo location $location
+echo seed_node_location $seed_node_location
 echo unique_string $unique_string
-echo data_center_name $data_center_name
+echo opscenter_location $opscenter_location
+
+seed_node_dns_name="$seed_vm_name$unique_string.$seed_node_location.cloudapp.azure.com"
+opscenter_dns_name="$opscenter_vm_name$unique_string.$opscenter_location.cloudapp.azure.com"
+
+echo "Calling dse.sh with the settings:"
+echo cloud_type $cloud_type
 echo seed_node_dns_name $seed_node_dns_name
+echo data_center_name $data_center_name
+echo opscenter_dns_name $opscenter_dns_name
 
-wget https://github.com/DSPN/install-datastax/archive/1.0.zip
+#echo dse_version $dse_version
+
 apt-get -y install unzip
-unzip 1.0.zip
-cd install-datastax-1.0/bin
 
-./dse.sh $cloud_type $seed_node_dns_name $data_center_name
+wget https://github.com/DSPN/install-datastax-ubuntu/archive/5.0.1-5.zip
+unzip 5.0.1-5.zip
+cd install-datastax-ubuntu-5.0.1-5/bin
+
+#wget https://github.com/DSPN/install-datastax-ubuntu/archive/master.zip
+#unzip master.zip
+#cd install-datastax-ubuntu-master/bin
+
+./dse.sh $cloud_type $seed_node_dns_name $data_center_name $opscenter_dns_name

@@ -4,7 +4,7 @@
   "parameters": {
     "virtualMachinesSettings": {
       "value": {
-        "namePrefix": "ra-ntier-data",
+        "namePrefix": "ra-ntier-mgmt",
         "computerNamePrefix": "cn",
         "size": "Standard_DS1",
         "adminUsername": "testuser",
@@ -16,9 +16,9 @@
           {
             "isPublic": "true",
             "isPrimary": "true",
-            "subnetName": "data",
-            "publicIPAllocationMethod": "dynamic",
+            "subnetName": "mgmt",
             "privateIPAllocationMethod": "dynamic",
+            "publicIPAllocationMethod": "dynamic",
             "enableIPForwarding": false,
             "dnsServers": [ ]
           }
@@ -38,8 +38,8 @@
         },
         "extensions": [
           {
-            "name": "ra-ntier-install-cassandra-ext",
-            "settingsConfigMapperUri": "https://raw.githubusercontent.com/mspnp/reference-architectures/kirpas/ra-ntier-db/guidance-compute-n-tier/extensions/linux/cassandra-mapper.json",
+            "name": "ra-ntier-install-opscenter-ext",
+            "settingsConfigMapperUri": "https://raw.githubusercontent.com/mspnp/reference-architectures/kirpas/ra-ntier-db/guidance-compute-n-tier/extensions/linux/opscenter-mapper.json",
             "publisher": "Microsoft.OSTCExtensions",
             "type": "CustomScriptForLinux",
             "typeHandlerVersion": "1.5",
@@ -48,8 +48,8 @@
           }
         ],
         "availabilitySet": {
-          "useExistingAvailabilitySet": "Yes",
-          "name": "ra-ntier-data-as"
+          "useExistingAvailabilitySet": "No",
+          "name": ""
         }
       }
     },
@@ -61,9 +61,9 @@
     },
     "buildingBlockSettings": {
       "value": {
-        "storageAccountsCount": 6,
-        "vmCount": 6,
-        "vmStartIndex": 1
+        "storageAccountsCount": 1,
+        "vmCount": 1,
+        "vmStartIndex": 2
       }
     }
   }

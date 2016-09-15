@@ -7,18 +7,15 @@
     "context": { "type": "object" }
   },
   "variables": {
-    "scriptName": "install-cassandra.sh",
-    "refArchPrefix": "ra-ntier-",
+    "scriptName": "install-opscenter.sh",
     "apacheInstallerUri": "[uri(deployment().properties.templateLink.uri, variables('scriptName'))]",
     "uniqueString": "[uniqueString(resourceGroup().id)]",
-    "dataCenterName": "[concat(variables('refArchPrefix'), 'dc-', variables('location'))]",
     "location": "[resourceGroup().location]",
-    "seedVmName": "[concat(variables('refArchPrefix'), 'data-vm1')]",
-    "opsCenterVmName": "[concat(variables('refArchPrefix'), 'mgmt-vm2')]",
+    "seedVmName": "ra-ntier-data-vm1",
     "instance": {
       "settings": {
         "fileUris": [ "[variables('apacheInstallerUri')]" ],
-        "commandToExecute": "[concat('sh ', variables('scriptName'), ' ', variables('location'),' ', variables('uniqueString'), ' ', variables('dataCenterName'), ' ', variables('location'), ' ', variables('seedVmName'), ' ', variables('opsCenterVmName'))]"
+        "commandToExecute": "[concat('sh ', variables('scriptName'), ' ', variables('location'),' ', variables('uniqueString'), ' ', variables('seedVmName'))]"
       },
       "protectedSettings": { }
     }
