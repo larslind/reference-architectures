@@ -62,6 +62,7 @@
             "subnetName": "biz",
             "privateIPAllocationMethod": "dynamic",
             "enableIPForwarding": false,
+            "domainNameLabelPrefix": "",
             "dnsServers": [ ]
           }
         ],

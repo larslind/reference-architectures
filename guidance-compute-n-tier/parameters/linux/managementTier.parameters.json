@@ -20,6 +20,7 @@
             "privateIPAllocationMethod": "dynamic",
             "publicIPAllocationMethod": "static",
             "enableIPForwarding": false,
+            "domainNameLabelPrefix": "",
             "dnsServers": [ ]
           }
         ],
