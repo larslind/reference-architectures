@@ -169,7 +169,7 @@ elseif ($Mode -eq "AzureADDS") {
     $onpremiseNetworkResourceGroup = Get-AzureRmResourceGroup -Name $onpremiseNetworkResourceGroupName
     Write-Host "Creating ADDS replication site..."
     New-AzureRmResourceGroupDeployment -Name "ra-adds-site-replication-deployment" `
-        -ResourceGroupName $addsResourceGroup.ResourceGroupName `
+        -ResourceGroupName $onpremiseNetworkResourceGroup.ResourceGroupName `
         -TemplateUri $virtualMachineExtensionsTemplate.AbsoluteUri -TemplateParameterFile $onpremiseReplicationSiteForestExtensionParametersFile
 
     $networkResourceGroup = Get-AzureRmResourceGroup -Name $networkResourceGroupName
