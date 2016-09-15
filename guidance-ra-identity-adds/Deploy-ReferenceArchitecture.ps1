@@ -85,6 +85,7 @@ if ($Mode -eq "Onpremise") {
         -ResourceGroupName $onpremiseNetworkResourceGroup.ResourceGroupName `
         -TemplateUri $virtualMachineTemplate.AbsoluteUri -TemplateParameterFile $onpremiseADDSVirtualMachinesParametersFile
 
+    # Remove the Azure DNS entry since the forest will create a DNS forwarding entry.
     Write-Host "Updating virtual network DNS servers..."
     New-AzureRmResourceGroupDeployment -Name "ra-adds-onpremise-dns-vnet-deployment" `
         -ResourceGroupName $onpremiseNetworkResourceGroup.ResourceGroupName -TemplateUri $virtualNetworkTemplate.AbsoluteUri `
