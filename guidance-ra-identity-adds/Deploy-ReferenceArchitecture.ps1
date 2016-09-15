@@ -43,6 +43,7 @@ $onpremiseADDSVirtualMachinesParametersFile = [System.IO.Path]::Combine($PSScrip
 $onpremiseRRASVirtualMachinesParametersFile = [System.IO.Path]::Combine($PSScriptRoot, "parameters\onpremise\virtualMachines-rras.parameters.json")
 $onpremiseCreateAddsForestExtensionParametersFile = [System.IO.Path]::Combine($PSScriptRoot, "parameters\onpremise\create-adds-forest-extension.parameters.json")
 $onpremiseAddAddsDomainControllerExtensionParametersFile = [System.IO.Path]::Combine($PSScriptRoot, "parameters\onpremise\add-adds-domain-controller.parameters.json")
+$onpremiseReplicationSiteForestExtensionParametersFile = [System.IO.Path]::Combine($PSScriptRoot, "parameters\onpremise\create-azure-replication-site.parameters.json")
 
 # Azure ADDS Parameter Files
 $virtualNetworkOnpremiseDnsParametersFile = [System.IO.Path]::Combine($PSScriptRoot, "parameters\azure\virtualNetwork-with-onpremise-dns.parameters.json")
@@ -157,12 +158,19 @@ elseif ($Mode -eq "Infrastructure") {
 }
 elseif ($Mode -eq "AzureADDS") {
     # Deploy AD tier
-    Write-Host "Creating ADDS resource group..."
-    $addsResourceGroup = New-AzureRmResourceGroup -Name $addsResourceGroupName -Location $Location
+    #Write-Host "Creating ADDS resource group..."
+    #$addsResourceGroup = New-AzureRmResourceGroup -Name $addsResourceGroupName -Location $Location
+    $addsResourceGroup = Get-AzureRmResourceGroup -Name $addsResourceGroupName
 
-    Write-Host "Deploying ADDS servers..."
-    New-AzureRmResourceGroupDeployment -Name "ra-adds-adds-deployment" -ResourceGroupName $addsResourceGroup.ResourceGroupName `
-        -TemplateUri $virtualMachineTemplate.AbsoluteUri -TemplateParameterFile $addsVirtualMachinesParametersFile
+    #Write-Host "Deploying ADDS servers..."
+    #New-AzureRmResourceGroupDeployment -Name "ra-adds-adds-deployment" -ResourceGroupName $addsResourceGroup.ResourceGroupName `
+    #    -TemplateUri $virtualMachineTemplate.AbsoluteUri -TemplateParameterFile $addsVirtualMachinesParametersFile
+
+    $onpremiseNetworkResourceGroup = Get-AzureRmResourceGroup -Name $onpremiseNetworkResourceGroupName
+    Write-Host "Creating ADDS replication site..."
+    New-AzureRmResourceGroupDeployment -Name "ra-adds-site-replication-deployment" `
+        -ResourceGroupName $addsResourceGroup.ResourceGroupName `
+        -TemplateUri $virtualMachineExtensionsTemplate.AbsoluteUri -TemplateParameterFile $onpremiseReplicationSiteForestExtensionParametersFile
 
     $networkResourceGroup = Get-AzureRmResourceGroup -Name $networkResourceGroupName
     # Update DNS server to point to onpremise so we can join the domain and create DCs
