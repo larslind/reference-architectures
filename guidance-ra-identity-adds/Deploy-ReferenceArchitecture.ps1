@@ -74,42 +74,46 @@ $addsResourceGroupName = "ra-adds-adds-rg"
 Login-AzureRmAccount -SubscriptionId $SubscriptionId | Out-Null
 
 if ($Mode -eq "Onpremise") {
-    $onpremiseNetworkResourceGroup = Get-AzureRmResourceGroup -Name $onpremiseNetworkResourceGroupName
-    #$onpremiseNetworkResourceGroup = New-AzureRmResourceGroup -Name $onpremiseNetworkResourceGroupName -Location $Location
-    #Write-Host "Creating Onpremise virtual network..."
-    #New-AzureRmResourceGroupDeployment -Name "ra-adds-onpremise-vnet-deployment" `
-    #    -ResourceGroupName $onpremiseNetworkResourceGroup.ResourceGroupName -TemplateUri $virtualNetworkTemplate.AbsoluteUri `
-    #    -TemplateParameterFile $onpremiseVirtualNetworkParametersFile
-
-    #Write-Host "Deploying ADDS servers..."
-    #New-AzureRmResourceGroupDeployment -Name "ra-adds-onpremise-adds-deployment" `
-    #    -ResourceGroupName $onpremiseNetworkResourceGroup.ResourceGroupName `
-    #    -TemplateUri $virtualMachineTemplate.AbsoluteUri -TemplateParameterFile $onpremiseADDSVirtualMachinesParametersFile
-
-    #Write-Host "Deploying RRAS server..."
-    #New-AzureRmResourceGroupDeployment -Name "ra-adds-onpremise-rras-deployment" `
-    #    -ResourceGroupName $onpremiseNetworkResourceGroup.ResourceGroupName `
-    #    -TemplateUri $virtualMachineTemplate.AbsoluteUri -TemplateParameterFile $onpremiseRRASVirtualMachinesParametersFile
-
-    #Write-Host "Creating ADDS forest..."
-    #New-AzureRmResourceGroupDeployment -Name "ra-adds-onpremise-adds-forest-deployment" `
-    #    -ResourceGroupName $onpremiseNetworkResourceGroup.ResourceGroupName `
-    #    -TemplateUri $virtualMachineExtensionsTemplate.AbsoluteUri -TemplateParameterFile $onpremiseCreateAddsForestExtensionParametersFile
-
-    Write-Host "Updating virtual network DNS for one ADDS server..."
-    New-AzureRmResourceGroupDeployment -Name "ra-adds-onpremise-one-dns-vnet-deployment" `
+    $onpremiseNetworkResourceGroup = New-AzureRmResourceGroup -Name $onpremiseNetworkResourceGroupName -Location $Location
+    Write-Host "Creating onpremise virtual network..."
+    New-AzureRmResourceGroupDeployment -Name "ra-adds-onpremise-vnet-deployment" `
         -ResourceGroupName $onpremiseNetworkResourceGroup.ResourceGroupName -TemplateUri $virtualNetworkTemplate.AbsoluteUri `
-        -TemplateParameterFile $onpremiseVirtualNetworkOneDnsParametersFile
+        -TemplateParameterFile $onpremiseVirtualNetworkParametersFile
+
+    Write-Host "Deploying ADDS servers..."
+    New-AzureRmResourceGroupDeployment -Name "ra-adds-onpremise-adds-deployment" `
+        -ResourceGroupName $onpremiseNetworkResourceGroup.ResourceGroupName `
+        -TemplateUri $virtualMachineTemplate.AbsoluteUri -TemplateParameterFile $onpremiseADDSVirtualMachinesParametersFile
+
+    Write-Host "Updating virtual network DNS servers..."
+    New-AzureRmResourceGroupDeployment -Name "ra-adds-onpremise-dns-vnet-deployment" `
+        -ResourceGroupName $onpremiseNetworkResourceGroup.ResourceGroupName -TemplateUri $virtualNetworkTemplate.AbsoluteUri `
+        -TemplateParameterFile $onpremiseVirtualNetworkTwoDnsParametersFile
+
+    Write-Host "Creating ADDS forest..."
+    New-AzureRmResourceGroupDeployment -Name "ra-adds-onpremise-adds-forest-deployment" `
+        -ResourceGroupName $onpremiseNetworkResourceGroup.ResourceGroupName `
+        -TemplateUri $virtualMachineExtensionsTemplate.AbsoluteUri -TemplateParameterFile $onpremiseCreateAddsForestExtensionParametersFile
+
+    #Write-Host "Updating virtual network DNS for one ADDS server..."
+    #New-AzureRmResourceGroupDeployment -Name "ra-adds-onpremise-one-dns-vnet-deployment" `
+    #    -ResourceGroupName $onpremiseNetworkResourceGroup.ResourceGroupName -TemplateUri $virtualNetworkTemplate.AbsoluteUri `
+    #    -TemplateParameterFile $onpremiseVirtualNetworkOneDnsParametersFile
 
     Write-Host "Creating ADDS domain controller..."
     New-AzureRmResourceGroupDeployment -Name "ra-adds-onpremise-adds-dc-deployment" `
         -ResourceGroupName $onpremiseNetworkResourceGroup.ResourceGroupName `
         -TemplateUri $virtualMachineExtensionsTemplate.AbsoluteUri -TemplateParameterFile $onpremiseAddAddsDomainControllerExtensionParametersFile
 
-    Write-Host "Updating virtual network DNS for two ADDS servers..."
-    New-AzureRmResourceGroupDeployment -Name "ra-adds-onpremise-two-dns-vnet-deployment" `
-        -ResourceGroupName $onpremiseNetworkResourceGroup.ResourceGroupName -TemplateUri $virtualNetworkTemplate.AbsoluteUri `
-        -TemplateParameterFile $onpremiseVirtualNetworkTwoDnsParametersFile
+    Write-Host "Deploying RRAS server..."
+    New-AzureRmResourceGroupDeployment -Name "ra-adds-onpremise-rras-deployment" `
+        -ResourceGroupName $onpremiseNetworkResourceGroup.ResourceGroupName `
+        -TemplateUri $virtualMachineTemplate.AbsoluteUri -TemplateParameterFile $onpremiseRRASVirtualMachinesParametersFile
+
+    #Write-Host "Updating virtual network DNS for two ADDS servers..."
+    #New-AzureRmResourceGroupDeployment -Name "ra-adds-onpremise-two-dns-vnet-deployment" `
+    #    -ResourceGroupName $onpremiseNetworkResourceGroup.ResourceGroupName -TemplateUri $virtualNetworkTemplate.AbsoluteUri `
+    #    -TemplateParameterFile $onpremiseVirtualNetworkTwoDnsParametersFile
 }
 elseif ($Mode -eq "Infrastructure") {
     Write-Host "Creating ADDS resource group..."
@@ -120,63 +124,63 @@ elseif ($Mode -eq "Infrastructure") {
     New-AzureRmResourceGroupDeployment -Name "ra-adds-vnet-deployment" -ResourceGroupName $networkResourceGroup.ResourceGroupName `
         -TemplateUri $virtualNetworkTemplate.AbsoluteUri -TemplateParameterFile $virtualNetworkParametersFile
 
-    Write-Host "Deploying private DMZ..."
-    New-AzureRmResourceGroupDeployment -Name "ra-adds-dmz-private-deployment" -ResourceGroupName $networkResourceGroup.ResourceGroupName `
-        -TemplateUri $dmzTemplate.AbsoluteUri -TemplateParameterFile $privateDmzParametersFile
+    #Write-Host "Deploying private DMZ..."
+    #New-AzureRmResourceGroupDeployment -Name "ra-adds-dmz-private-deployment" -ResourceGroupName $networkResourceGroup.ResourceGroupName `
+    #    -TemplateUri $dmzTemplate.AbsoluteUri -TemplateParameterFile $privateDmzParametersFile
 
-    Write-Host "Deploying public DMZ..."
-    New-AzureRmResourceGroupDeployment -Name "ra-adds-dmz-public-deployment" -ResourceGroupName $networkResourceGroup.ResourceGroupName `
-        -TemplateUri $dmzTemplate.AbsoluteUri -TemplateParameterFile $publicDmzParametersFile
+    #Write-Host "Deploying public DMZ..."
+    #New-AzureRmResourceGroupDeployment -Name "ra-adds-dmz-public-deployment" -ResourceGroupName $networkResourceGroup.ResourceGroupName `
+    #    -TemplateUri $dmzTemplate.AbsoluteUri -TemplateParameterFile $publicDmzParametersFile
 
     Write-Host "Deploying Virtual Network Gateway..."
-    New-AzureRmResourceGroupDeployment -Name "ra-adds-dmz-public-deployment" -ResourceGroupName $networkResourceGroup.ResourceGroupName `
+    New-AzureRmResourceGroupDeployment -Name "ra-adds-vpn-gateway-deployment" -ResourceGroupName $networkResourceGroup.ResourceGroupName `
         -TemplateUri $virtualNetworkGatewayTemplate.AbsoluteUri -TemplateParameterFile $virtualNetworkGatewayParametersFile
 
-    # Deploy workload tiers
-    Write-Host "Creating workload resource group..."
-    $workloadResourceGroup = New-AzureRmResourceGroup -Name $workloadResourceGroupName -Location $Location
+    ## Deploy workload tiers
+    #Write-Host "Creating workload resource group..."
+    #$workloadResourceGroup = New-AzureRmResourceGroup -Name $workloadResourceGroupName -Location $Location
 
-    Write-Host "Deploying web load balancer..."
-    New-AzureRmResourceGroupDeployment -Name "ra-adds-web-deployment" -ResourceGroupName $workloadResourceGroup.ResourceGroupName `
-        -TemplateUri $loadBalancerTemplate.AbsoluteUri -TemplateParameterFile $webLoadBalancerParametersFile
+    #Write-Host "Deploying web load balancer..."
+    #New-AzureRmResourceGroupDeployment -Name "ra-adds-web-deployment" -ResourceGroupName $workloadResourceGroup.ResourceGroupName `
+    #    -TemplateUri $loadBalancerTemplate.AbsoluteUri -TemplateParameterFile $webLoadBalancerParametersFile
 
-    Write-Host "Deploying biz load balancer..."
-    New-AzureRmResourceGroupDeployment -Name "ra-adds-biz-deployment" -ResourceGroupName $workloadResourceGroup.ResourceGroupName `
-        -TemplateUri $loadBalancerTemplate.AbsoluteUri -TemplateParameterFile $bizLoadBalancerParametersFile
+    #Write-Host "Deploying biz load balancer..."
+    #New-AzureRmResourceGroupDeployment -Name "ra-adds-biz-deployment" -ResourceGroupName $workloadResourceGroup.ResourceGroupName `
+    #    -TemplateUri $loadBalancerTemplate.AbsoluteUri -TemplateParameterFile $bizLoadBalancerParametersFile
 
-    Write-Host "Deploying data load balancer..."
-    New-AzureRmResourceGroupDeployment -Name "ra-adds-data-deployment" -ResourceGroupName $workloadResourceGroup.ResourceGroupName `
-        -TemplateUri $loadBalancerTemplate.AbsoluteUri -TemplateParameterFile $dataLoadBalancerParametersFile
+    #Write-Host "Deploying data load balancer..."
+    #New-AzureRmResourceGroupDeployment -Name "ra-adds-data-deployment" -ResourceGroupName $workloadResourceGroup.ResourceGroupName `
+    #    -TemplateUri $loadBalancerTemplate.AbsoluteUri -TemplateParameterFile $dataLoadBalancerParametersFile
 
-    # Deploy security infrastructure
-    Write-Host "Creating security resource group..."
-    $securityResourceGroup = New-AzureRmResourceGroup -Name $securityResourceGroupName -Location $Location
+    ## Deploy security infrastructure
+    #Write-Host "Creating security resource group..."
+    #$securityResourceGroup = New-AzureRmResourceGroup -Name $securityResourceGroupName -Location $Location
 
-    Write-Host "Deploying jumpbox..."
-    New-AzureRmResourceGroupDeployment -Name "ra-adds-jumpbox-deployment" -ResourceGroupName $securityResourceGroup.ResourceGroupName `
-        -TemplateUri $virtualMachineTemplate.AbsoluteUri -TemplateParameterFile $managementParametersFile
+    #Write-Host "Deploying jumpbox..."
+    #New-AzureRmResourceGroupDeployment -Name "ra-adds-jumpbox-deployment" -ResourceGroupName $securityResourceGroup.ResourceGroupName `
+    #    -TemplateUri $virtualMachineTemplate.AbsoluteUri -TemplateParameterFile $managementParametersFile
 }
 elseif ($Mode -eq "AzureADDS") {
-    # Deploy AD tier
-    #Write-Host "Creating ADDS resource group..."
-    #$addsResourceGroup = New-AzureRmResourceGroup -Name $addsResourceGroupName -Location $Location
-    $addsResourceGroup = Get-AzureRmResourceGroup -Name $addsResourceGroupName
-
-    #Write-Host "Deploying ADDS servers..."
-    #New-AzureRmResourceGroupDeployment -Name "ra-adds-adds-deployment" -ResourceGroupName $addsResourceGroup.ResourceGroupName `
-    #    -TemplateUri $virtualMachineTemplate.AbsoluteUri -TemplateParameterFile $addsVirtualMachinesParametersFile
-
+    # Add the replication site.
     $onpremiseNetworkResourceGroup = Get-AzureRmResourceGroup -Name $onpremiseNetworkResourceGroupName
     Write-Host "Creating ADDS replication site..."
     New-AzureRmResourceGroupDeployment -Name "ra-adds-site-replication-deployment" `
         -ResourceGroupName $onpremiseNetworkResourceGroup.ResourceGroupName `
         -TemplateUri $virtualMachineExtensionsTemplate.AbsoluteUri -TemplateParameterFile $onpremiseReplicationSiteForestExtensionParametersFile
 
-    $networkResourceGroup = Get-AzureRmResourceGroup -Name $networkResourceGroupName
+    # Deploy AD tier
+    Write-Host "Creating ADDS resource group..."
+    $addsResourceGroup = New-AzureRmResourceGroup -Name $addsResourceGroupName -Location $Location
+
     # Update DNS server to point to onpremise so we can join the domain and create DCs
+    $networkResourceGroup = Get-AzureRmResourceGroup -Name $networkResourceGroupName
     Write-Host "Updating virtual network DNS..."
     New-AzureRmResourceGroupDeployment -Name "ra-adds-vnet-onpremise-dns-deployment" -ResourceGroupName $networkResourceGroup.ResourceGroupName `
         -TemplateUri $virtualNetworkTemplate.AbsoluteUri -TemplateParameterFile $virtualNetworkOnpremiseDnsParametersFile
+
+    Write-Host "Deploying ADDS servers..."
+    New-AzureRmResourceGroupDeployment -Name "ra-adds-adds-deployment" -ResourceGroupName $addsResourceGroup.ResourceGroupName `
+        -TemplateUri $virtualMachineTemplate.AbsoluteUri -TemplateParameterFile $addsVirtualMachinesParametersFile
 
     # Join the domain and create DCs
     Write-Host "Creating ADDS domain controllers..."

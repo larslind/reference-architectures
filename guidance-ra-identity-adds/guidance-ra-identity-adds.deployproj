@@ -31,6 +31,7 @@
     <Content Include="Deploy-ReferenceArchitecture.ps1" />
     <Content Include="parameters\virtualNetwork.parameters.json" />
     <Content Include="templates\azuredeploy.json" />
+    <None Include="extensions\adds-forest.ps1" />
     <None Include="extensions\adds-replication-site.ps1" />
     <None Include="extensions\adds.ps1" />
     <None Include="parameters\azure\add-adds-domain-controller.parameters.json" />

@@ -41,7 +41,7 @@
                   "safeModePassword": "Saf3M0de@PW"
                 },
                 "fileUris": [
-                  "https://raw.githubusercontent.com/mspnp/reference-architectures/andrew/ra-ad/guidance-iaas-ad/extensions/adds.ps1"
+                  "https://raw.githubusercontent.com/mspnp/reference-architectures/andrew/ra-ad/guidance-ra-identity-adds/extensions/adds.ps1"
                 ]
               },
               "protectedSettingsConfig": {
