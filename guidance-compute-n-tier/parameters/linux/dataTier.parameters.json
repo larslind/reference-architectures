@@ -20,7 +20,7 @@
             "publicIPAllocationMethod": "dynamic",
             "privateIPAllocationMethod": "dynamic",
             "enableIPForwarding": false,
-            "domainNameLabelPrefix": "",
+            "domainNameLabelPrefix": "ra-ntier-data-vm1",
             "dnsServers": [ ]
           }
         ],

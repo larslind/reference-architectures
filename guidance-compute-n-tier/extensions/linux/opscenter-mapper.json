@@ -9,13 +9,11 @@
   "variables": {
     "scriptName": "install-opscenter.sh",
     "apacheInstallerUri": "[uri(deployment().properties.templateLink.uri, variables('scriptName'))]",
-    "uniqueString": "[uniqueString(resourceGroup().id)]",
-    "location": "[resourceGroup().location]",
     "seedVmName": "ra-ntier-data-vm1",
     "instance": {
       "settings": {
         "fileUris": [ "[variables('apacheInstallerUri')]" ],
-        "commandToExecute": "[concat('sh ', variables('scriptName'), ' ', variables('location'),' ', variables('uniqueString'), ' ', variables('seedVmName'))]"
+        "commandToExecute": "[concat('sh ', variables('scriptName'), ' ', variables('seedVmName'))]"
       },
       "protectedSettings": { }
     }
