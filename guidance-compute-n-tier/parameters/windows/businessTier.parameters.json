@@ -9,6 +9,7 @@
           {
             "name": "ra-ntier-biz-lb-fe-config1",
             "loadBalancerType": "internal",
+            "domainNameLabel": "",
             "internalLoadBalancerSettings": {
               "privateIPAddress": "10.0.2.250",
               "subnetName": "biz"
@@ -23,6 +24,7 @@
             "protocol": "Tcp",
             "backendPoolName": "lb-bep1",
             "frontendIPConfigurationName": "ra-ntier-biz-lb-fe-config1",
+            "enableFloatingIP": false,
             "probeName": "lbp1"
           }
         ],
@@ -60,6 +62,7 @@
             "subnetName": "biz",
             "privateIPAllocationMethod": "dynamic",
             "enableIPForwarding": false,
+            "domainNameLabelPrefix": "",
             "dnsServers": [ ]
           }
         ],
