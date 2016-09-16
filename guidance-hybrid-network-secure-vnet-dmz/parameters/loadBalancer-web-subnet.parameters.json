@@ -19,6 +19,7 @@
             "privateIPAllocationMethod": "dynamic",
             "isPrimary": "true",
             "enableIPForwarding": false,
+            "domainNameLabelPrefix": "",
             "dnsServers": [ ]
           }
         ],
@@ -67,6 +68,7 @@
           {
             "name": "fe-config1",
             "loadBalancerType": "internal",
+            "domainNameLabel": "",
             "internalLoadBalancerSettings": {
               "privateIPAddress": "10.0.1.100",
               "subnetName": "web"

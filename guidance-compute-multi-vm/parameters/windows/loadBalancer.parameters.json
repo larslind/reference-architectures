@@ -20,6 +20,7 @@
             "publicIPAllocationMethod": "dynamic",
             "isPrimary": "true",
             "enableIPForwarding": false,
+            "domainNameLabelPrefix": "",
             "dnsServers": [ ]
           }
         ],
@@ -51,7 +52,8 @@
             "settingsConfig": {
               "modulesUrl": "https://raw.githubusercontent.com/mspnp/reference-architectures/master/guidance-compute-multi-vm/extensions/windows/iisaspnet.ps1.zip",
               "configurationFunction": "iisaspnet.ps1\\iisaspnet"
-            }
+            },
+            "protectedSettingsConfig": { }
           }
         ],
         "availabilitySet": {
@@ -67,6 +69,7 @@
           {
             "name": "ra-multi-vm-lb-fe-config1",
             "loadBalancerType": "public",
+            "domainNameLabel": "",
             "internalLoadBalancerSettings": {
               "privateIPAddress": "10.0.0.250",
               "subnetName": "ra-multi-vm-sn"

@@ -19,6 +19,7 @@
             "subnetName": "data",
             "privateIPAllocationMethod": "dynamic",
             "enableIPForwarding": false,
+            "domainNameLabelPrefix": "",
             "dnsServers": [ ]
           }
         ],
