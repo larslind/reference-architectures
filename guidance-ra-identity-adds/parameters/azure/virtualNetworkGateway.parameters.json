@@ -14,21 +14,6 @@
         "vpnType": "RouteBased",
         "sku": "Standard"
       }
-    },
-    "connectionSettings": {
-      "value": {
-        "name": "ra-adds-vpn-cn",
-        "connectionType": "IPsec",
-        "sharedKey": "123secret",
-        "virtualNetworkGateway1": {
-          "name": "ra-adds-vpn-vgw"
-        },
-        "localNetworkGateway": {
-          "name": "ra-adds-vpn-lgw",
-          "ipAddress": "13.66.218.215",
-          "addressPrefixes": [ "192.168.0.0/16" ]
-        }
-      }
     }
   }
 }
