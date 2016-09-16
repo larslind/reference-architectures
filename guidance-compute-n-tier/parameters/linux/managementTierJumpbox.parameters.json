@@ -5,7 +5,7 @@
     "virtualMachinesSettings": {
       "value": {
         "namePrefix": "ra-ntier-mgmt",
-        "computerNamePrefix": "cn",
+        "computerNamePrefix": "jumpbox",
         "size": "Standard_DS1",
         "adminUsername": "testuser",
         "adminPassword": "AweS0me@PW",

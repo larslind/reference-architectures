@@ -4,8 +4,8 @@
   "parameters": {
     "virtualMachinesSettings": {
       "value": {
-        "namePrefix": "ra-ntier-mgmt",
-        "computerNamePrefix": "cn",
+        "namePrefix": "ra-ntier-ops",
+        "computerNamePrefix": "opscenter",
         "size": "Standard_DS1",
         "adminUsername": "testuser",
         "adminPassword": "AweS0me@PW",
@@ -64,7 +64,7 @@
       "value": {
         "storageAccountsCount": 1,
         "vmCount": 1,
-        "vmStartIndex": 2
+        "vmStartIndex": 1
       }
     }
   }
