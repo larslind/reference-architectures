@@ -53,6 +53,9 @@
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2015-01-01",
       "name": "ra-ntier-data-avset-deployment",
+      "dependsOn": [
+        "Microsoft.Resources/deployments/ra-ntier-vnet-deployment"
+      ],
       "properties": {
         "mode": "Incremental",
         "templateLink": {

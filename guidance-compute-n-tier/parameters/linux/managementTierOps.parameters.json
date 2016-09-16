@@ -20,7 +20,7 @@
             "privateIPAllocationMethod": "dynamic",
             "publicIPAllocationMethod": "dynamic",
             "enableIPForwarding": false,
-            "domainNameLabelPrefix": "ra-ntier-mgmt-vm2",
+            "domainNameLabelPrefix": "rantierops",
             "dnsServers": [ ]
           }
         ],

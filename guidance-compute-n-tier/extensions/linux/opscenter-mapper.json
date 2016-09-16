@@ -9,11 +9,12 @@
   "variables": {
     "scriptName": "install-opscenter.sh",
     "apacheInstallerUri": "[uri(deployment().properties.templateLink.uri, variables('scriptName'))]",
-    "seedVmName": "ra-ntier-data-vm1",
+    "seedNodeName": "rantierdatanode1",
+    "location": "[resourceGroup().location]",
     "instance": {
       "settings": {
         "fileUris": [ "[variables('apacheInstallerUri')]" ],
-        "commandToExecute": "[concat('sh ', variables('scriptName'), ' ', variables('seedVmName'))]"
+        "commandToExecute": "[concat('sh ', variables('scriptName'), ' ', variables('seedNodeName'), ' ', variables('location'))]"
       },
       "protectedSettings": { }
     }

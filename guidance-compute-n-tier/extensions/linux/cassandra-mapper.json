@@ -12,12 +12,12 @@
     "apacheInstallerUri": "[uri(deployment().properties.templateLink.uri, variables('scriptName'))]",
     "dataCenterName": "[concat(variables('refArchPrefix'), 'dc-', variables('location'))]",
     "location": "[resourceGroup().location]",
-    "seedVmName": "[concat(variables('refArchPrefix'), 'data-vm1')]",
-    "opsCenterVmName": "[concat(variables('refArchPrefix'), 'mgmt-vm2')]",
+    "seedNodeName": "rantierdatanode1",
+    "opsCenterNodeName": "rantierops1",
     "instance": {
       "settings": {
         "fileUris": [ "[variables('apacheInstallerUri')]" ],
-        "commandToExecute": "[concat('sh ', variables('scriptName'), ' ', variables('seedVmName'), ' ', variables('opsCenterVmName'), ' ', variables('dataCenterName'))]"
+        "commandToExecute": "[concat('sh ', variables('scriptName'), ' ', variables('seedNodeName'), ' ', variables('opsCenterNodeName'), ' ', variables('dataCenterName'), ' ', variables('location'))]"
       },
       "protectedSettings": { }
     }
