@@ -39,6 +39,7 @@
     <None Include="parameters\azure\virtualMachines-adds.parameters.json" />
     <None Include="parameters\azure\virtualNetwork-with-onpremise-and-azure-dns.parameters.json" />
     <None Include="parameters\azure\virtualNetwork-with-onpremise-dns.parameters.json" />
+    <None Include="parameters\azure\virtualNetworkGateway.parameters.json" />
     <None Include="parameters\dmz-private.parameters.json" />
     <None Include="parameters\dmz-public.parameters.json" />
     <None Include="parameters\loadBalancer-data.parameters.json" />
@@ -52,8 +53,8 @@
     <None Include="parameters\onpremise\virtualNetwork-one-dns.parameters.json" />
     <None Include="parameters\onpremise\virtualNetwork-two-dns.parameters.json" />
     <None Include="parameters\onpremise\virtualNetwork.parameters.json" />
+    <None Include="parameters\onpremise\virtualNetworkGateway.parameters.json" />
     <None Include="parameters\virtualMachines-mgmt.parameters.json" />
-    <None Include="parameters\virtualNetworkGateway.parameters.json" />
     <None Include="templates\onpremise\ad-forest-extension-settings-mapper.json" />
     <None Include="templates\onpremise\ad-replication-site-extension-settings-mapper.json" />
     <None Include="templates\onpremise\adds-domain-controller-extension-settings-mapper.json" />
