@@ -14,6 +14,21 @@
         "vpnType": "RouteBased",
         "sku": "Standard"
       }
+    },
+    "connectionSettings": {
+      "value": {
+        "name": "ra-adds-vpn-cn",
+        "connectionType": "Vnet2Vnet",
+        "sharedKey": "123secret",
+        "virtualNetworkGateway1": {
+          "name": "ra-adds-vpn-vgw",
+          "resourceGroup": "ra-adds-network-rg"
+        },
+        "virtualNetworkGateway2": {
+          "name": "ra-adds-onpremise-vpn-vgw",
+          "resourceGroup": "ra-adds-onpremise-rg"
+        }
+      }
     }
   }
 }

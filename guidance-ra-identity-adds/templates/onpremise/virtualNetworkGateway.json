@@ -5,7 +5,7 @@
     "deploymentContext": {
       "type": "object",
       "defaultValue": {
-        "parentTemplateUniqueString": "bbVPN"
+        "parentTemplateUniqueString": "bbVNG"
       }
     },
     "virtualNetworkSettings": {

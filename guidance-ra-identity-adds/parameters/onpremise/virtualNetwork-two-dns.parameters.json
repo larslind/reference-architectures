@@ -13,6 +13,10 @@
           {
             "name": "adds",
             "addressPrefix": "192.168.0.0/24"
+          },
+          {
+            "name": "GatewaySubnet",
+            "addressPrefix": "192.168.255.224/27"
           }
         ],
         "dnsServers": [
