@@ -20,7 +20,7 @@
             "privateIPAllocationMethod": "dynamic",
             "publicIPAllocationMethod": "static",
             "enableIPForwarding": false,
-            "domainNameLabelPrefix": "ramgmtjb",
+            "domainNameLabelPrefix": "",
             "dnsServers": [ ]
           }
         ],
