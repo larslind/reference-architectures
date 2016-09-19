@@ -48,7 +48,7 @@
     "virtualMachinesSettings": {
       "value": {
         "namePrefix": "ra-ntier-biz",
-        "computerNamePrefix": "cn",
+        "computerNamePrefix": "biz",
         "size": "Standard_DS1",
         "adminUsername": "testuser",
         "adminPassword": "AweS0me@PW",

@@ -5,7 +5,7 @@
     "virtualMachinesSettings": {
       "value": {
         "namePrefix": "ra-ntier-data",
-        "computerNamePrefix": "cn",
+        "computerNamePrefix": "data",
         "size": "Standard_DS1",
         "adminUsername": "testuser",
         "adminPassword": "AweS0me@PW",
@@ -31,8 +31,12 @@
           "version": "latest"
         },
         "dataDisks": {
-          "count": 0,
-          "properties": { }
+          "count": 1,
+          "properties": {
+            "diskSizeGB": 128,
+            "caching": "None",
+            "createOption": "Empty"
+          }
         },
         "osDisk": {
           "caching": "ReadWrite"
