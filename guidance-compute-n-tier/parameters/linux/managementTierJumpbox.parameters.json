@@ -31,8 +31,12 @@
           "version": "latest"
         },
         "dataDisks": {
-          "count": 0,
-          "properties": { }
+          "count": 1,
+          "properties": {
+            "diskSizeGB": 128,
+            "caching": "None",
+            "createOption": "Empty"
+          }
         },
         "osDisk": {
           "caching": "ReadWrite"
