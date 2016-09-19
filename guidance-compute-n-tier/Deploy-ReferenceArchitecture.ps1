@@ -46,6 +46,7 @@ $webTierParametersFile = [System.IO.Path]::Combine($PSScriptRoot, 'parameters', 
 $managementTierJumpboxParametersFile = [System.IO.Path]::Combine($PSScriptRoot, 'parameters', $OSType.ToLower(), 'managementTierJumpbox.parameters.json')
 $managementTierOpsParametersFile = [System.IO.Path]::Combine($PSScriptRoot, 'parameters', $OSType.ToLower(), 'managementTierOps.parameters.json')
 $networkSecurityGroupParametersFile = [System.IO.Path]::Combine($PSScriptRoot, 'parameters', $OSType.ToLower(), 'networkSecurityGroups.parameters.json')
+$availabilitySetParametersFile = [System.IO.Path]::Combine($PSScriptRoot, 'parameters', $OSType.ToLower(), 'availabilitySet.parameters.json')
 
 $resourceGroupName = "ra-ntier-vm-rg"
 
@@ -58,6 +59,10 @@ $resourceGroup = New-AzureRmResourceGroup -Name $resourceGroupName -Location $Lo
 Write-Host "Deploying virtual network..."
 New-AzureRmResourceGroupDeployment -Name "ra-ntier-vnet-deployment" -ResourceGroupName $resourceGroup.ResourceGroupName `
     -TemplateUri $virtualNetworkTemplate.AbsoluteUri -TemplateParameterFile $virtualNetworkParametersFile
+
+Write-Host "Deploying availability set for data tier..."
+New-AzureRmResourceGroupDeployment -Name "ra-ntier-data-avset-deployment" -ResourceGroupName $resourceGroup.ResourceGroupName `
+    -TemplateUri $availabilitySetTemplate.AbsoluteUri -TemplateParameterFile $availabilitySetParametersFile
 
 Write-Host "Deploying business tier..."
 New-AzureRmResourceGroupDeployment -Name "ra-ntier-biz-deployment" -ResourceGroupName $resourceGroup.ResourceGroupName `

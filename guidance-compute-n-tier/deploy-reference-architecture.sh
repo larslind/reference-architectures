@@ -111,6 +111,10 @@ VIRTUAL_NETWORK_TEMPLATE_URI="${TEMPLATE_ROOT_URI}templates/buildingBlocks/vnet-
 VIRTUAL_NETWORK_PARAMETERS_PATH="${SCRIPT_DIR}/parameters/${OS_TYPE}/virtualNetwork.parameters.json"
 VIRTUAL_NETWORK_DEPLOYMENT_NAME="ra-ntier-vnet-deployment"
 
+AVAILABILITY_SET_TEMPLATE_URI="${TEMPLATE_ROOT_URI}templates/resources/Microsoft.Compute/virtualMachines/availabilitySet-new.json"
+AVAILABILITY_SET_PARAMETERS_PATH="${SCRIPT_DIR}/parameters/${OS_TYPE}/availabilitySet.parameters.json"
+AVAILABILITY_SET_DEPLOYMENT_NAME="ra-ntier-data-avset-deployment"
+
 VIRTUAL_MACHINE_TEMPLATE_URI="${TEMPLATE_ROOT_URI}templates/buildingBlocks/multi-vm-n-nic-m-storage/azuredeploy.json"
 
 MGMT_TIER_PARAMETERS_PATH="${SCRIPT_DIR}/parameters/${OS_TYPE}/managementTier.parameters.json"
@@ -140,6 +144,12 @@ RESOURCE_GROUP_OUTPUT=$(azure group create --name $RESOURCE_GROUP_NAME --locatio
 echo "Deploying virtual network..."
 azure group deployment create --resource-group $RESOURCE_GROUP_NAME --name $VIRTUAL_NETWORK_DEPLOYMENT_NAME \
 --template-uri $VIRTUAL_NETWORK_TEMPLATE_URI --parameters-file $VIRTUAL_NETWORK_PARAMETERS_PATH \
+--subscription $SUBSCRIPTION_ID || exit 1
+
+# Create availability set for Cassandra cluster
+echo "Deploying availability set for data tier..."
+azure group deployment create --resource-group $RESOURCE_GROUP_NAME --name $AVAILABILITY_SET_DEPLOYMENT_NAME \
+--template-uri $AVAILABILITY_SET_TEMPLATE_URI --parameters-file $AVAILABILITY_SET_PARAMETERS_PATH \
 --subscription $SUBSCRIPTION_ID || exit 1
 
 echo "Deploying web tier..."
@@ -173,6 +183,9 @@ echo "==================================="
 echo $RESOURCE_GROUP_OUTPUT
 
 azure group deployment show --resource-group $RESOURCE_GROUP_NAME --name $VIRTUAL_NETWORK_DEPLOYMENT_NAME \
+--subscription $SUBSCRIPTION_ID --json || exit 1
+
+azure group deployment show --resource-group $RESOURCE_GROUP_NAME --name $AVAILABILITY_SET_DEPLOYMENT_NAME \
 --subscription $SUBSCRIPTION_ID --json || exit 1
 
 azure group deployment show --resource-group $RESOURCE_GROUP_NAME --name $WEB_TIER_DEPLOYMENT_NAME \
