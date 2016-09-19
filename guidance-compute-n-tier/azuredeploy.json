@@ -26,6 +26,12 @@
       "metadata": {
         "description": "Relative path decider for the template parameters."
       }
+    },
+    "availabilitySetParameters": {
+      "type": "object",
+      "metadata": {
+        "description": "Custom settings for Cassandra cluster availability set."
+      }
     }
   },
   "variables": {
@@ -44,6 +50,7 @@
         "dataTier": "[concat(parameters('parameterRootUri'), 'guidance-compute-n-tier/parameters/', parameters('osType'), '/dataTier.parameters.json')]",
         "businessTier": "[concat(parameters('parameterRootUri'), 'guidance-compute-n-tier/parameters/', parameters('osType'), '/businessTier.parameters.json')]",
         "managementTierJumpbox": "[concat(parameters('parameterRootUri'), 'guidance-compute-n-tier/parameters/', parameters('osType'), '/managementTierJumpbox.parameters.json')]",
+        "availabilitySet": "[concat(parameters('parameterRootUri'), 'guidance-compute-n-tier/parameters/', parameters('osType'), '/availabilitySet.parameters.json')]",
         "managementTierOps": "[concat(parameters('parameterRootUri'), 'guidance-compute-n-tier/parameters/', parameters('osType'), '/managementTierOps.parameters.json')]"
       }
     }
@@ -63,14 +70,14 @@
         },
         "parameters": {
           "platformFaultDomainCount": {
-            "value": 3
+            "value": "[parameters('availabilitySetParameters').platformFaultDomainCount]"
           },
           "platformUpdateDomainCount": {
-            "value": 18
+            "value": "[parameters('availabilitySetParameters').platformUpdateDomainCount]"
           },
           "availabilitySetSettings": {
             "value": {
-              "name": "ra-ntier-data-as"
+              "name": "[parameters('availabilitySetParameters').availabilitySetSettings.name]"
             }
           }
         }

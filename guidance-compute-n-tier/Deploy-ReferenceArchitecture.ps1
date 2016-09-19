@@ -36,6 +36,7 @@ $virtualNetworkTemplate = New-Object System.Uri -ArgumentList @($templateRootUri
 $loadBalancedVmSetTemplate = New-Object System.Uri -ArgumentList @($templateRootUri, 'templates/buildingBlocks/loadBalancer-backend-n-vm/azuredeploy.json')
 $virtualMachineTemplate = New-Object System.Uri -ArgumentList @($templateRootUri, 'templates/buildingBlocks/multi-vm-n-nic-m-storage/azuredeploy.json')
 $networkSecurityGroupTemplate = New-Object System.Uri -ArgumentList @($templateRootUri, 'templates/buildingBlocks/networkSecurityGroups/azuredeploy.json')
+$availabilitySetTemplate = New-Object System.Uri -ArgumentList @($templateRootUri, 'templates/resources/Microsoft.Compute/virtualMachines/availabilitySet-new.json')
 
 # Template parameters for respective deployments
 $virtualNetworkParametersFile = [System.IO.Path]::Combine($PSScriptRoot, 'parameters', $OSType.ToLower(), 'virtualNetwork.parameters.json')

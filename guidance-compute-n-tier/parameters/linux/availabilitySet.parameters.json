@@ -1,0 +1,15 @@
+﻿{
+  "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "availabilitySetParameters": {
+      "value": {
+        "platformFaultDomainCount": 3,
+        "platformUpdateDomainCount": 18,
+        "availabilitySetSettings": {
+          "name": "ra-ntier-data-as"
+        }
+      }
+    }
+  }
+}
