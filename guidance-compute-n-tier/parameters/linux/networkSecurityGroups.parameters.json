@@ -205,7 +205,7 @@
           "name": "ra-ntier-mgmt-ops-nsg",
           "subnets": [ ],
           "networkInterfaces": [
-            "ra-ntier-mgmt-vm2-nic1"
+            "ra-ntier-ops-vm1-nic1"
           ],
           "securityRules": [
             {
