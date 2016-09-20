@@ -76,29 +76,25 @@
             },
             {
               "name": "allow-ops-center-native",
-              "properties": {
-                "protocol": "TCP",
-                "sourcePortRange": "*",
-                "destinationPortRange": "9042",
-                "sourceAddressPrefix": "10.0.0.128/25",
-                "destinationAddressPrefix": "*",
-                "access": "Allow",
-                "priority": 110,
-                "direction": "Inbound"
-              }
+              "protocol": "TCP",
+              "sourcePortRange": "*",
+              "destinationPortRange": "9042",
+              "sourceAddressPrefix": "10.0.0.128/25",
+              "destinationAddressPrefix": "*",
+              "access": "Allow",
+              "priority": 110,
+              "direction": "Inbound"
             },
             {
               "name": "allow-ops-center-jmx",
-              "properties": {
-                "protocol": "TCP",
-                "sourcePortRange": "*",
-                "destinationPortRange": "7199",
-                "sourceAddressPrefix": "10.0.0.128/25",
-                "destinationAddressPrefix": "*",
-                "access": "Allow",
-                "priority": 120,
-                "direction": "Inbound"
-              }
+              "protocol": "TCP",
+              "sourcePortRange": "*",
+              "destinationPortRange": "7199",
+              "sourceAddressPrefix": "10.0.0.128/25",
+              "destinationAddressPrefix": "*",
+              "access": "Allow",
+              "priority": 120,
+              "direction": "Inbound"
             },
             {
               "name": "allow-biz-traffic",
@@ -114,17 +110,15 @@
             },
             {
               "name": "deny-other-traffic",
-              "properties": {
-                "description": "Deny all other traffic",
-                "protocol": "*",
-                "sourcePortRange": "*",
-                "destinationPortRange": "*",
-                "sourceAddressPrefix": "*",
-                "destinationAddressPrefix": "*",
-                "access": "Deny",
-                "priority": 140,
-                "direction": "Inbound"
-              }
+              "description": "Deny all other traffic",
+              "protocol": "*",
+              "sourcePortRange": "*",
+              "destinationPortRange": "*",
+              "sourceAddressPrefix": "*",
+              "destinationAddressPrefix": "*",
+              "access": "Deny",
+              "priority": 140,
+              "direction": "Inbound"
             }
           ]
         },
@@ -237,16 +231,14 @@
             },
             {
               "name": "allow-http",
-              "properties": {
-                "protocol": "*",
-                "sourcePortRange": "*",
-                "destinationPortRange": "8888",
-                "sourceAddressPrefix": "*",
-                "destinationAddressPrefix": "*",
-                "access": "Allow",
-                "priority": 110,
-                "direction": "Inbound"
-              }
+              "protocol": "*",
+              "sourcePortRange": "*",
+              "destinationPortRange": "8888",
+              "sourceAddressPrefix": "*",
+              "destinationAddressPrefix": "*",
+              "access": "Allow",
+              "priority": 110,
+              "direction": "Inbound"
             },
             {
               "name": "deny-other-traffic",
