@@ -5,11 +5,10 @@ param(
   [Parameter(Mandatory=$true)]
   $SubscriptionId,
   [Parameter(Mandatory=$false)]
-  $Location = "Central US",
-  [Parameter(Mandatory=$false)]
-  [ValidateSet("Windows", "Linux")]
-  $OSType = "Linux"
+  $Location = "Central US"
 )
+
+$OSType = "Linux"
 
 $ErrorActionPreference = "Stop"
 

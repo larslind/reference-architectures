@@ -2,6 +2,7 @@
 
 RESOURCE_GROUP_NAME="ra-ntier-vm-rg"
 LOCATION="centralus"
+OS_TYPE="linux"
 
 TEMPLATE_ROOT_URI=${TEMPLATE_ROOT_URI:="https://raw.githubusercontent.com/mspnp/template-building-blocks/master/"}
 # Make sure we have a trailing slash
@@ -41,7 +42,6 @@ showErrorAndUsage() {
   echo "  usage:  $(basename ${0}) [options]"
   echo "  options:"
   echo "    -l, --location <location>"
-  echo "    -o, --os-type <windows | linux>"
   echo "    -s, --subscription <subscription-id>"
   echo
   exit 1
@@ -56,10 +56,6 @@ while [[ $# > 0 ]]
 do
   key="$1"
   case $key in
-    -o|--os-type)
-      OS_TYPE="$2"
-      shift
-      ;;
     -s|--subscription)
       # Explicitly set the subscription to avoid confusion as to which subscription
       # is active/default
@@ -80,11 +76,6 @@ done
 if ! [[ $SUBSCRIPTION_ID =~ ^[0-9a-f]{8}-([0-9a-f]{4}-){3}[0-9a-f]{12}$  ]];
 then
   showErrorAndUsage "Invalid Subscription ID"
-fi
-
-if validate $OS_TYPE "windows" "linux";
-then
-  showErrorAndUsage "Invalid OS Type: '${OS_TYPE}'  Valid values are 'windows' or 'linux'"
 fi
 
 if validateNotEmpty $LOCATION;
