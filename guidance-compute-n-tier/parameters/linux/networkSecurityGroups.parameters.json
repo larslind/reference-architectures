@@ -64,21 +64,9 @@
           ],
           "securityRules": [
             {
-              "name": "allow-biz-traffic",
-              "description": "Allow traffic originating from biz layer.",
-              "protocol": "*",
-              "sourcePortRange": "*",
-              "destinationPortRange": "9042",
-              "sourceAddressPrefix": "10.0.2.0/24",
-              "destinationAddressPrefix": "*",
-              "access": "Allow",
-              "priority": 100,
-              "direction": "Inbound"
-            },
-            {
               "name": "allow-mgmt-ssh",
               "direction": "Inbound",
-              "priority": 110,
+              "priority": 100,
               "sourceAddressPrefix": "10.0.0.128/25",
               "destinationAddressPrefix": "*",
               "sourcePortRange": "*",
@@ -87,28 +75,56 @@
               "protocol": "Tcp"
             },
             {
-              "name": "allow-ops-center-web-traffic",
-              "description": "Allow web traffic to ops center.",
+              "name": "allow-ops-center-native",
+              "properties": {
+                "protocol": "TCP",
+                "sourcePortRange": "*",
+                "destinationPortRange": "9042",
+                "sourceAddressPrefix": "10.0.0.128/25",
+                "destinationAddressPrefix": "*",
+                "access": "Allow",
+                "priority": 110,
+                "direction": "Inbound"
+              }
+            },
+            {
+              "name": "allow-ops-center-jmx",
+              "properties": {
+                "protocol": "TCP",
+                "sourcePortRange": "*",
+                "destinationPortRange": "7199",
+                "sourceAddressPrefix": "10.0.0.128/25",
+                "destinationAddressPrefix": "*",
+                "access": "Allow",
+                "priority": 120,
+                "direction": "Inbound"
+              }
+            },
+            {
+              "name": "allow-biz-traffic",
+              "description": "Allow traffic originating from biz layer.",
               "protocol": "*",
               "sourcePortRange": "*",
-              "destinationPortRange": "8888",
-              "sourceAddressPrefix": "*",
+              "destinationPortRange": "9042",
+              "sourceAddressPrefix": "10.0.2.0/24",
               "destinationAddressPrefix": "*",
               "access": "Allow",
-              "priority": 120,
+              "priority": 130,
               "direction": "Inbound"
             },
             {
               "name": "deny-other-traffic",
-              "description": "Deny all other traffic",
-              "protocol": "*",
-              "sourcePortRange": "*",
-              "destinationPortRange": "*",
-              "sourceAddressPrefix": "*",
-              "destinationAddressPrefix": "*",
-              "access": "Deny",
-              "priority": 130,
-              "direction": "Inbound"
+              "properties": {
+                "description": "Deny all other traffic",
+                "protocol": "*",
+                "sourcePortRange": "*",
+                "destinationPortRange": "*",
+                "sourceAddressPrefix": "*",
+                "destinationAddressPrefix": "*",
+                "access": "Deny",
+                "priority": 140,
+                "direction": "Inbound"
+              }
             }
           ]
         },
@@ -218,6 +234,19 @@
               "destinationPortRange": "22",
               "access": "Allow",
               "protocol": "Tcp"
+            },
+            {
+              "name": "allow-http",
+              "properties": {
+                "protocol": "*",
+                "sourcePortRange": "*",
+                "destinationPortRange": "8888",
+                "sourceAddressPrefix": "*",
+                "destinationAddressPrefix": "*",
+                "access": "Allow",
+                "priority": 110,
+                "direction": "Inbound"
+              }
             },
             {
               "name": "deny-other-traffic",
