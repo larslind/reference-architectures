@@ -4,7 +4,8 @@
   "parameters": {
     "virtualNetworkSettings": {
       "value": {
-        "name": "ra-adds-onpremise-vnet"
+        "name": "ra-adds-onpremise-vnet",
+        "resourceGroup": "ra-adds-onpremise-rg"
       }
     },
     "virtualNetworkGatewaySettings": {

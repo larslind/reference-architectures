@@ -4,7 +4,8 @@
   "parameters": {
     "virtualNetworkSettings": {
       "value": {
-        "name": "ra-adds-vnet"
+        "name": "ra-adds-vnet",
+        "resourceGroup": "ra-adds-network-rg"
       }
     },
     "virtualNetworkGatewaySettings": {

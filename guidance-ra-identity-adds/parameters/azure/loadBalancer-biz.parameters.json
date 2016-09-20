@@ -4,8 +4,8 @@
   "parameters": {
     "virtualMachinesSettings": {
       "value": {
-        "namePrefix": "ra-adds-data",
-        "computerNamePrefix": "data",
+        "namePrefix": "ra-adds-biz",
+        "computerNamePrefix": "biz",
         "size": "Standard_DS1_v2",
         "osType": "windows",
         "adminUsername": "testuser",
@@ -14,9 +14,8 @@
         "nics": [
           {
             "isPublic": "false",
-            "subnetName": "data",
-            "privateIPAllocationMethod": "dynamic",
-            "publicIPAllocationMethod": "dynamic",
+            "subnetName": "biz",
+            "privateIPAllocationMethod": "Dynamic",
             "isPrimary": "true",
             "enableIPForwarding": false,
             "dnsServers": [ ]
@@ -42,26 +41,26 @@
         "extensions": [ ],
         "availabilitySet": {
           "useExistingAvailabilitySet": "No",
-          "name": "ra-adds-data-vm-as"
+          "name": "ra-adds-biz-vm-as"
         }
       }
     },
     "loadBalancerSettings": {
       "value": {
-        "name": "ra-adds-data-lb",
+        "name": "ra-adds-biz-lb",
         "frontendIPConfigurations": [
           {
-            "name": "ra-adds-data-lb-fe",
+            "name": "ra-adds-biz-lb-fe",
             "loadBalancerType": "internal",
             "internalLoadBalancerSettings": {
-              "privateIPAddress": "10.0.3.254",
-              "subnetName": "data"
+              "privateIPAddress": "10.0.2.254",
+              "subnetName": "biz"
             }
           }
         ],
         "backendPools": [
           {
-            "name": "ra-adds-data-lb-bep",
+            "name": "ra-adds-biz-lb-bep",
             "nicIndex": 0
           }
         ],
@@ -71,9 +70,10 @@
             "frontendPort": 443,
             "backendPort": 443,
             "protocol": "Tcp",
-            "backendPoolName": "ra-adds-data-lb-bep",
-            "frontendIPConfigurationName": "ra-adds-data-lb-fe",
-            "probeName": "https-probe"
+            "backendPoolName": "ra-adds-biz-lb-bep",
+            "frontendIPConfigurationName": "ra-adds-biz-lb-fe",
+            "probeName": "https-probe",
+            "enableFloatingIP": false
           }
         ],
         "probes": [

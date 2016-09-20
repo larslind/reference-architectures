@@ -4,12 +4,11 @@
   "parameters": {
     "dmzSettings": {
       "value": {
-        "namePrefix": "dmz-private",
+        "namePrefix": "dmz-public",
         "endpoint": {
-          "hasPublicEndpoint": "no",
+          "hasPublicEndpoint": "yes",
+          "domainNameLabel": "",
           "internalLoadBalancerSettings": {
-            "privateIPAddress": "10.0.0.4",
-            "subnetName": "dmz-private-in"
           }
         },
         "applianceSettings": {
@@ -64,11 +63,11 @@
         "subnets": {
           "useExistingSubnets": "yes",
           "inSubnet": {
-            "name": "dmz-private-in",
+            "name": "dmz-public-in",
             "addressPrefix": ""
           },
           "outSubnet": {
-            "name": "dmz-private-out",
+            "name": "dmz-public-out",
             "addressPrefix": ""
           }
         }

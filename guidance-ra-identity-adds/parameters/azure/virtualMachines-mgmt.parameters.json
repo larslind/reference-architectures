@@ -13,13 +13,15 @@
         "osAuthenticationType": "password",
         "nics": [
           {
-            "isPublic": "false",
+            "isPublic": "true",
             "subnetName": "mgmt",
+            "publicIPAllocationMethod": "Dynamic",
             "privateIPAllocationMethod": "Static",
             "startingIPAddress": "10.0.0.132",
             "enableIPForwarding": false,
             "dnsServers": [ ],
-            "isPrimary": "true"
+            "isPrimary": "true",
+            "domainNameLabelPrefix": ""
           }
         ],
         "imageReference": {

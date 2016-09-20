@@ -15,8 +15,7 @@
           {
             "isPublic": "false",
             "subnetName": "web",
-            "privateIPAllocationMethod": "dynamic",
-            "publicIPAllocationMethod": "dynamic",
+            "privateIPAllocationMethod": "Dynamic",
             "isPrimary": "true",
             "enableIPForwarding": false,
             "dnsServers": [ ]
@@ -73,7 +72,8 @@
             "protocol": "Tcp",
             "backendPoolName": "ra-adds-web-lb-bep",
             "frontendIPConfigurationName": "ra-adds-web-lb-fe",
-            "probeName": "https-probe"
+            "probeName": "https-probe",
+            "enableFloatingIP": false
           }
         ],
         "probes": [
