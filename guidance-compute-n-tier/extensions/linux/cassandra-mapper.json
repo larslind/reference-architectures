@@ -9,15 +9,15 @@
   "variables": {
     "scriptName": "install-cassandra.sh",
     "refArchPrefix": "ra-ntier-",
-    "apacheInstallerUri": "[uri(deployment().properties.templateLink.uri, variables('scriptName'))]",
+    "cassandraInstallerUri": "[uri(deployment().properties.templateLink.uri, variables('scriptName'))]",
     "dataCenterName": "[concat(variables('refArchPrefix'), 'dc-', variables('location'))]",
     "location": "[resourceGroup().location]",
     "seedNodeName": "rantierdatanode1",
     "opsCenterNodeName": "rantierops1",
     "instance": {
       "settings": {
-        "fileUris": [ "[variables('apacheInstallerUri')]" ],
-        "commandToExecute": "[concat('sh ', variables('scriptName'), ' ', variables('seedNodeName'), ' ', variables('opsCenterNodeName'), ' ', variables('dataCenterName'), ' ', variables('location'))]"
+        "fileUris": [ "[variables('cassandraInstallerUri')]" ],
+        "commandToExecute": "[concat('bash ', variables('scriptName'), ' ', variables('seedNodeName'), ' ', variables('opsCenterNodeName'), ' ', variables('dataCenterName'), ' ', variables('location'))]"
       },
       "protectedSettings": { }
     }

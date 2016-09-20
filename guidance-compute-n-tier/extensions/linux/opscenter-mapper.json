@@ -8,13 +8,13 @@
   },
   "variables": {
     "scriptName": "install-opscenter.sh",
-    "apacheInstallerUri": "[uri(deployment().properties.templateLink.uri, variables('scriptName'))]",
+    "opsCenterInstallerUri": "[uri(deployment().properties.templateLink.uri, variables('scriptName'))]",
     "seedNodeName": "rantierdatanode1",
     "location": "[resourceGroup().location]",
     "instance": {
       "settings": {
-        "fileUris": [ "[variables('apacheInstallerUri')]" ],
-        "commandToExecute": "[concat('sh ', variables('scriptName'), ' ', variables('seedNodeName'), ' ', variables('location'))]"
+        "fileUris": [ "[variables('opsCenterInstallerUri')]" ],
+        "commandToExecute": "[concat('bash ', variables('scriptName'), ' ', variables('seedNodeName'), ' ', variables('location'))]"
       },
       "protectedSettings": { }
     }
