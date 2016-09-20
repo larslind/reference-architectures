@@ -1,0 +1,46 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|AnyCPU">
+      <Configuration>Debug</Configuration>
+      <Platform>AnyCPU</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|AnyCPU">
+      <Configuration>Release</Configuration>
+      <Platform>AnyCPU</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="security.azuredeploy.json" />
+    <None Include="workload.azuredeploy.json" />
+    <None Include="virtualNetwork.azuredeploy.json" />
+    <None Include="deploy-reference-architecture.sh" />
+    <None Include="Deploy-ReferenceArchitecture.ps1" />
+    <None Include="extensions\linux\install-apache.sh" />
+    <None Include="extensions\windows\iisaspnet.ps1.zip" />
+    <None Include="parameters\internet-dmz.parameters.json" />
+    <None Include="parameters\dmz.parameters.json" />
+    <None Include="parameters\networkSecurityGroups.parameters.json" />
+    <None Include="parameters\virtualMachines-mgmt-subnet.parameters.json" />
+    <None Include="parameters\loadBalancer-data-subnet.parameters.json" />
+    <None Include="parameters\loadBalancer-biz-subnet.parameters.json" />
+    <None Include="parameters\loadBalancer-web-subnet.parameters.json" />
+    <None Include="parameters\virtualNetwork.parameters.json" />
+    <None Include="parameters\vpn.parameters.json" />
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>004e8121-2b17-4946-b8e8-11b0c8642fd7</ProjectGuid>
+  </PropertyGroup>
+  <PropertyGroup>
+    <TargetFrameworkIdentifier>Deployment</TargetFrameworkIdentifier>
+    <TargetFrameworkVersion>1.0</TargetFrameworkVersion>
+    <PrepareForBuildDependsOn>
+    </PrepareForBuildDependsOn>
+  </PropertyGroup>
+  <Import Condition=" Exists('Deployment.targets') " Project="Deployment.targets" />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.Common.targets" />
+  <!-- vertag<:>start tokens<:>maj.min -->
+  <Import Condition=" Exists('$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Deployment\1.1\DeploymentProject.targets') " Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Deployment\1.1\DeploymentProject.targets" />
+  <!-- vertag<:>end -->
+  <Target Name="GetReferenceAssemblyPaths" />
+</Project>

@@ -4,16 +4,16 @@
   "parameters": {
     "virtualNetworkSettings": {
       "value": {
-        "name": "ra-vnet",
+        "name": "ra-ntier-vnet",
         "resourceGroup": "ra-ntier-vm-rg"
 	}
     },
     "networkSecurityGroupsSettings": {
       "value": [
         {
-          "name": "app1-biz-nsg",
+          "name": "ra-ntier-biz-nsg",
           "subnets": [
-            "app1-biz-sn"
+            "biz"
           ],
           "networkInterfaces": [
           ],
@@ -24,11 +24,22 @@
               "protocol": "*",
               "sourcePortRange": "*",
               "destinationPortRange": "80",
-              "sourceAddressPrefix": "10.0.0.0/24",
+              "sourceAddressPrefix": "10.0.1.0/24",
               "destinationAddressPrefix": "*",
               "access": "Allow",
               "priority": 100,
               "direction": "Inbound"
+            },
+            {
+              "name": "allow-mgmt-rdp",
+              "direction": "Inbound",
+              "priority": 110,
+              "sourceAddressPrefix": "10.0.0.128/25",
+              "destinationAddressPrefix": "*",
+              "sourcePortRange": "*",
+              "destinationPortRange": "3389",
+              "access": "Allow",
+              "protocol": "Tcp"
             },
             {
               "name": "deny-other-traffic",
@@ -45,9 +56,9 @@
           ]
         },
         {
-          "name": "app1-data-nsg",
+          "name": "ra-ntier-data-nsg",
           "subnets": [
-            "app1-data-sn"
+            "data"
           ],
           "networkInterfaces": [
           ],
@@ -57,12 +68,23 @@
               "description": "Allow traffic originating from biz layer.",
               "protocol": "*",
               "sourcePortRange": "*",
-              "destinationPortRange": "80",
-              "sourceAddressPrefix": "10.0.1.0/24",
+              "destinationPortRange": "1433",
+              "sourceAddressPrefix": "10.0.2.0/24",
               "destinationAddressPrefix": "*",
               "access": "Allow",
               "priority": 100,
               "direction": "Inbound"
+            },
+            {
+              "name": "allow-mgmt-rdp",
+              "direction": "Inbound",
+              "priority": 110,
+              "sourceAddressPrefix": "10.0.0.128/25",
+              "destinationAddressPrefix": "*",
+              "sourcePortRange": "*",
+              "destinationPortRange": "3389",
+              "access": "Allow",
+              "protocol": "Tcp"
             },
             {
               "name": "deny-other-traffic",
@@ -79,9 +101,9 @@
           ]
         },
         {
-          "name": "app1-web-nsg",
+          "name": "ra-ntier-web-nsg",
           "subnets": [
-            "app1-web-sn"
+            "web"
           ],
           "networkInterfaces": [
           ],
@@ -111,6 +133,17 @@
               "direction": "Inbound"
             },
             {
+              "name": "allow-mgmt-rdp",
+              "direction": "Inbound",
+              "priority": 120,
+              "sourceAddressPrefix": "10.0.0.128/25",
+              "destinationAddressPrefix": "*",
+              "sourcePortRange": "*",
+              "destinationPortRange": "3389",
+              "access": "Allow",
+              "protocol": "Tcp"
+            },
+            {
               "name": "deny-other-traffic",
               "description": "Deny all other traffic",
               "protocol": "*",
@@ -119,22 +152,22 @@
               "sourceAddressPrefix": "*",
               "destinationAddressPrefix": "*",
               "access": "Deny",
-              "priority": 120,
+              "priority": 130,
               "direction": "Inbound"
             }
           ]
         },
         {
-          "name": "app1-mgmt-nsg",
+          "name": "ra-ntier-mgmt-nsg",
           "subnets": [ ],
           "networkInterfaces": [
-            "ra-vm9-nic1"
+            "ra-ntier-mgmt-vm1-nic1"
           ],
           "securityRules": [
             {
-              "name": "RDP",
+              "name": "default-allow-rdp",
               "description": "Allow RDP Subnet",
-              "protocol": "tcp",
+              "protocol": "Tcp",
               "sourcePortRange": "*",
               "destinationPortRange": "3389",
               "sourceAddressPrefix": "*",
