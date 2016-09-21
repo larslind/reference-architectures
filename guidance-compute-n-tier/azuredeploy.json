@@ -26,12 +26,6 @@
       "metadata": {
         "description": "Relative path decider for the template parameters."
       }
-    },
-    "availabilitySetParameters": {
-      "type": "object",
-      "metadata": {
-        "description": "Custom settings for Cassandra cluster availability set."
-      }
     }
   },
   "variables": {
@@ -68,18 +62,9 @@
         "templateLink": {
           "uri": "[variables('templates').deployment.availabilitySet]"
         },
-        "parameters": {
-          "platformFaultDomainCount": {
-            "value": "[parameters('availabilitySetParameters').platformFaultDomainCount]"
-          },
-          "platformUpdateDomainCount": {
-            "value": "[parameters('availabilitySetParameters').platformUpdateDomainCount]"
-          },
-          "availabilitySetSettings": {
-            "value": {
-              "name": "[parameters('availabilitySetParameters').availabilitySetSettings.name]"
-            }
-          }
+        "parametersLink": {
+          "uri": "[variables('templates').parameter.availabilitySet]",
+          "contentVersion": "1.0.0.0"
         }
       }
     },

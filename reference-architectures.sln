@@ -1,13 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.25123.0
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{151D2E53-A2C4-4D7D-83FE-D05416EBD58E}") = "guidance-compute-multi-vm", "guidance-compute-multi-vm\guidance-compute-multi-vm.deployproj", "{58119F1A-4CF6-46F9-AD16-444E3B873F03}"
 EndProject
 Project("{151D2E53-A2C4-4D7D-83FE-D05416EBD58E}") = "guidance-compute-single-vm", "guidance-compute-single-vm\guidance-compute-single-vm.deployproj", "{B7B33AE1-E56A-458D-93FB-D06DDB93CD7F}"
 EndProject
-Project("{151D2E53-A2C4-4D7D-83FE-D05416EBD58E}") = "guidance-compute-n-tier", "guidance-compute-n-tier\guidance-compute-n-tier.deployproj", "{37BD5438-1465-443B-8826-A112CCA2E409}"
+Project("{151D2E53-A2C4-4D7D-83FE-D05416EBD58E}") = "guidance-compute-ntier-cassandra", "guidance-compute-n-tier\guidance-compute-ntier-cassandra.deployproj", "{37BD5438-1465-443B-8826-A112CCA2E409}"
 EndProject
 Project("{151D2E53-A2C4-4D7D-83FE-D05416EBD58E}") = "guidance-hybrid-network-er", "guidance-hybrid-network-er\guidance-hybrid-network-er.deployproj", "{334ED53A-1F21-48E3-BB52-1B96E4A49592}"
 EndProject
