@@ -1,6 +1,6 @@
 #!/bin/bash
 
-RESOURCE_GROUP_NAME="ra-ntier-vm-rg"
+RESOURCE_GROUP_NAME="ra-aad-ntier-vm-rg"
 LOCATION="centralus"
 
 TEMPLATE_ROOT_URI=${TEMPLATE_ROOT_URI:="https://raw.githubusercontent.com/mspnp/template-building-blocks/master/"}
