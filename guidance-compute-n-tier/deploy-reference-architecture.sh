@@ -108,8 +108,11 @@ AVAILABILITY_SET_DEPLOYMENT_NAME="ra-ntier-data-avset-deployment"
 
 VIRTUAL_MACHINE_TEMPLATE_URI="${TEMPLATE_ROOT_URI}templates/buildingBlocks/multi-vm-n-nic-m-storage/azuredeploy.json"
 
-MGMT_TIER_PARAMETERS_PATH="${SCRIPT_DIR}/parameters/${OS_TYPE}/managementTier.parameters.json"
-MGMT_TIER_DEPLOYMENT_NAME="ra-ntier-mgmt-deployment"
+MGMT_TIER_JUMPBOX_PARAMETERS_PATH="${SCRIPT_DIR}/parameters/${OS_TYPE}/managementTierJumpbox.parameters.json"
+MGMT_TIER_JUMPBOX_DEPLOYMENT_NAME="ra-ntier-mgmt-jb-deployment"
+
+MGMT_TIER_OPS_PARAMETERS_PATH="${SCRIPT_DIR}/parameters/${OS_TYPE}/managementTierOps.parameters.json"
+MGMT_TIER_OPS_DEPLOYMENT_NAME="ra-ntier-mgmt-ops-deployment"
 
 LOAD_BALANCER_TEMPLATE_URI="${TEMPLATE_ROOT_URI}templates/buildingBlocks/loadBalancer-backend-n-vm/azuredeploy.json"
 
@@ -158,9 +161,14 @@ azure group deployment create --resource-group $RESOURCE_GROUP_NAME --name $DATA
 --template-uri $VIRTUAL_MACHINE_TEMPLATE_URI --parameters-file $DATA_TIER_PARAMETERS_PATH \
 --subscription $SUBSCRIPTION_ID || exit 1
 
-echo "Deploying management tier..."
-azure group deployment create --resource-group $RESOURCE_GROUP_NAME --name $MGMT_TIER_DEPLOYMENT_NAME \
---template-uri $VIRTUAL_MACHINE_TEMPLATE_URI --parameters-file $MGMT_TIER_PARAMETERS_PATH \
+echo "Deploying jumpbox in management tier..."
+azure group deployment create --resource-group $RESOURCE_GROUP_NAME --name $MGMT_TIER_JUMPBOX_DEPLOYMENT_NAME \
+--template-uri $VIRTUAL_MACHINE_TEMPLATE_URI --parameters-file $MGMT_TIER_JUMPBOX_PARAMETERS_PATH \
+--subscription $SUBSCRIPTION_ID || exit 1
+
+echo "Deploying operations center in management tier..."
+azure group deployment create --resource-group $RESOURCE_GROUP_NAME --name $MGMT_TIER_OPS_DEPLOYMENT_NAME \
+--template-uri $VIRTUAL_MACHINE_TEMPLATE_URI --parameters-file $MGMT_TIER_OPS_PARAMETERS_PATH \
 --subscription $SUBSCRIPTION_ID || exit 1
 
 echo "Deploying network security group..."
@@ -188,7 +196,10 @@ azure group deployment show --resource-group $RESOURCE_GROUP_NAME --name $BIZ_TI
 azure group deployment show --resource-group $RESOURCE_GROUP_NAME --name $DATA_TIER_DEPLOYMENT_NAME \
 --subscription $SUBSCRIPTION_ID --json || exit 1
 
-azure group deployment show --resource-group $RESOURCE_GROUP_NAME --name $MGMT_TIER_DEPLOYMENT_NAME \
+azure group deployment show --resource-group $RESOURCE_GROUP_NAME --name $MGMT_TIER_JUMPBOX_DEPLOYMENT_NAME \
+--subscription $SUBSCRIPTION_ID --json || exit 1
+
+azure group deployment show --resource-group $RESOURCE_GROUP_NAME --name $MGMT_TIER_OPS_DEPLOYMENT_NAME \
 --subscription $SUBSCRIPTION_ID --json || exit 1
 
 azure group deployment show --resource-group $RESOURCE_GROUP_NAME --name $NETWORK_SECURITY_GROUP_DEPLOYMENT_NAME \
