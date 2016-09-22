@@ -1,12 +1,12 @@
 ﻿{
-    "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
-    "contentVersion": "1.0.0.0",
+  "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
   "parameters": {
     "virtualNetworkSettings": {
       "value": {
         "name": "ra-ntier-vnet",
         "resourceGroup": "ra-ntier-vm-rg"
-	}
+      }
     },
     "networkSecurityGroupsSettings": {
       "value": [
@@ -109,8 +109,8 @@
           ],
           "securityRules": [
             {
-              "name": "allow-web-traffic-from-external",
-              "description": "Allow web traffic originating externally.",
+              "name": "allow-http-traffic-from-external",
+              "description": "Allow http traffic originating externally.",
               "protocol": "*",
               "sourcePortRange": "*",
               "destinationPortRange": "80",
@@ -121,21 +121,45 @@
               "direction": "Inbound"
             },
             {
-              "name": "allow-web-traffic-from-vnet",
-              "description": "Allow web traffic originating from vnet.",
+              "name": "allow-https-traffic-from-external",
+              "description": "Allow https traffic originating externally.",
               "protocol": "*",
               "sourcePortRange": "*",
-              "destinationPortRange": "80",
-              "sourceAddressPrefix": "10.0.0.0/16",
+              "destinationPortRange": "443",
+              "sourceAddressPrefix": "*",
               "destinationAddressPrefix": "*",
               "access": "Allow",
               "priority": 110,
               "direction": "Inbound"
             },
             {
+              "name": "allow-http-traffic-from-vnet",
+              "description": "Allow http traffic originating from vnet.",
+              "protocol": "*",
+              "sourcePortRange": "*",
+              "destinationPortRange": "80",
+              "sourceAddressPrefix": "10.0.0.0/16",
+              "destinationAddressPrefix": "*",
+              "access": "Allow",
+              "priority": 120,
+              "direction": "Inbound"
+            },
+            {
+              "name": "allow-https-traffic-from-vnet",
+              "description": "Allow https traffic originating from vnet.",
+              "protocol": "*",
+              "sourcePortRange": "*",
+              "destinationPortRange": "443",
+              "sourceAddressPrefix": "10.0.0.0/16",
+              "destinationAddressPrefix": "*",
+              "access": "Allow",
+              "priority": 130,
+              "direction": "Inbound"
+            },
+            {
               "name": "allow-mgmt-rdp",
               "direction": "Inbound",
-              "priority": 120,
+              "priority": 140,
               "sourceAddressPrefix": "10.0.0.128/25",
               "destinationAddressPrefix": "*",
               "sourcePortRange": "*",
@@ -152,7 +176,7 @@
               "sourceAddressPrefix": "*",
               "destinationAddressPrefix": "*",
               "access": "Deny",
-              "priority": 130,
+              "priority": 150,
               "direction": "Inbound"
             }
           ]
@@ -194,3 +218,4 @@
     }
   }
 }
+
