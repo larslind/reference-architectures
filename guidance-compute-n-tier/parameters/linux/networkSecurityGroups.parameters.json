@@ -115,6 +115,7 @@
         {
           "name": "ra-ntier-data-nsg",
           "subnets": [
+            "data"
           ],
           "networkInterfaces": [
           ],
