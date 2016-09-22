@@ -8,7 +8,7 @@ param(
   $Location = "Central US",
   [Parameter(Mandatory=$false)]
   [ValidateSet("Windows", "Linux")]
-  $OSType = "Linux"
+  $OSType = "Windows"
 )
 $resourceGroupName = "ra-aad-ntier-rg"
 
