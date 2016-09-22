@@ -5,7 +5,7 @@
     "virtualNetworkSettings": {
       "value": {
         "name": "ra-ntier-vnet",
-        "resourceGroup": "ra-ntier-vm-rg"
+        "resourceGroup": "ra-aad-ntier-rg"
 	}
     },
     "networkSecurityGroupsSettings": {
