@@ -121,19 +121,8 @@
           ],
           "securityRules": [
             {
-              "name": "allow-mgmt-ssh",
-              "direction": "Inbound",
-              "priority": 100,
-              "sourceAddressPrefix": "10.0.0.128/25",
-              "destinationAddressPrefix": "*",
-              "sourcePortRange": "*",
-              "destinationPortRange": "22",
-              "access": "Allow",
-              "protocol": "Tcp"
-            },
-            {
               "name": "allow-ops-center-http",
-              "protocol": "TCP",
+              "protocol": "*",
               "sourcePortRange": "*",
               "destinationPortRange": "8888-65535",
               "sourceAddressPrefix": "*",
