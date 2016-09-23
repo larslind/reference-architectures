@@ -41,13 +41,10 @@
     <None Include="parameters\linux\virtualNetwork.parameters.json" />
     <None Include="parameters\linux\webTier.parameters.json" />
     <None Include="parameters\onpremise\add-adds-domain-controller.parameters.json" />
-    <None Include="parameters\onpremise\connection.parameters.json" />
     <None Include="parameters\onpremise\create-adds-forest-extension.parameters.json" />
-    <None Include="parameters\onpremise\create-azure-replication-site.parameters.json" />
     <None Include="parameters\onpremise\virtualMachines-adds.parameters.json" />
     <None Include="parameters\onpremise\virtualNetwork-adds-dns.parameters.json" />
     <None Include="parameters\onpremise\virtualNetwork.parameters.json" />
-    <None Include="parameters\onpremise\virtualNetworkGateway.parameters.json" />
     <None Include="parameters\windows\businessTier.parameters.json" />
     <None Include="parameters\windows\dataTier.parameters.json" />
     <None Include="parameters\windows\managementTier.parameters.json" />
@@ -55,10 +52,7 @@
     <None Include="parameters\windows\virtualNetwork.parameters.json" />
     <None Include="parameters\windows\webTier.parameters.json" />
     <None Include="templates\onpremise\ad-forest-extension-settings-mapper.json" />
-    <None Include="templates\onpremise\ad-replication-site-extension-settings-mapper.json" />
     <None Include="templates\onpremise\adds-domain-controller-extension-settings-mapper.json" />
-    <None Include="templates\onpremise\connection.json" />
-    <None Include="templates\onpremise\virtualNetworkGateway.json" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="azuredeploy.json" />
