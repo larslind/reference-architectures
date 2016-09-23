@@ -5,7 +5,7 @@ param(
   [Parameter(Mandatory=$true)]
   $SubscriptionId,
   [Parameter(Mandatory=$false)]
-  $Location = "Central US",
+  $Location = "eastus",
   [Parameter(Mandatory=$false)]
   [ValidateSet("Windows", "Linux")]
   $OSType = "Windows"

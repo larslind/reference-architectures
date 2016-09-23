@@ -1,7 +1,7 @@
 #!/bin/bash
 
 RESOURCE_GROUP_NAME="ra-aad-ntier-rg"
-LOCATION="centralus"
+LOCATION="eastus"
 
 TEMPLATE_ROOT_URI=${TEMPLATE_ROOT_URI:="https://raw.githubusercontent.com/mspnp/template-building-blocks/master/"}
 # Make sure we have a trailing slash
