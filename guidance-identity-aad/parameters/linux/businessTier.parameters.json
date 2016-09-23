@@ -4,10 +4,10 @@
   "parameters": {
     "loadBalancerSettings": {
       "value": {
-        "name": "ra-ntier-biz-lb",
+        "name": "ra-aad-ntier-biz-lb",
         "frontendIPConfigurations": [
           {
-            "name": "ra-ntier-biz-lb-fe-config1",
+            "name": "ra-aad-ntier-biz-lb-fe-config1",
             "loadBalancerType": "internal",
             "domainNameLabel": "",
             "internalLoadBalancerSettings": {
@@ -23,7 +23,7 @@
             "backendPort": 80,
             "protocol": "Tcp",
             "backendPoolName": "lb-bep1",
-            "frontendIPConfigurationName": "ra-ntier-biz-lb-fe-config1",
+            "frontendIPConfigurationName": "ra-aad-ntier-biz-lb-fe-config1",
             "enableFloatingIP": false,
             "probeName": "lbp1"
           }
@@ -47,7 +47,7 @@
     },
     "virtualMachinesSettings": {
       "value": {
-        "namePrefix": "ra-ntier-biz",
+        "namePrefix": "ra-aad-ntier-biz",
         "computerNamePrefix": "cn",
         "size": "Standard_DS1",
         "adminUsername": "testuser",
@@ -86,13 +86,13 @@
         "extensions": [ ],
         "availabilitySet": {
           "useExistingAvailabilitySet": "No",
-          "name": "ra-ntier-biz-as"
+          "name": "ra-aad-ntier-biz-as"
         }
       }
     },
     "virtualNetworkSettings": {
       "value": {
-        "name": "ra-ntier-vnet",
+        "name": "ra-aad-ntier-vnet",
         "resourceGroup": "ra-aad-ntier-rg"
       }
     },

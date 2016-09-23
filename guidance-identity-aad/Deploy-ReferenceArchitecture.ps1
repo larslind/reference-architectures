@@ -54,25 +54,25 @@ Login-AzureRmAccount -SubscriptionId $SubscriptionId | Out-Null
 $resourceGroup = New-AzureRmResourceGroup -Name $resourceGroupName -Location $Location
 
 Write-Host "Deploying virtual network..."
-New-AzureRmResourceGroupDeployment -Name "ra-ntier-vnet-deployment" -ResourceGroupName $resourceGroup.ResourceGroupName `
+New-AzureRmResourceGroupDeployment -Name "ra-aad-ntier-vnet-deployment" -ResourceGroupName $resourceGroup.ResourceGroupName `
     -TemplateUri $virtualNetworkTemplate.AbsoluteUri -TemplateParameterFile $virtualNetworkParametersFile
 
 Write-Host "Deploying business tier..."
-New-AzureRmResourceGroupDeployment -Name "ra-ntier-biz-deployment" -ResourceGroupName $resourceGroup.ResourceGroupName `
+New-AzureRmResourceGroupDeployment -Name "ra-aad-ntier-biz-deployment" -ResourceGroupName $resourceGroup.ResourceGroupName `
     -TemplateUri $loadBalancedVmSetTemplate.AbsoluteUri -TemplateParameterFile $businessTierParametersFile
 
 Write-Host "Deploying data tier..."
-New-AzureRmResourceGroupDeployment -Name "ra-ntier-data-deployment" -ResourceGroupName $resourceGroup.ResourceGroupName `
+New-AzureRmResourceGroupDeployment -Name "ra-aad-ntier-data-deployment" -ResourceGroupName $resourceGroup.ResourceGroupName `
     -TemplateUri $virtualMachineTemplate.AbsoluteUri -TemplateParameterFile $dataTierParametersFile
 
 Write-Host "Deploying web tier..."
-New-AzureRmResourceGroupDeployment -Name "ra-ntier-web-deployment" -ResourceGroupName $resourceGroup.ResourceGroupName `
+New-AzureRmResourceGroupDeployment -Name "ra-aad-ntier-web-deployment" -ResourceGroupName $resourceGroup.ResourceGroupName `
     -TemplateUri $loadBalancedVmSetTemplate.AbsoluteUri -TemplateParameterFile $webTierParametersFile
 
 Write-Host "Deploying management tier..."
-New-AzureRmResourceGroupDeployment -Name "ra-ntier-mgmt-deployment" -ResourceGroupName $resourceGroup.ResourceGroupName `
+New-AzureRmResourceGroupDeployment -Name "ra-aad-ntier-mgmt-deployment" -ResourceGroupName $resourceGroup.ResourceGroupName `
     -TemplateUri $virtualMachineTemplate.AbsoluteUri -TemplateParameterFile $managementTierParametersFile
 
 Write-Host "Deploying network security group"
-New-AzureRmResourceGroupDeployment -Name "ra-ntier-nsg-deployment" -ResourceGroupName $resourceGroup.ResourceGroupName `
+New-AzureRmResourceGroupDeployment -Name "ra-aad-ntier-nsg-deployment" -ResourceGroupName $resourceGroup.ResourceGroupName `
     -TemplateUri $networkSecurityGroupTemplate.AbsoluteUri -TemplateParameterFile $networkSecurityGroupParametersFile

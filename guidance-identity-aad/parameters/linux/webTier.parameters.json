@@ -4,10 +4,10 @@
   "parameters": {
     "loadBalancerSettings": {
       "value": {
-        "name": "ra-ntier-web-lb",
+        "name": "ra-aad-ntier-web-lb",
         "frontendIPConfigurations": [
           {
-            "name": "ra-ntier-web-lb-fe-config1",
+            "name": "ra-aad-ntier-web-lb-fe-config1",
             "loadBalancerType": "public",
             "domainNameLabel": "",
             "internalLoadBalancerSettings": { }
@@ -20,7 +20,7 @@
             "backendPort": 80,
             "protocol": "Tcp",
             "backendPoolName": "lb-bep1",
-            "frontendIPConfigurationName": "ra-ntier-web-lb-fe-config1",
+            "frontendIPConfigurationName": "ra-aad-ntier-web-lb-fe-config1",
             "enableFloatingIP": false,
             "probeName": "lbp1"
           },
@@ -30,7 +30,7 @@
             "backendPort": 443,
             "protocol": "Tcp",
             "backendPoolName": "lb-bep1",
-            "frontendIPConfigurationName": "ra-ntier-web-lb-fe-config1",
+            "frontendIPConfigurationName": "ra-aad-ntier-web-lb-fe-config1",
             "enableFloatingIP": false,
             "probeName": "lbp2"
           }
@@ -60,7 +60,7 @@
     },
     "virtualMachinesSettings": {
       "value": {
-        "namePrefix": "ra-ntier-web",
+        "namePrefix": "ra-aad-ntier-web",
         "computerNamePrefix": "cn",
         "size": "Standard_DS1",
         "adminUsername": "testuser",
@@ -112,13 +112,13 @@
         ],
         "availabilitySet": {
           "useExistingAvailabilitySet": "No",
-          "name": "ra-ntier-web-as"
+          "name": "ra-aad-ntier-web-as"
         }
       }
     },
     "virtualNetworkSettings": {
       "value": {
-        "name": "ra-ntier-vnet",
+        "name": "ra-aad-ntier-vnet",
         "resourceGroup": "ra-aad-ntier-rg"
       }
     },

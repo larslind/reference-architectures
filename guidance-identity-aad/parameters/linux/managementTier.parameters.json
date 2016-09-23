@@ -4,7 +4,7 @@
   "parameters": {
     "virtualMachinesSettings": {
       "value": {
-        "namePrefix": "ra-ntier-mgmt",
+        "namePrefix": "ra-aad-ntier-mgmt",
         "computerNamePrefix": "cn",
         "size": "Standard_DS1",
         "adminUsername": "testuser",
@@ -50,7 +50,7 @@
     },
     "virtualNetworkSettings": {
       "value": {
-        "name": "ra-ntier-vnet",
+        "name": "ra-aad-ntier-vnet",
         "resourceGroup": "ra-aad-ntier-rg"
       }
     },

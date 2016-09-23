@@ -50,7 +50,7 @@
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2015-01-01",
-      "name": "ra-ntier-vnet-deployment",
+      "name": "ra-aad-ntier-vnet-deployment",
       "properties": {
         "mode": "Incremental",
         "templateLink": {
@@ -65,9 +65,9 @@
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2015-01-01",
-      "name": "ra-ntier-web-deployment",
+      "name": "ra-aad-ntier-web-deployment",
       "dependsOn": [
-        "Microsoft.Resources/deployments/ra-ntier-vnet-deployment"
+        "Microsoft.Resources/deployments/ra-aad-ntier-vnet-deployment"
       ],
       "properties": {
         "mode": "Incremental",
@@ -83,9 +83,9 @@
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2015-01-01",
-      "name": "ra-ntier-biz-deployment",
+      "name": "ra-aad-ntier-biz-deployment",
       "dependsOn": [
-        "Microsoft.Resources/deployments/ra-ntier-vnet-deployment"
+        "Microsoft.Resources/deployments/ra-aad-ntier-vnet-deployment"
       ],
       "properties": {
         "mode": "Incremental",
@@ -101,9 +101,9 @@
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2015-01-01",
-      "name": "ra-ntier-data-deployment",
+      "name": "ra-aad-ntier-data-deployment",
       "dependsOn": [
-        "Microsoft.Resources/deployments/ra-ntier-vnet-deployment"
+        "Microsoft.Resources/deployments/ra-aad-ntier-vnet-deployment"
       ],
       "properties": {
         "mode": "Incremental",
@@ -119,9 +119,9 @@
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2015-01-01",
-      "name": "ra-ntier-mgmt-deployment",
+      "name": "ra-aad-ntier-mgmt-deployment",
       "dependsOn": [
-        "Microsoft.Resources/deployments/ra-ntier-vnet-deployment"
+        "Microsoft.Resources/deployments/ra-aad-ntier-vnet-deployment"
       ],
       "properties": {
         "mode": "Incremental",
@@ -136,14 +136,14 @@
     },
     {
       "type": "Microsoft.Resources/deployments",
-      "name": "ra-ntier-nsg-deployment",
+      "name": "ra-aad-ntier-nsg-deployment",
       "apiVersion": "2015-01-01",
       "dependsOn": [
-        "Microsoft.Resources/deployments/ra-ntier-vnet-deployment",
-        "Microsoft.Resources/deployments/ra-ntier-mgmt-deployment",
-        "Microsoft.Resources/deployments/ra-ntier-data-deployment",
-        "Microsoft.Resources/deployments/ra-ntier-biz-deployment",
-        "Microsoft.Resources/deployments/ra-ntier-web-deployment"
+        "Microsoft.Resources/deployments/ra-aad-ntier-vnet-deployment",
+        "Microsoft.Resources/deployments/ra-aad-ntier-mgmt-deployment",
+        "Microsoft.Resources/deployments/ra-aad-ntier-data-deployment",
+        "Microsoft.Resources/deployments/ra-aad-ntier-biz-deployment",
+        "Microsoft.Resources/deployments/ra-aad-ntier-web-deployment"
       ],
       "properties": {
         "mode": "Incremental",

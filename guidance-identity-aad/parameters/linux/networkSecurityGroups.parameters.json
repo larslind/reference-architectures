@@ -4,14 +4,14 @@
   "parameters": {
     "virtualNetworkSettings": {
       "value": {
-        "name": "ra-ntier-vnet",
+        "name": "ra-aad-ntier-vnet",
         "resourceGroup": "ra-aad-ntier-rg"
 	}
     },
     "networkSecurityGroupsSettings": {
       "value": [
         {
-          "name": "ra-ntier-biz-nsg",
+          "name": "ra-aad-ntier-biz-nsg",
           "subnets": [
             "biz"
           ],
@@ -56,7 +56,7 @@
           ]
         },
         {
-          "name": "ra-ntier-data-nsg",
+          "name": "ra-aad-ntier-data-nsg",
           "subnets": [
             "data"
           ],
@@ -113,7 +113,7 @@
           ]
         },
         {
-          "name": "ra-ntier-web-nsg",
+          "name": "ra-aad-ntier-web-nsg",
           "subnets": [
             "web"
           ],
@@ -194,10 +194,10 @@
           ]
         },
         {
-          "name": "ra-ntier-mgmt-nsg",
+          "name": "ra-aad-ntier-mgmt-nsg",
           "subnets": [ ],
           "networkInterfaces": [
-            "ra-ntier-mgmt-vm1-nic1"
+            "ra-aad-ntier-mgmt-vm1-nic1"
           ],
           "securityRules": [
             {
