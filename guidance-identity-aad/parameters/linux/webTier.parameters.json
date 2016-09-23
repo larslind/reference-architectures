@@ -47,7 +47,7 @@
             "name": "lbp2",
             "port": 443,
             "protocol": "Tcp",
-            "requestPath": ""
+            "requestPath": null
           }
         ],
         "backendPools": [
