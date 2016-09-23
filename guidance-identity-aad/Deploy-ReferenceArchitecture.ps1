@@ -4,18 +4,53 @@
 param(
   [Parameter(Mandatory=$true)]
   $SubscriptionId,
+
   [Parameter(Mandatory=$false)]
   $Location = "eastus",
+
   [Parameter(Mandatory=$false)]
   [ValidateSet("Windows", "Linux")]
-  $OSType = "Windows"
+  $OSType = "Windows",
+
   [Parameter(Mandatory=$true)]
   [ValidateSet("onpremise", "ntier")]
   $Mode
 )
 
+$ErrorActionPreference = "Stop"
+
+$templateRootUriString = $env:TEMPLATE_ROOT_URI
+if ($templateRootUriString -eq $null) {
+  $templateRootUriString = "https://raw.githubusercontent.com/mspnp/template-building-blocks/master/"
+}
+if (![System.Uri]::IsWellFormedUriString($templateRootUriString, [System.UriKind]::Absolute)) {
+  throw "Invalid value for TEMPLATE_ROOT_URI: $env:TEMPLATE_ROOT_URI"
+}
+Write-Host
+Write-Host "Using $templateRootUriString to locate templates"
+Write-Host
+
+$templateRootUri = New-Object System.Uri -ArgumentList @($templateRootUriString)
+$virtualNetworkTemplate = New-Object System.Uri -ArgumentList @($templateRootUri, 'templates/buildingBlocks/vnet-n-subnet/azuredeploy.json')
+$virtualMachineTemplate = New-Object System.Uri -ArgumentList @($templateRootUri, 'templates/buildingBlocks/multi-vm-n-nic-m-storage/azuredeploy.json')
+$virtualMachineExtensionsTemplate = New-Object System.Uri -ArgumentList @($templateRootUri, "templates/buildingBlocks/virtualMachine-extensions/azuredeploy.json")
+$loadBalancedVmSetTemplate = New-Object System.Uri -ArgumentList @($templateRootUri, 'templates/buildingBlocks/loadBalancer-backend-n-vm/azuredeploy.json')
+$networkSecurityGroupTemplate = New-Object System.Uri -ArgumentList @($templateRootUri, 'templates/buildingBlocks/networkSecurityGroups/azuredeploy.json')
+
+# Login to Azure and select your subscription
+Login-AzureRmAccount -SubscriptionId $SubscriptionId | Out-Null
 
 if ($Mode -eq "onpremise") {
+	# Azure Onpremise Parameter Files
+	$onpremiseVirtualNetworkParametersFile = [System.IO.Path]::Combine($PSScriptRoot, "parameters\onpremise\virtualNetwork.parameters.json")
+	$onpremiseVirtualNetworkDnsParametersFile = [System.IO.Path]::Combine($PSScriptRoot, "parameters\onpremise\virtualNetwork-adds-dns.parameters.json")
+	$onpremiseADDSVirtualMachinesParametersFile = [System.IO.Path]::Combine($PSScriptRoot, "parameters\onpremise\virtualMachines-adds.parameters.json")
+	$onpremiseCreateAddsForestExtensionParametersFile = [System.IO.Path]::Combine($PSScriptRoot, "parameters\onpremise\create-adds-forest-extension.parameters.json")
+	$onpremiseAddAddsDomainControllerExtensionParametersFile = [System.IO.Path]::Combine($PSScriptRoot, "parameters\onpremise\add-adds-domain-controller.parameters.json")
+
+	$onpremiseNetworkResourceGroupName = "ra-aad-onpremise-rg"
+
+	# Azure Onpremise Deployments
     $onpremiseNetworkResourceGroup = New-AzureRmResourceGroup -Name $onpremiseNetworkResourceGroupName -Location $Location
     Write-Host "Creating onpremise virtual network..."
     New-AzureRmResourceGroupDeployment -Name "ra-adds-onpremise-vnet-deployment" `
@@ -46,32 +81,6 @@ if ($Mode -eq "onpremise") {
 elseif ($Mode -eq "ntier") {
 
 	$resourceGroupName = "ra-aad-ntier-rg"
-
-	$ErrorActionPreference = "Stop"
-
-	$templateRootUriString = $env:TEMPLATE_ROOT_URI
-	if ($templateRootUriString -eq $null) {
-	  $templateRootUriString = "https://raw.githubusercontent.com/mspnp/template-building-blocks/master/"
-	}
-
-	if (![System.Uri]::IsWellFormedUriString($templateRootUriString, [System.UriKind]::Absolute)) {
-	  throw "Invalid value for TEMPLATE_ROOT_URI: $env:TEMPLATE_ROOT_URI"
-	}
-
-	Write-Host
-	Write-Host "Using $templateRootUriString to locate templates"
-	Write-Host
-
-	Write-Host
-	Write-Host "Using $PSScriptRoot to locate parameters"
-	Write-Host
-
-	# Deployer templates for respective resources
-	$templateRootUri = New-Object System.Uri -ArgumentList @($templateRootUriString)
-	$virtualNetworkTemplate = New-Object System.Uri -ArgumentList @($templateRootUri, 'templates/buildingBlocks/vnet-n-subnet/azuredeploy.json')
-	$loadBalancedVmSetTemplate = New-Object System.Uri -ArgumentList @($templateRootUri, 'templates/buildingBlocks/loadBalancer-backend-n-vm/azuredeploy.json')
-	$virtualMachineTemplate = New-Object System.Uri -ArgumentList @($templateRootUri, 'templates/buildingBlocks/multi-vm-n-nic-m-storage/azuredeploy.json')
-	$networkSecurityGroupTemplate = New-Object System.Uri -ArgumentList @($templateRootUri, 'templates/buildingBlocks/networkSecurityGroups/azuredeploy.json')
 
 	# Template parameters for respective deployments
 	$virtualNetworkParametersFile = [System.IO.Path]::Combine($PSScriptRoot, 'parameters', $OSType.ToLower(), 'virtualNetwork.parameters.json')
