@@ -23,6 +23,16 @@
             "frontendIPConfigurationName": "ra-aad-ntier-web-lb-fe-config1",
             "enableFloatingIP": false,
             "probeName": "lbp1"
+          },
+          {
+            "name": "lbr2",
+            "frontendPort": 443,
+            "backendPort": 443,
+            "protocol": "Tcp",
+            "backendPoolName": "lb-bep1",
+            "frontendIPConfigurationName": "ra-aad-ntier-web-lb-fe-config1",
+            "enableFloatingIP": false,
+            "probeName": "lbp2"
           }
         ],
         "probes": [
@@ -31,6 +41,11 @@
             "port": 80,
             "protocol": "Http",
             "requestPath": "/"
+          },
+          {
+            "name": "lbp2",
+            "port": 443,
+            "protocol": "Tcp"
           }
         ],
         "backendPools": [
