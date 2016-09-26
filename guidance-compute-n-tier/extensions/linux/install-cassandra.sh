@@ -24,12 +24,8 @@ echo opscenter_dns_name $opscenter_dns_name
 
 apt-get -y install unzip
 
-wget https://github.com/DSPN/install-datastax-ubuntu/archive/5.0.1-5.zip
-unzip 5.0.1-5.zip
-cd install-datastax-ubuntu-5.0.1-5/bin
-
-#wget https://github.com/DSPN/install-datastax-ubuntu/archive/master.zip
-#unzip master.zip
-#cd install-datastax-ubuntu-master/bin
+wget https://github.com/DSPN/install-datastax-ubuntu/archive/5.0.2-2.zip
+unzip 5.0.2-2.zip
+cd install-datastax-ubuntu-5.0.2-2/bin
 
 ./dse.sh $cloud_type $seed_node_dns_name $data_center_name $opscenter_dns_name
