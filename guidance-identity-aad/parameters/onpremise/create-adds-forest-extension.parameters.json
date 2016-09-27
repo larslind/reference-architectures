@@ -5,7 +5,7 @@
     "virtualMachinesExtensionSettings": {
       "value": [
         {
-          "vms": [ "ra-aad-onpremise-vm1" ],
+          "vms": [ "ra-aad-onpremise-ad-vm1" ],
           "extensions": [
             {
               "name": "install-adds-forest",

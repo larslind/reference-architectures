@@ -4,7 +4,7 @@
   "parameters": {
     "virtualMachinesSettings": {
       "value": {
-        "namePrefix": "ra-aad-onpremise",
+        "namePrefix": "ra-aad-onpremise-ad",
         "computerNamePrefix": "ad",
         "size": "Standard_DS3_v2",
         "osType": "Windows",
@@ -43,7 +43,7 @@
         "extensions": [ ],
         "availabilitySet": {
           "useExistingAvailabilitySet": "No",
-          "name": "ra-aad-onpremise-as"
+          "name": "ra-aad-onpremise-ad-as"
         }
       }
     },
