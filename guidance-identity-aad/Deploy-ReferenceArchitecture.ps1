@@ -47,6 +47,7 @@ if ($Mode -eq "onpremise") {
 	$onpremiseADDSVirtualMachinesParametersFile = [System.IO.Path]::Combine($PSScriptRoot, "parameters\onpremise\virtualMachines-adds.parameters.json")
 	$onpremiseCreateAddsForestExtensionParametersFile = [System.IO.Path]::Combine($PSScriptRoot, "parameters\onpremise\create-adds-forest-extension.parameters.json")
 	$onpremiseAddAddsDomainControllerExtensionParametersFile = [System.IO.Path]::Combine($PSScriptRoot, "parameters\onpremise\add-adds-domain-controller.parameters.json")
+	$onpremisJoinDomainExtensionParametersFile = [System.IO.Path]::Combine($PSScriptRoot, "parameters\onpremise\virtualMachines-adc-joindomain.parameters.json")
 
 	$azureAdcVirtualMachinesParametersFile = [System.IO.Path]::Combine($PSScriptRoot, "parameters\onpremise\virtualMachines-adc.parameters.json")
 
@@ -60,6 +61,11 @@ if ($Mode -eq "onpremise") {
     New-AzureRmResourceGroupDeployment -Name "ra-adds-onpremise-vnet-deployment" `
         -ResourceGroupName $onpremiseNetworkResourceGroup.ResourceGroupName -TemplateUri $virtualNetworkTemplate.AbsoluteUri `
         -TemplateParameterFile $onpremiseVirtualNetworkParametersFile
+
+    Write-Host "Deploying AD Connect servers..."
+    New-AzureRmResourceGroupDeployment -Name "ra-adds-onpremise-adc-deployment" `
+		-ResourceGroupName $onpremiseNetworkResourceGroup.ResourceGroupName `
+        -TemplateUri $virtualMachineTemplate.AbsoluteUri -TemplateParameterFile $azureAdcVirtualMachinesParametersFile
 
     Write-Host "Deploying ADDS servers..."
     New-AzureRmResourceGroupDeployment -Name "ra-adds-onpremise-adds-deployment" `
@@ -82,11 +88,10 @@ if ($Mode -eq "onpremise") {
         -ResourceGroupName $onpremiseNetworkResourceGroup.ResourceGroupName `
         -TemplateUri $virtualMachineExtensionsTemplate.AbsoluteUri -TemplateParameterFile $onpremiseAddAddsDomainControllerExtensionParametersFile
 
-
-    Write-Host "Deploying AD Connect servers..."
-    New-AzureRmResourceGroupDeployment -Name "ra-adds-onpremise-adc-deployment" `
-		-ResourceGroupName $onpremiseNetworkResourceGroup.ResourceGroupName `
-        -TemplateUri $virtualMachineTemplate.AbsoluteUri -TemplateParameterFile $azureAdcVirtualMachinesParametersFile
+    Write-Host "Join AD Connect servers to Domain......"
+    New-AzureRmResourceGroupDeployment -Name "ra-adds-onpremise-adds-dc-deployment" `
+        -ResourceGroupName $onpremiseNetworkResourceGroup.ResourceGroupName `
+        -TemplateUri $virtualMachineExtensionsTemplate.AbsoluteUri -TemplateParameterFile $onpremisJoinDomainExtensionParametersFile
 }
 elseif ($Mode -eq "ntier") {
 

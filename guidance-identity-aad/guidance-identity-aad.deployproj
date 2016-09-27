@@ -25,7 +25,6 @@
   <Import Condition=" Exists('$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Deployment\1.1\DeploymentProject.targets') " Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Deployment\1.1\DeploymentProject.targets" />
   <!-- vertag<:>end -->
   <ItemGroup>
-    <None Include="deploy-reference-architecture.sh" />
     <None Include="Deploy-ReferenceArchitecture.ps1" />
     <None Include="Deployment.targets">
       <Visible>False</Visible>
@@ -40,6 +39,7 @@
     <None Include="parameters\linux\networkSecurityGroups.parameters.json" />
     <None Include="parameters\linux\virtualNetwork.parameters.json" />
     <None Include="parameters\linux\webTier.parameters.json" />
+    <None Include="parameters\onpremise\virtualMachines-adc-joindomain.parameters.json" />
     <None Include="parameters\onpremise\add-adds-domain-controller.parameters.json" />
     <None Include="parameters\onpremise\create-adds-forest-extension.parameters.json" />
     <None Include="parameters\onpremise\virtualMachines-adc.parameters.json" />
