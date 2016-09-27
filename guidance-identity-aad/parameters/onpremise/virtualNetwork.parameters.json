@@ -17,10 +17,6 @@
           {
             "name": "adc",
             "addressPrefix": "192.168.1.0/24"
-          },
-          {
-            "name": "GatewaySubnet",
-            "addressPrefix": "192.168.255.224/27"
           }
         ],
         "dnsServers": [
