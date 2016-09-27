@@ -19,6 +19,7 @@
             "startingIPAddress": "192.168.1.4",
             "publicIPAllocationMethod": "static",
             "enableIPForwarding": false,
+            "domainNameLabelPrefix": "",
             "dnsServers": [
             ],
             "isPrimary": "true"
