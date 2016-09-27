@@ -48,6 +48,10 @@ if ($Mode -eq "onpremise") {
 	$onpremiseCreateAddsForestExtensionParametersFile = [System.IO.Path]::Combine($PSScriptRoot, "parameters\onpremise\create-adds-forest-extension.parameters.json")
 	$onpremiseAddAddsDomainControllerExtensionParametersFile = [System.IO.Path]::Combine($PSScriptRoot, "parameters\onpremise\add-adds-domain-controller.parameters.json")
 
+	$azureAdcVirtualMachinesParametersFile = [System.IO.Path]::Combine($PSScriptRoot, "parameters\onpremise\virtualMachines-adc.parameters.json")
+
+
+
 	$onpremiseNetworkResourceGroupName = "ra-aad-onpremise-rg"
 
 	# Azure Onpremise Deployments
@@ -77,6 +81,12 @@ if ($Mode -eq "onpremise") {
     New-AzureRmResourceGroupDeployment -Name "ra-adds-onpremise-adds-dc-deployment" `
         -ResourceGroupName $onpremiseNetworkResourceGroup.ResourceGroupName `
         -TemplateUri $virtualMachineExtensionsTemplate.AbsoluteUri -TemplateParameterFile $onpremiseAddAddsDomainControllerExtensionParametersFile
+
+
+    Write-Host "Deploying AD Connect servers..."
+    New-AzureRmResourceGroupDeployment -Name "ra-adds-onpremise-adc-deployment" `
+		-ResourceGroupName $onpremiseNetworkResourceGroup.ResourceGroupName `
+        -TemplateUri $virtualMachineTemplate.AbsoluteUri -TemplateParameterFile $azureAdcVirtualMachinesParametersFile
 }
 elseif ($Mode -eq "ntier") {
 
