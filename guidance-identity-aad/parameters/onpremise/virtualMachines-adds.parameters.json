@@ -13,11 +13,13 @@
         "osAuthenticationType": "password",
         "nics": [
           {
-            "isPublic": "false",
+            "isPublic": "true",
             "subnetName": "adds",
             "privateIPAllocationMethod": "Static",
+            "publicIPAllocationMethod": "static",
             "startingIPAddress": "192.168.0.4",
             "enableIPForwarding": false,
+            "domainNameLabelPrefix": "",
             "dnsServers": [
             ],
             "isPrimary": "true"
