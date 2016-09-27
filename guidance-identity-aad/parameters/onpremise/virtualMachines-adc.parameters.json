@@ -4,7 +4,7 @@
   "parameters": {
     "virtualMachinesSettings": {
       "value": {
-        "namePrefix": "ra-adds-onpremise-adc",
+        "namePrefix": "ra-aad-onpremise-adc",
         "computerNamePrefix": "adc",
         "size": "Standard_DS3_v2",
         "osType": "Windows",
@@ -45,13 +45,13 @@
         "extensions": [ ],
         "availabilitySet": {
           "useExistingAvailabilitySet": "No",
-          "name": "ra-adds-onpremise-adc-as"
+          "name": "ra-aad-onpremise-adc-as"
         }
       }
     },
     "virtualNetworkSettings": {
       "value": {
-        "name": "ra-adds-onpremise-vnet",
+        "name": "ra-aad-onpremise-vnet",
         "resourceGroup": "ra-aad-onpremise-rg"
       }
     },

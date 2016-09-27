@@ -58,38 +58,38 @@ if ($Mode -eq "onpremise") {
 	# Azure Onpremise Deployments
     $onpremiseNetworkResourceGroup = New-AzureRmResourceGroup -Name $onpremiseNetworkResourceGroupName -Location $Location
     Write-Host "Creating onpremise virtual network..."
-    New-AzureRmResourceGroupDeployment -Name "ra-adds-onpremise-vnet-deployment" `
+    New-AzureRmResourceGroupDeployment -Name "ra-aad-onpremise-vnet-deployment" `
         -ResourceGroupName $onpremiseNetworkResourceGroup.ResourceGroupName -TemplateUri $virtualNetworkTemplate.AbsoluteUri `
         -TemplateParameterFile $onpremiseVirtualNetworkParametersFile
 
     Write-Host "Deploying AD Connect servers..."
-    New-AzureRmResourceGroupDeployment -Name "ra-adds-onpremise-adc-deployment" `
+    New-AzureRmResourceGroupDeployment -Name "ra-aad-onpremise-adc-deployment" `
 		-ResourceGroupName $onpremiseNetworkResourceGroup.ResourceGroupName `
         -TemplateUri $virtualMachineTemplate.AbsoluteUri -TemplateParameterFile $azureAdcVirtualMachinesParametersFile
 
     Write-Host "Deploying ADDS servers..."
-    New-AzureRmResourceGroupDeployment -Name "ra-adds-onpremise-adds-deployment" `
+    New-AzureRmResourceGroupDeployment -Name "ra-aad-onpremise-adds-deployment" `
         -ResourceGroupName $onpremiseNetworkResourceGroup.ResourceGroupName `
         -TemplateUri $virtualMachineTemplate.AbsoluteUri -TemplateParameterFile $onpremiseADDSVirtualMachinesParametersFile
 
     # Remove the Azure DNS entry since the forest will create a DNS forwarding entry.
     Write-Host "Updating virtual network DNS servers..."
-    New-AzureRmResourceGroupDeployment -Name "ra-adds-onpremise-dns-vnet-deployment" `
+    New-AzureRmResourceGroupDeployment -Name "ra-aad-onpremise-dns-vnet-deployment" `
         -ResourceGroupName $onpremiseNetworkResourceGroup.ResourceGroupName -TemplateUri $virtualNetworkTemplate.AbsoluteUri `
         -TemplateParameterFile $onpremiseVirtualNetworkDnsParametersFile
 
     Write-Host "Creating ADDS forest..."
-    New-AzureRmResourceGroupDeployment -Name "ra-adds-onpremise-adds-forest-deployment" `
+    New-AzureRmResourceGroupDeployment -Name "ra-aad-onpremise-adds-forest-deployment" `
         -ResourceGroupName $onpremiseNetworkResourceGroup.ResourceGroupName `
         -TemplateUri $virtualMachineExtensionsTemplate.AbsoluteUri -TemplateParameterFile $onpremiseCreateAddsForestExtensionParametersFile
 
     Write-Host "Creating ADDS domain controller..."
-    New-AzureRmResourceGroupDeployment -Name "ra-adds-onpremise-adds-dc-deployment" `
+    New-AzureRmResourceGroupDeployment -Name "ra-aad-onpremise-adds-dc-deployment" `
         -ResourceGroupName $onpremiseNetworkResourceGroup.ResourceGroupName `
         -TemplateUri $virtualMachineExtensionsTemplate.AbsoluteUri -TemplateParameterFile $onpremiseAddAddsDomainControllerExtensionParametersFile
 
     Write-Host "Join AD Connect servers to Domain......"
-    New-AzureRmResourceGroupDeployment -Name "ra-adds-onpremise-adds-dc-deployment" `
+    New-AzureRmResourceGroupDeployment -Name "ra-aad-onpremise-adds-dc-deployment" `
         -ResourceGroupName $onpremiseNetworkResourceGroup.ResourceGroupName `
         -TemplateUri $virtualMachineExtensionsTemplate.AbsoluteUri -TemplateParameterFile $onpremisJoinDomainExtensionParametersFile
 }
