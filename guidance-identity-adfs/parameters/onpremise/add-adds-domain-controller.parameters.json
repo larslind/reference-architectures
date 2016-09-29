@@ -5,7 +5,7 @@
     "virtualMachinesExtensionSettings": {
       "value": [
         {
-          "vms": [ "ra-adds-onpremise-vm2" ],
+          "vms": [ "ra-adfs-onpremise-vm2" ],
           "extensions": [
             {
               "name": "join-ad-domain",

@@ -4,8 +4,8 @@
   "parameters": {
     "virtualNetworkSettings": {
       "value": {
-        "name": "ra-adds-vnet",
-        "resourceGroup": "ra-adds-network-rg",
+        "name": "ra-adfs-vnet",
+        "resourceGroup": "ra-adfs-network-rg",
         "addressPrefixes": [
           "10.0.0.0/16"
         ],

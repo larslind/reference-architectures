@@ -4,7 +4,7 @@
   "parameters": {
     "virtualMachinesSettings": {
       "value": {
-        "namePrefix": "ra-adds-onpremise",
+        "namePrefix": "ra-adfs-onpremise",
         "computerNamePrefix": "ad",
         "size": "Standard_DS3_v2",
         "osType": "Windows",
@@ -43,14 +43,14 @@
         "extensions": [ ],
         "availabilitySet": {
           "useExistingAvailabilitySet": "No",
-          "name": "ra-adds-onpremise-as"
+          "name": "ra-adfs-onpremise-as"
         }
       }
     },
     "virtualNetworkSettings": {
       "value": {
-        "name": "ra-adds-onpremise-vnet",
-        "resourceGroup": "ra-adds-onpremise-rg"
+        "name": "ra-adfs-onpremise-vnet",
+        "resourceGroup": "ra-adfs-onpremise-rg"
       }
     },
     "buildingBlockSettings": {

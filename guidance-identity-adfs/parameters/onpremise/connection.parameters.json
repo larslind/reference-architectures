@@ -4,16 +4,16 @@
   "parameters": {
     "connectionSettings": {
       "value": {
-        "name": "ra-adds-onpremise-vpn-cn",
+        "name": "ra-adfs-onpremise-vpn-cn",
         "connectionType": "Vnet2Vnet",
         "sharedKey": "123secret",
         "virtualNetworkGateway1": {
-          "name": "ra-adds-onpremise-vpn-vgw",
-          "resourceGroup": "ra-adds-onpremise-rg"
+          "name": "ra-adfs-onpremise-vpn-vgw",
+          "resourceGroup": "ra-adfs-onpremise-rg"
         },
         "virtualNetworkGateway2": {
-          "name": "ra-adds-vpn-vgw",
-          "resourceGroup": "ra-adds-network-rg"
+          "name": "ra-adfs-vpn-vgw",
+          "resourceGroup": "ra-adfs-network-rg"
         }
       }
     }

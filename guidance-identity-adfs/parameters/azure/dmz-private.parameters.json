@@ -78,8 +78,8 @@
     },
     "virtualNetworkSettings": {
       "value": {
-        "name": "ra-adds-vnet",
-        "resourceGroup": "ra-adds-network-rg"
+        "name": "ra-adfs-vnet",
+        "resourceGroup": "ra-adfs-network-rg"
       }
     }
   }
