@@ -5,7 +5,7 @@ param(
   [Parameter(Mandatory=$true)]
   $SubscriptionId,
   [Parameter(Mandatory=$true)]
-  $Location,
+  $Location
 ##  [Parameter(Mandatory=$true)]
 ##  [ValidateSet("Onpremise", "Infrastructure", "CreateVpn", "AzureADDS", "Workload")]
 ##  $Mode
