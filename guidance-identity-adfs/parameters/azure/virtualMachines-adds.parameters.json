@@ -4,7 +4,7 @@
   "parameters": {
     "virtualMachinesSettings": {
       "value": {
-        "namePrefix": "ra-adfs",
+        "namePrefix": "ra-adfs-ad",
         "computerNamePrefix": "aad",
         "size": "Standard_DS3_v2",
         "osType": "Windows",
