@@ -29,8 +29,8 @@ Write-Host
 $templateRootUri = New-Object System.Uri -ArgumentList @($templateRootUriString)
 $referenceArchitectureRootUri = New-Object System.Uri -ArgumentList @("https://raw.githubusercontent.com/mspnp/reference-architectures/master/")
 
-$onPremiseVirtualNetworkGatewayTemplate = New-Object System.Uri -ArgumentList @($referenceArchitectureRootUri, "guidance-ra-identity-adds/templates/onpremise/virtualNetworkGateway.json")
-$onPremiseConnectionTemplate = New-Object System.Uri -ArgumentList @($referenceArchitectureRootUri, "guidance-ra-identity-adds/templates/onpremise/connection.json")
+$onPremiseVirtualNetworkGatewayTemplate = New-Object System.Uri -ArgumentList @($referenceArchitectureRootUri, "guidance-identity-adfs/templates/onpremise/virtualNetworkGateway.json")
+$onPremiseConnectionTemplate = New-Object System.Uri -ArgumentList @($referenceArchitectureRootUri, "guidance-identity-adfs/templates/onpremise/connection.json")
 
 $loadBalancerTemplate = New-Object System.Uri -ArgumentList @($templateRootUri, "templates/buildingBlocks/loadBalancer-backend-n-vm/azuredeploy.json")
 $virtualNetworkTemplate = New-Object System.Uri -ArgumentList @($templateRootUri, "templates/buildingBlocks/vnet-n-subnet/azuredeploy.json")
