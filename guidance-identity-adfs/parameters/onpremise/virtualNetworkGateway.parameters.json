@@ -1,0 +1,20 @@
+﻿{
+  "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "virtualNetworkSettings": {
+      "value": {
+        "name": "ra-adds-onpremise-vnet",
+        "resourceGroup": "ra-adds-onpremise-rg"
+      }
+    },
+    "virtualNetworkGatewaySettings": {
+      "value": {
+        "name": "ra-adds-onpremise-vpn-vgw",
+        "gatewayType": "Vpn",
+        "vpnType": "RouteBased",
+        "sku": "Standard"
+      }
+    }
+  }
+}

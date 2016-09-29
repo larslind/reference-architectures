@@ -25,6 +25,8 @@ Project("{151D2E53-A2C4-4D7D-83FE-D05416EBD58E}") = "guidance-compute-n-tier-sql
 EndProject
 Project("{151D2E53-A2C4-4D7D-83FE-D05416EBD58E}") = "guidance-identity-aad", "guidance-identity-aad\guidance-identity-aad.deployproj", "{A4D8B97A-55F9-44E5-8E04-EBFAB0B43B37}"
 EndProject
+Project("{151D2E53-A2C4-4D7D-83FE-D05416EBD58E}") = "guidance-identity-adfs", "guidance-identity-adfs\guidance-identity-adfs.deployproj", "{3C0939C7-004C-4157-B461-308CA8426BF2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -75,6 +77,10 @@ Global
 		{A4D8B97A-55F9-44E5-8E04-EBFAB0B43B37}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A4D8B97A-55F9-44E5-8E04-EBFAB0B43B37}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A4D8B97A-55F9-44E5-8E04-EBFAB0B43B37}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3C0939C7-004C-4157-B461-308CA8426BF2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3C0939C7-004C-4157-B461-308CA8426BF2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3C0939C7-004C-4157-B461-308CA8426BF2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3C0939C7-004C-4157-B461-308CA8426BF2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
