@@ -6,9 +6,9 @@ param(
   $SubscriptionId,
   [Parameter(Mandatory=$true)]
   $Location,
-  [Parameter(Mandatory=$true)]
-  [ValidateSet("Onpremise", "Infrastructure", "CreateVpn", "AzureADDS", "Workload")]
-  $Mode
+##  [Parameter(Mandatory=$true)]
+##  [ValidateSet("Onpremise", "Infrastructure", "CreateVpn", "AzureADDS", "Workload")]
+##  $Mode
 )
 
 $ErrorActionPreference = "Stop"
