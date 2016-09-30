@@ -4,11 +4,13 @@
 param(
   [Parameter(Mandatory=$true)]
   $SubscriptionId,
+
   [Parameter(Mandatory=$true)]
-  $Location
-##  [Parameter(Mandatory=$true)]
-##  [ValidateSet("Onpremise", "Infrastructure", "CreateVpn", "AzureADDS", "Workload")]
-##  $Mode
+  $Location,
+  
+  [Parameter(Mandatory=$false)]
+  [ValidateSet("All", "Onpremise", "Infrastructure", "CreateVpn", "AzureADDS", "Workload")]
+  $Mode = "All"
 )
 
 $ErrorActionPreference = "Stop"
@@ -76,7 +78,7 @@ $addsResourceGroupName = "ra-adfs-adds-rg"
 # Login to Azure and select your subscription
 Login-AzureRmAccount -SubscriptionId $SubscriptionId | Out-Null
 
-## if ($Mode -eq "Onpremise") {
+if ($Mode -eq "Onpremise" -Or $Mode -eq "All") {
     $onpremiseNetworkResourceGroup = New-AzureRmResourceGroup -Name $onpremiseNetworkResourceGroupName -Location $Location
     Write-Host "Creating onpremise virtual network..."
     New-AzureRmResourceGroupDeployment -Name "ra-adfs-onpremise-vnet-deployment" `
@@ -103,8 +105,8 @@ Login-AzureRmAccount -SubscriptionId $SubscriptionId | Out-Null
     New-AzureRmResourceGroupDeployment -Name "ra-adfs-onpremise-adds-dc-deployment" `
         -ResourceGroupName $onpremiseNetworkResourceGroup.ResourceGroupName `
         -TemplateUri $virtualMachineExtensionsTemplate.AbsoluteUri -TemplateParameterFile $onpremiseAddAddsDomainControllerExtensionParametersFile
-## }
-## elseif ($Mode -eq "Infrastructure") {
+}
+if ($Mode -eq "Infrastructure" -Or $Mode -eq "All") {
     Write-Host "Creating ADDS resource group..."
     $azureNetworkResourceGroup = New-AzureRmResourceGroup -Name $azureNetworkResourceGroupName -Location $Location
 
@@ -120,8 +122,8 @@ Login-AzureRmAccount -SubscriptionId $SubscriptionId | Out-Null
     Write-Host "Deploying jumpbox..."
     New-AzureRmResourceGroupDeployment -Name "ra-adfs-jumpbox-deployment" -ResourceGroupName $securityResourceGroup.ResourceGroupName `
         -TemplateUri $virtualMachineTemplate.AbsoluteUri -TemplateParameterFile $managementParametersFile
-## }
-## elseif ($Mode -eq "CreateVpn") {
+}
+if ($Mode -eq "CreateVpn" -Or $Mode -eq "All") {
     $onpremiseNetworkResourceGroup = Get-AzureRmResourceGroup -Name $onpremiseNetworkResourceGroupName
     $azureNetworkResourceGroup = Get-AzureRmResourceGroup -Name $azureNetworkResourceGroupName
 
@@ -138,8 +140,8 @@ Login-AzureRmAccount -SubscriptionId $SubscriptionId | Out-Null
     New-AzureRmResourceGroupDeployment -Name "ra-adfs-onpremise-connection-deployment" `
         -ResourceGroupName $onpremiseNetworkResourceGroup.ResourceGroupName `
         -TemplateUri $onPremiseConnectionTemplate.AbsoluteUri -TemplateParameterFile $onpremiseConnectionParametersFile
-## }
-## elseif ($Mode -eq "AzureADDS") {
+}
+if ($Mode -eq "AzureADDS" -Or $Mode -eq "All") {
     # Add the replication site.
     $onpremiseNetworkResourceGroup = Get-AzureRmResourceGroup -Name $onpremiseNetworkResourceGroupName
     Write-Host "Creating ADDS replication site..."
@@ -167,8 +169,8 @@ Login-AzureRmAccount -SubscriptionId $SubscriptionId | Out-Null
     New-AzureRmResourceGroupDeployment -Name "ra-adfs-adds-dc-deployment" `
         -ResourceGroupName $addsResourceGroup.ResourceGroupName `
         -TemplateUri $virtualMachineExtensionsTemplate.AbsoluteUri -TemplateParameterFile $azureAddAddsDomainControllerExtensionParametersFile
-## }
-## elseif ($Mode -eq "Workload") {
+}
+if ($Mode -eq "Workload" -Or $Mode -eq "All") {
     # Deploy DMZs
     $azureNetworkResourceGroup = Get-AzureRmResourceGroup -Name $azureNetworkResourceGroupName
 
@@ -195,4 +197,4 @@ Login-AzureRmAccount -SubscriptionId $SubscriptionId | Out-Null
     Write-Host "Deploying data load balancer..."
     New-AzureRmResourceGroupDeployment -Name "ra-adfs-data-deployment" -ResourceGroupName $workloadResourceGroup.ResourceGroupName `
         -TemplateUri $loadBalancerTemplate.AbsoluteUri -TemplateParameterFile $dataLoadBalancerParametersFile
-## }
+}
