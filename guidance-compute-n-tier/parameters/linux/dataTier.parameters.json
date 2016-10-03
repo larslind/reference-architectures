@@ -66,8 +66,8 @@
     },
     "buildingBlockSettings": {
       "value": {
-        "storageAccountsCount": 6,
-        "vmCount": 6,
+        "storageAccountsCount": 3,
+        "vmCount": 3,
         "vmStartIndex": 1
       }
     }

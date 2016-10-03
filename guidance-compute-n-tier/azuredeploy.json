@@ -38,7 +38,8 @@
         "availabilitySet": "[concat(parameters('templateRootUri'), 'templates/resources/Microsoft.Compute/virtualMachines/availabilitySet-new.json')]"
       },
       "parameter": {
-        "virtualNetwork": "[concat(parameters('parameterRootUri'), 'guidance-compute-n-tier/parameters/', parameters('osType'), '/virtualNetwork.parameters.json')]",
+        "virtualNetworkNodes": "[concat(parameters('parameterRootUri'), 'guidance-compute-n-tier/parameters/', parameters('osType'), '/virtualNetworkNodes.parameters.json')]",
+        "virtualNetworkManagement": "[concat(parameters('parameterRootUri'), 'guidance-compute-n-tier/parameters/', parameters('osType'), '/virtualNetworkManagement.parameters.json')]",
         "networkSecurityGroup": "[concat(parameters('parameterRootUri'), 'guidance-compute-n-tier/parameters/', parameters('osType'), '/networkSecurityGroups.parameters.json')]",
         "webTier": "[concat(parameters('parameterRootUri'), 'guidance-compute-n-tier/parameters/', parameters('osType'), '/webTier.parameters.json')]",
         "dataTier": "[concat(parameters('parameterRootUri'), 'guidance-compute-n-tier/parameters/', parameters('osType'), '/dataTier.parameters.json')]",
@@ -71,18 +72,33 @@
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2015-01-01",
-      "name": "ra-ntier-vnet-deployment",
+      "name": "ra-ntier-nodes-vnet-deployment",
       "properties": {
         "mode": "Incremental",
         "templateLink": {
           "uri": "[variables('templates').deployment.virtualNetwork]"
         },
         "parametersLink": {
-          "uri": "[variables('templates').parameter.virtualNetwork]",
+          "uri": "[variables('templates').parameter.virtualNetworkNodes]",
           "contentVersion": "1.0.0.0"
         }
       }
     },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2015-01-01",
+      "name": "ra-ntier-mgmt-vnet-deployment",
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[variables('templates').deployment.virtualNetwork]"
+        },
+        "parametersLink": {
+          "uri": "[variables('templates').parameter.virtualNetworkManagement]",
+          "contentVersion": "1.0.0.0"
+        }
+      }
+    },    
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2015-01-01",

@@ -60,7 +60,7 @@
     },
     "virtualNetworkSettings": {
       "value": {
-        "name": "ra-ntier-vnet",
+        "name": "ra-ntier-mgmt-vnet",
         "resourceGroup": "ra-ntier-vm-rg"
       }
     },
