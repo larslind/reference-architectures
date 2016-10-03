@@ -104,7 +104,7 @@
       "apiVersion": "2015-01-01",
       "name": "ra-ntier-web-deployment",
       "dependsOn": [
-        "Microsoft.Resources/deployments/ra-ntier-vnet-deployment"
+        "Microsoft.Resources/deployments/ra-ntier-nodes-vnet-deployment"
       ],
       "properties": {
         "mode": "Incremental",
@@ -122,7 +122,7 @@
       "apiVersion": "2015-01-01",
       "name": "ra-ntier-biz-deployment",
       "dependsOn": [
-        "Microsoft.Resources/deployments/ra-ntier-vnet-deployment"
+        "Microsoft.Resources/deployments/ra-ntier-nodes-vnet-deployment"
       ],
       "properties": {
         "mode": "Incremental",
@@ -140,7 +140,7 @@
       "apiVersion": "2015-01-01",
       "name": "ra-ntier-data-deployment",
       "dependsOn": [
-        "Microsoft.Resources/deployments/ra-ntier-vnet-deployment",
+        "Microsoft.Resources/deployments/ra-ntier-nodes-vnet-deployment",
         "Microsoft.Resources/deployments/ra-ntier-data-avset-deployment"
       ],
       "properties": {
@@ -159,7 +159,7 @@
       "apiVersion": "2015-01-01",
       "name": "ra-ntier-mgmt-jb-deployment",
       "dependsOn": [
-        "Microsoft.Resources/deployments/ra-ntier-vnet-deployment"
+        "Microsoft.Resources/deployments/ra-ntier-mgmt-vnet-deployment"
       ],
       "properties": {
         "mode": "Incremental",
@@ -177,7 +177,7 @@
       "apiVersion": "2015-01-01",
       "name": "ra-ntier-mgmt-ops-deployment",
       "dependsOn": [
-        "Microsoft.Resources/deployments/ra-ntier-vnet-deployment"
+        "Microsoft.Resources/deployments/ra-ntier-mgmt-vnet-deployment"
       ],
       "properties": {
         "mode": "Incremental",
@@ -195,7 +195,8 @@
       "name": "ra-ntier-nsg-deployment",
       "apiVersion": "2015-01-01",
       "dependsOn": [
-        "Microsoft.Resources/deployments/ra-ntier-vnet-deployment",
+        "Microsoft.Resources/deployments/ra-ntier-nodes-vnet-deployment",
+        "Microsoft.Resources/deployments/ra-ntier-mgmt-vnet-deployment",        
         "Microsoft.Resources/deployments/ra-ntier-mgmt-jb-deployment",
         "Microsoft.Resources/deployments/ra-ntier-mgmt-ops-deployment",
         "Microsoft.Resources/deployments/ra-ntier-data-deployment",
