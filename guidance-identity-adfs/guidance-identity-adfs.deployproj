@@ -55,7 +55,7 @@
     <None Include="parameters\onpremise\virtualNetworkGateway.parameters.json" />
     <None Include="templates\onpremise\ad-forest-extension-settings-mapper.json" />
     <None Include="templates\onpremise\ad-replication-site-extension-settings-mapper.json" />
-    <None Include="templates\onpremise\gma-extension-settings-mapper.json" />
+    <None Include="templates\onpremise\gmsa-extension-settings-mapper.json" />
     <None Include="templates\onpremise\adds-domain-controller-extension-settings-mapper.json" />
     <None Include="templates\onpremise\connection.json" />
     <None Include="templates\onpremise\virtualNetworkGateway.json" />
