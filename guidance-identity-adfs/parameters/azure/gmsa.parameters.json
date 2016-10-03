@@ -18,7 +18,7 @@
                 "activeDirectorySettings": {
                   "adminUser": "testuser",
                   "adminPassword": "AweS0me@PW",
-                  "$netBiosDomainName": "CONTOSO",
+                  "netBiosDomainName": "CONTOSO",
                   "fqDomainName": "contoso.com",
                   "gmsaName": "adfsgmsa",
                   "federationName": "adfs.contoso.com",
