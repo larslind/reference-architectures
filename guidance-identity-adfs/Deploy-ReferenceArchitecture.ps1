@@ -9,7 +9,7 @@ param(
   $Location,
   
   [Parameter(Mandatory=$false)]
-  [ValidateSet("All", "Onpremise", "Infrastructure", "CreateVpn", "AzureADDS", "Workload")]
+  [ValidateSet("All", "Onpremise", "Infrastructure", "CreateVpn", "AzureADDS", "Workload","ADFS")]
   $Mode = "All"
 )
 
@@ -55,6 +55,7 @@ $onpremiseConnectionParametersFile = [System.IO.Path]::Combine($PSScriptRoot, "p
 $azureVirtualNetworkOnpremiseAndAzureDnsParametersFile = [System.IO.Path]::Combine($PSScriptRoot, "parameters\azure\virtualNetwork-with-onpremise-and-azure-dns.parameters.json")
 $azureAddsVirtualMachinesParametersFile = [System.IO.Path]::Combine($PSScriptRoot, "parameters\azure\virtualMachines-adds.parameters.json")
 $azureAddAddsDomainControllerExtensionParametersFile = [System.IO.Path]::Combine($PSScriptRoot, "parameters\azure\add-adds-domain-controller.parameters.json")
+$azureGmsaExtensionParametersFile = [System.IO.Path]::Combine($PSScriptRoot, "parameters\azure\add-adds-domain-controller.parameters.json")
 
 $azureVirtualNetworkGatewayParametersFile = [System.IO.Path]::Combine($PSScriptRoot, "parameters\azure\virtualNetworkGateway.parameters.json")
 $azureVirtualNetworkParametersFile = [System.IO.Path]::Combine($PSScriptRoot, "parameters\azure\virtualNetwork.parameters.json")
@@ -74,6 +75,7 @@ $azureNetworkResourceGroupName = "ra-adfs-network-rg"
 $workloadResourceGroupName = "ra-adfs-workload-rg"
 $securityResourceGroupName = "ra-adfs-security-rg"
 $addsResourceGroupName = "ra-adfs-adds-rg"
+$addsResourceGroupName = "ra-adfs-adfs-rg"
 
 # Login to Azure and select your subscription
 Login-AzureRmAccount -SubscriptionId $SubscriptionId | Out-Null
@@ -197,4 +199,10 @@ if ($Mode -eq "Workload" -Or $Mode -eq "All") {
     Write-Host "Deploying data load balancer..."
     New-AzureRmResourceGroupDeployment -Name "ra-adfs-data-deployment" -ResourceGroupName $workloadResourceGroup.ResourceGroupName `
         -TemplateUri $loadBalancerTemplate.AbsoluteUri -TemplateParameterFile $dataLoadBalancerParametersFile
+}
+if ($Mode -eq "AzureADFS" -Or $Mode -eq "All") {
+    Write-Host "Create group management service account and DNS record for ADFS..."
+    New-AzureRmResourceGroupDeployment -Name "ra-adfs-adds-gma-deployment" `
+        -ResourceGroupName $addsResourceGroup.ResourceGroupName `
+        -TemplateUri $virtualMachineExtensionsTemplate.AbsoluteUri -TemplateParameterFile $azureGmsaExtensionParametersFile
 }

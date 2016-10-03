@@ -33,6 +33,8 @@
     <None Include="extensions\adds-forest.ps1" />
     <None Include="extensions\adds-replication-site.ps1" />
     <None Include="extensions\adds.ps1" />
+    <None Include="extensions\gmsa.ps1" />
+    <None Include="parameters\azure\gmsa.parameters.json" />
     <None Include="parameters\azure\add-adds-domain-controller.parameters.json" />
     <None Include="parameters\azure\dmz-private.parameters.json" />
     <None Include="parameters\azure\dmz-public.parameters.json" />
@@ -53,6 +55,7 @@
     <None Include="parameters\onpremise\virtualNetworkGateway.parameters.json" />
     <None Include="templates\onpremise\ad-forest-extension-settings-mapper.json" />
     <None Include="templates\onpremise\ad-replication-site-extension-settings-mapper.json" />
+    <None Include="templates\onpremise\gma-extension-settings-mapper.json" />
     <None Include="templates\onpremise\adds-domain-controller-extension-settings-mapper.json" />
     <None Include="templates\onpremise\connection.json" />
     <None Include="templates\onpremise\virtualNetworkGateway.json" />
