@@ -4,11 +4,11 @@
 param(
   [Parameter(Mandatory=$true)]
   $SubscriptionId,
-  [Parameter(Mandatory=$false)]
-  $Location = "Central US",
-  [Parameter(Mandatory=$false)]
-  [ValidateSet("Windows", "Linux")]
-  $OSType = "Linux"
+  [Parameter(Mandatory=$true)]
+  $Location,
+  [Parameter(Mandatory=$true)]
+  [ValidateSet("Infrastructure", "Security", "Workload")]
+  $Mode
 )
 
 $ErrorActionPreference = "Stop"
@@ -26,53 +26,112 @@ Write-Host
 Write-Host "Using $templateRootUriString to locate templates"
 Write-Host
 
-Write-Host
-Write-Host "Using $PSScriptRoot to locate parameters"
-Write-Host
-
-# Deployer templates for respective resources
 $templateRootUri = New-Object System.Uri -ArgumentList @($templateRootUriString)
-$virtualNetworkTemplate = New-Object System.Uri -ArgumentList @($templateRootUri, 'templates/buildingBlocks/vnet-n-subnet/azuredeploy.json')
-$loadBalancedVmSetTemplate = New-Object System.Uri -ArgumentList @($templateRootUri, 'templates/buildingBlocks/loadBalancer-backend-n-vm/azuredeploy.json')
-$virtualMachineTemplate = New-Object System.Uri -ArgumentList @($templateRootUri, 'templates/buildingBlocks/multi-vm-n-nic-m-storage/azuredeploy.json')
-$networkSecurityGroupTemplate = New-Object System.Uri -ArgumentList @($templateRootUri, 'templates/buildingBlocks/networkSecurityGroups/azuredeploy.json')
+$referenceArchitectureRootUri = New-Object System.Uri -ArgumentList @("https://aotemplates.blob.core.windows.net/ratemplates/guidance-compute-n-tier-sql/")
 
-# Template parameters for respective deployments
-$virtualNetworkParametersFile = [System.IO.Path]::Combine($PSScriptRoot, 'parameters', $OSType.ToLower(), 'virtualNetwork.parameters.json')
-$businessTierParametersFile = [System.IO.Path]::Combine($PSScriptRoot, 'parameters', $OSType.ToLower(), 'businessTier.parameters.json')
-$dataTierParametersFile = [System.IO.Path]::Combine($PSScriptRoot, 'parameters', $OSType.ToLower(), 'dataTier.parameters.json')
-$webTierParametersFile = [System.IO.Path]::Combine($PSScriptRoot, 'parameters', $OSType.ToLower(), 'webTier.parameters.json')
-$managementTierParametersFile = [System.IO.Path]::Combine($PSScriptRoot, 'parameters', $OSType.ToLower(), 'managementTier.parameters.json')
-$networkSecurityGroupParametersFile = [System.IO.Path]::Combine($PSScriptRoot, 'parameters', $OSType.ToLower(), 'networkSecurityGroups.parameters.json')
+$loadBalancerTemplate = New-Object System.Uri -ArgumentList @($templateRootUri, "templates/buildingBlocks/loadBalancer-backend-n-vm/azuredeploy.json")
+$virtualNetworkTemplate = New-Object System.Uri -ArgumentList @($templateRootUri, "templates/buildingBlocks/vnet-n-subnet/azuredeploy.json")
+$virtualMachineTemplate = New-Object System.Uri -ArgumentList @($templateRootUri, "templates/buildingBlocks/multi-vm-n-nic-m-storage/azuredeploy.json")
+$virtualMachineExtensionsTemplate = New-Object System.Uri -ArgumentList @($templateRootUri, "templates/buildingBlocks/virtualMachine-extensions/azuredeploy.json")
+$networkSecurityGroupTemplate = New-Object System.Uri -ArgumentList @($templateRootUri, "templates/buildingBlocks/networkSecurityGroups/azuredeploy.json")
 
-$resourceGroupName = "ra-ntier-vm-rg"
+# Azure ADDS Parameter Files
+$domainControllersParametersFile = [System.IO.Path]::Combine($PSScriptRoot, "parameters\adds\ad.parameters.json")
+$virtualNetworkDNSParametersFile = [System.IO.Path]::Combine($PSScriptRoot, "parameters\adds\virtualNetwork-adds-dns.parameters.json")
+$addAddsDomainControllerExtensionParametersFile = [System.IO.Path]::Combine($PSScriptRoot, "parameters\adds\add-adds-domain-controller.parameters.json")
+$createAddsDomainControllerForestExtensionParametersFile = [System.IO.Path]::Combine($PSScriptRoot, "parameters\adds\create-adds-forest-extension.parameters.json")
+
+# SQL Always On Parameter Files
+$sqlParametersFile = [System.IO.Path]::Combine($PSScriptRoot, "parameters\sql.parameters.json")
+$fswParametersFile = [System.IO.Path]::Combine($PSScriptRoot, "parameters\fws.parameters.json")
+$sqlPrepareAOExtensionParametersFile = [System.IO.Path]::Combine($PSScriptRoot, "parameters\sql-iaas-ao-extensions.parameters.json")
+$sqlConfigureAOExtensionParametersFile = [System.IO.Path]::Combine($PSScriptRoot, "parameters\sql-configure-ao-extension.parameters.json")
+
+# Infrastructure And Workload Parameters Files
+$virtualNetworkParametersFile = [System.IO.Path]::Combine($PSScriptRoot, "parameters\virtualNetwork.parameters.json")
+$managementParametersFile = [System.IO.Path]::Combine($PSScriptRoot, "parameters\virtualMachines-mgmt.parameters.json")
+$serviceALoadBalancerParametersFile = [System.IO.Path]::Combine($PSScriptRoot, "parameters\serviceA.parameters.json")
+$serviceBLoadBalancerParametersFile = [System.IO.Path]::Combine($PSScriptRoot, "parameters\serviceB.parameters.json")
+$networkSecurityGroupParametersFile = [System.IO.Path]::Combine($PSScriptRoot, "parameters\networkSecurityGroups.parameters.json")
+
+$infrastructureResourceGroupName = "ra-ntier-sql-network-rg"
+$workloadResourceGroupName = "ra-ntier-sql-workload-rg"
+$securityResourceGroupName = "ra-ntier-sql-security-rg"
 
 # Login to Azure and select your subscription
 Login-AzureRmAccount -SubscriptionId $SubscriptionId | Out-Null
 
-# Create the resource group
-$resourceGroup = New-AzureRmResourceGroup -Name $resourceGroupName -Location $Location
+if ($Mode -eq "Infrastructure") {
+    $infrastructureResourceGroup = New-AzureRmResourceGroup -Name $infrastructureResourceGroupName -Location $Location
+    Write-Host "Creating virtual network..."
+    New-AzureRmResourceGroupDeployment -Name "ra-ntier-sql-vnet-deployment" `
+        -ResourceGroupName $infrastructureResourceGroup.ResourceGroupName -TemplateUri $virtualNetworkTemplate.AbsoluteUri `
+        -TemplateParameterFile $virtualNetworkParametersFile
 
-Write-Host "Deploying virtual network..."
-New-AzureRmResourceGroupDeployment -Name "ra-ntier-vnet-deployment" -ResourceGroupName $resourceGroup.ResourceGroupName `
-    -TemplateUri $virtualNetworkTemplate.AbsoluteUri -TemplateParameterFile $virtualNetworkParametersFile
+	Write-Host "Deploying jumpbox..."
+	New-AzureRmResourceGroupDeployment -Name "ra-ntier-sql-mgmt-deployment" -ResourceGroupName $infrastructureResourceGroup.ResourceGroupName `
+    -TemplateUri $virtualMachineTemplate.AbsoluteUri -TemplateParameterFile $managementParametersFile
 
-Write-Host "Deploying business tier..."
-New-AzureRmResourceGroupDeployment -Name "ra-ntier-biz-deployment" -ResourceGroupName $resourceGroup.ResourceGroupName `
-    -TemplateUri $loadBalancedVmSetTemplate.AbsoluteUri -TemplateParameterFile $businessTierParametersFile
+    Write-Host "Deploying ADDS servers..."
+    New-AzureRmResourceGroupDeployment -Name "ra-ntier-sql-ad-deployment" `
+        -ResourceGroupName $infrastructureResourceGroup.ResourceGroupName `
+        -TemplateUri $virtualMachineTemplate.AbsoluteUri -TemplateParameterFile $domainControllersParametersFile
 
-Write-Host "Deploying data tier..."
-New-AzureRmResourceGroupDeployment -Name "ra-ntier-data-deployment" -ResourceGroupName $resourceGroup.ResourceGroupName `
-    -TemplateUri $virtualMachineTemplate.AbsoluteUri -TemplateParameterFile $dataTierParametersFile
+    Write-Host "Updating virtual network DNS servers..."
+    New-AzureRmResourceGroupDeployment -Name "ra-ntier-sql-update-dns" `
+        -ResourceGroupName $infrastructureResourceGroup.ResourceGroupName -TemplateUri $virtualNetworkTemplate.AbsoluteUri `
+        -TemplateParameterFile $virtualNetworkDNSParametersFile
 
-Write-Host "Deploying web tier..."
-New-AzureRmResourceGroupDeployment -Name "ra-ntier-web-deployment" -ResourceGroupName $resourceGroup.ResourceGroupName `
-    -TemplateUri $loadBalancedVmSetTemplate.AbsoluteUri -TemplateParameterFile $webTierParametersFile
+    Write-Host "Creating ADDS forest..."
+    New-AzureRmResourceGroupDeployment -Name "ra-ntier-sql-primary-ad-ext" `
+        -ResourceGroupName $infrastructureResourceGroup.ResourceGroupName `
+        -TemplateUri $virtualMachineExtensionsTemplate.AbsoluteUri -TemplateParameterFile $createAddsDomainControllerForestExtensionParametersFile
 
-Write-Host "Deploying management tier..."
-New-AzureRmResourceGroupDeployment -Name "ra-ntier-mgmt-deployment" -ResourceGroupName $resourceGroup.ResourceGroupName `
-    -TemplateUri $virtualMachineTemplate.AbsoluteUri -TemplateParameterFile $managementTierParametersFile
+    Write-Host "Creating ADDS domain controller..."
+    New-AzureRmResourceGroupDeployment -Name "ra-ntier-sql-secondary-ad-ext" `
+        -ResourceGroupName $infrastructureResourceGroup.ResourceGroupName `
+        -TemplateUri $virtualMachineExtensionsTemplate.AbsoluteUri -TemplateParameterFile $addAddsDomainControllerExtensionParametersFile
+	
+    Write-Host "Deploy SQL servers with load balancer..."
+    New-AzureRmResourceGroupDeployment -Name "ra-ntier-sql-servers" `
+        -ResourceGroupName $infrastructureResourceGroup.ResourceGroupName -TemplateUri $loadBalancerTemplate.AbsoluteUri `
+        -TemplateParameterFile $sqlParametersFile
 
-Write-Host "Deploying network security group"
-New-AzureRmResourceGroupDeployment -Name "ra-ntier-nsg-deployment" -ResourceGroupName $resourceGroup.ResourceGroupName `
-    -TemplateUri $networkSecurityGroupTemplate.AbsoluteUri -TemplateParameterFile $networkSecurityGroupParametersFile
+    Write-Host "Deploy FWS..."
+    New-AzureRmResourceGroupDeployment -Name "ra-ntier-sql-fsw" `
+        -ResourceGroupName $infrastructureResourceGroup.ResourceGroupName `
+        -TemplateUri $virtualMachineTemplate.AbsoluteUri -TemplateParameterFile $fswParametersFile
+
+    Write-Host "Prepare SQL Always ON..."
+    New-AzureRmResourceGroupDeployment -Name "ra-ntier-sql-ao-iaas-ext" `
+        -ResourceGroupName $infrastructureResourceGroup.ResourceGroupName `
+        -TemplateUri $virtualMachineExtensionsTemplate.AbsoluteUri -TemplateParameterFile $sqlPrepareAOExtensionParametersFile
+
+	Write-Host "Configure SQL Always ON..."
+    New-AzureRmResourceGroupDeployment -Name "ra-ntier-sql-ao-iaas-ext" `
+        -ResourceGroupName $infrastructureResourceGroup.ResourceGroupName `
+        -TemplateUri $virtualMachineExtensionsTemplate.AbsoluteUri -TemplateParameterFile $sqlConfigureAOExtensionParametersFile
+}
+elseif ($Mode -eq "Workload") {
+    Write-Host "Creating workload resource group..."
+    $workloadResourceGroup = New-AzureRmResourceGroup -Name $workloadResourceGroupName -Location $Location
+
+    Write-Host "Deploy Service A servers with load balancer..."
+    New-AzureRmResourceGroupDeployment -Name "ra-ntier-sql-serviceA-deployment" `
+        -ResourceGroupName $workloadResourceGroup.ResourceGroupName -TemplateUri $loadBalancerTemplate.AbsoluteUri `
+        -TemplateParameterFile $serviceALoadBalancerParametersFile
+
+	Write-Host "Deploy Service B servers with load balancer..."
+    New-AzureRmResourceGroupDeployment -Name "ra-ntier-sql-serviceB-deployment" `
+        -ResourceGroupName $workloadResourceGroup.ResourceGroupName -TemplateUri $loadBalancerTemplate.AbsoluteUri `
+        -TemplateParameterFile $serviceBLoadBalancerParametersFile
+}
+elseif ($Mode -eq "Security") {
+    # Deploy DMZs
+    $securityResourceGroup = Get-AzureRmResourceGroup -Name $securityResourceGroupName
+
+    Write-Host "Deploying NSGs..."
+    New-AzureRmResourceGroupDeployment -Name "ra-ntier-sql-nsg-deployment" -ResourceGroupName $securityResourceGroup.ResourceGroupName `
+        -TemplateUri $networkSecurityGroupTemplate.AbsoluteUri -TemplateParameterFile $networkSecurityGroupParametersFile
+
+}

@@ -27,7 +27,6 @@
   <ItemGroup>
     <Content Include="virtualNetwork.azuredeploy.json" />
     <None Include="Deploy-ReferenceArchitecture.ps1" />
-    <None Include="deploy-reference-architecture.sh" />
     <None Include="extensions\adds-forest.ps1" />
     <None Include="extensions\adds.ps1" />
     <None Include="extensions\CreateADBDC.ps1.zip" />
@@ -46,11 +45,12 @@
     <None Include="parameters\sql.parameters.json" />
     <None Include="parameters\networkSecurityGroups.parameters.json" />
     <None Include="parameters\serviceB.parameters.json" />
-    <None Include="parameters\virtualMachines-mgmt-subnet.parameters.json" />
+    <None Include="parameters\virtualMachines-mgmt.parameters.json" />
     <None Include="parameters\virtualNetwork.parameters.json" />
     <None Include="parameters\serviceA.parameters.json" />
     <None Include="templates\adds\ad-forest-extension-settings-mapper.json" />
     <None Include="templates\adds\adds-domain-controller-extension-settings-mapper.json" />
+    <None Include="security.azuredeploy.json" />
     <None Include="workload.azuredeploy.json" />
   </ItemGroup>
   <Target Name="GetReferenceAssemblyPaths" />

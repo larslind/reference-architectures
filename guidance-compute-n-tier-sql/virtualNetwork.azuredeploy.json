@@ -23,12 +23,10 @@
         "loadBalancer": "[concat(parameters('templateRootUri'), 'templates/buildingBlocks/loadBalancer-backend-n-vm/azuredeploy.json')]",
         "virtualNetwork": "[concat(parameters('templateRootUri'), 'templates/buildingBlocks/vnet-n-subnet/azuredeploy.json')]",
         "virtualMachine": "[concat(parameters('templateRootUri'), 'templates/buildingBlocks/multi-vm-n-nic-m-storage/azuredeploy.json')]",
-        "networkSecurityGroup": "[concat(parameters('templateRootUri'), 'templates/buildingBlocks/networkSecurityGroups/azuredeploy.json')]",
         "extensions": "[concat(parameters('templateRootUri'), 'templates/buildingBlocks/virtualMachine-extensions/azuredeploy.json')]"
       },
       "parameter": {
         "virtualNetwork": "[concat(parameters('parameterRootUri'), 'virtualNetwork.parameters.json')]",
-        "networkSecurityGroup": "[concat(parameters('parameterRootUri'), 'networkSecurityGroups.parameters.json')]",
         "ad": "[concat(parameters('parameterRootUri'), 'adds/ad.parameters.json')]",
         "adPrimaryExtension": "[concat(parameters('parameterRootUri'), 'adds/create-adds-forest-extension.parameters.json')]",
         "adSecondaryExtension": "[concat(parameters('parameterRootUri'), 'adds/add-adds-domain-controller.parameters.json')]",
@@ -37,7 +35,7 @@
         "sqlFsw": "[concat(parameters('parameterRootUri'), 'fsw.parameters.json')]",
         "sqlAOIaaSExtensions": "[concat(parameters('parameterRootUri'), 'sql-iaas-ao-extensions.parameters.json')]",
         "sqlConfigureAOExtensions": "[concat(parameters('parameterRootUri'), 'sql-configure-ao-extension.parameters.json')]",
-        "managementTier": "[concat(parameters('parameterRootUri'), 'virtualMachines-mgmt-subnet.parameters.json')]"
+        "managementTier": "[concat(parameters('parameterRootUri'), 'virtualMachines-mgmt.parameters.json')]"
       }
     }
   },
