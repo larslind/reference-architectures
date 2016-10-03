@@ -8,9 +8,9 @@
           "vms": [ "ra-adfs-ad-vm1" ],
           "extensions": [
             {
-              "name": "add-gmsa",
+              "name": "create-gmsa",
               "publisher": "Microsoft.Compute",
-              "type": "CustomScriptExtension",
+              "type": "CustomScriptExtenseion",
               "typeHandlerVersion": "1.8",
               "autoUpgradeMinorVersion": false,
               "settingsConfigMapperUri": "https://raw.githubusercontent.com/mspnp/reference-architectures/master/guidance-identity-adfs/templates/onpremise/gmsa-extension-settings-mapper.json",

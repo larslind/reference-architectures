@@ -75,7 +75,7 @@ $azureNetworkResourceGroupName = "ra-adfs-network-rg"
 $workloadResourceGroupName = "ra-adfs-workload-rg"
 $securityResourceGroupName = "ra-adfs-security-rg"
 $addsResourceGroupName = "ra-adfs-adds-rg"
-$addsResourceGroupName = "ra-adfs-adfs-rg"
+$adfsResourceGroupName = "ra-adfs-adfs-rg"
 
 # Login to Azure and select your subscription
 Login-AzureRmAccount -SubscriptionId $SubscriptionId | Out-Null
@@ -203,7 +203,7 @@ if ($Mode -eq "Workload" -Or $Mode -eq "All") {
 if ($Mode -eq "ADFS") {
 
     Write-Host "Create group management service account and DNS record for ADFS..."
-    New-AzureRmResourceGroupDeployment -Name "ra-adfs-adds-gma-deployment" `
+    New-AzureRmResourceGroupDeployment -Name "ra-adfs-adds-create-gma-deployment" `
         -ResourceGroupName $addsResourceGroupName `
         -TemplateUri $virtualMachineExtensionsTemplate.AbsoluteUri -TemplateParameterFile $gmsaExtensionParametersFile
 }
