@@ -5,7 +5,7 @@
     "virtualNetworkSettings": {
       "value": {
         "name": "ra-ntier-sql-vnet",
-        "resourceGroup": "ra-ntier-sql-rg"
+        "resourceGroup": "ra-ntier-sql-network-rg"
       }
     },
     "networkSecurityGroupsSettings": {
