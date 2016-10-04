@@ -171,6 +171,11 @@ if ($Mode -eq "AzureADDS" -Or $Mode -eq "All") {
     New-AzureRmResourceGroupDeployment -Name "ra-adfs-adds-dc-deployment" `
         -ResourceGroupName $addsResourceGroup.ResourceGroupName `
         -TemplateUri $virtualMachineExtensionsTemplate.AbsoluteUri -TemplateParameterFile $azureAddAddsDomainControllerExtensionParametersFile
+
+    Write-Host "Create group management service account and DNS record for ADFS..."
+    New-AzureRmResourceGroupDeployment -Name "ra-adfs-adds-create-gmsa-and-dns-entry-for-adfs-deployment" `
+        -ResourceGroupName $addsResourceGroup.ResourceGroupName `
+        -TemplateUri $virtualMachineExtensionsTemplate.AbsoluteUri -TemplateParameterFile $gmsaExtensionParametersFile
 }
 if ($Mode -eq "Workload" -Or $Mode -eq "All") {
     # Deploy DMZs
@@ -202,8 +207,4 @@ if ($Mode -eq "Workload" -Or $Mode -eq "All") {
 }
 if ($Mode -eq "ADFS") {
 
-    Write-Host "Create group management service account and DNS record for ADFS..."
-    New-AzureRmResourceGroupDeployment -Name "ra-adfs-adds-create-gma-and-dns-entry-for-adfs-deployment" `
-        -ResourceGroupName $addsResourceGroupName `
-        -TemplateUri $virtualMachineExtensionsTemplate.AbsoluteUri -TemplateParameterFile $gmsaExtensionParametersFile
 }
