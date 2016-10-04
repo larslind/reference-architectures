@@ -43,7 +43,7 @@ $createAddsDomainControllerForestExtensionParametersFile = [System.IO.Path]::Com
 
 # SQL Always On Parameter Files
 $sqlParametersFile = [System.IO.Path]::Combine($PSScriptRoot, "parameters\sql.parameters.json")
-$fswParametersFile = [System.IO.Path]::Combine($PSScriptRoot, "parameters\fws.parameters.json")
+$fswParametersFile = [System.IO.Path]::Combine($PSScriptRoot, "parameters\fsw.parameters.json")
 $sqlPrepareAOExtensionParametersFile = [System.IO.Path]::Combine($PSScriptRoot, "parameters\sql-iaas-ao-extensions.parameters.json")
 $sqlConfigureAOExtensionParametersFile = [System.IO.Path]::Combine($PSScriptRoot, "parameters\sql-configure-ao-extension.parameters.json")
 
@@ -56,7 +56,6 @@ $networkSecurityGroupParametersFile = [System.IO.Path]::Combine($PSScriptRoot, "
 
 $infrastructureResourceGroupName = "ra-ntier-sql-network-rg"
 $workloadResourceGroupName = "ra-ntier-sql-workload-rg"
-$securityResourceGroupName = "ra-ntier-sql-security-rg"
 
 # Login to Azure and select your subscription
 Login-AzureRmAccount -SubscriptionId $SubscriptionId | Out-Null
@@ -128,10 +127,10 @@ elseif ($Mode -eq "Workload") {
 }
 elseif ($Mode -eq "Security") {
     # Deploy DMZs
-    $securityResourceGroup = Get-AzureRmResourceGroup -Name $securityResourceGroupName
+    $infrastructureResourceGroup = Get-AzureRmResourceGroup -Name $infrastructureResourceGroupName 
 
     Write-Host "Deploying NSGs..."
-    New-AzureRmResourceGroupDeployment -Name "ra-ntier-sql-nsg-deployment" -ResourceGroupName $securityResourceGroup.ResourceGroupName `
+    New-AzureRmResourceGroupDeployment -Name "ra-ntier-sql-nsg-deployment" -ResourceGroupName $infrastructureResourceGroup.ResourceGroupName `
         -TemplateUri $networkSecurityGroupTemplate.AbsoluteUri -TemplateParameterFile $networkSecurityGroupParametersFile
 
 }
