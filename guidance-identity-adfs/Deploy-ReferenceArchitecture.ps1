@@ -203,7 +203,7 @@ if ($Mode -eq "Workload" -Or $Mode -eq "All") {
 if ($Mode -eq "ADFS") {
 
     Write-Host "Create group management service account and DNS record for ADFS..."
-    New-AzureRmResourceGroupDeployment -Name "ra-adfs-adds-create-gma-deployment" `
+    New-AzureRmResourceGroupDeployment -Name "ra-adfs-adds-create-gma-and-dns-entry-for-adfs-deployment" `
         -ResourceGroupName $addsResourceGroupName `
         -TemplateUri $virtualMachineExtensionsTemplate.AbsoluteUri -TemplateParameterFile $gmsaExtensionParametersFile
 }
