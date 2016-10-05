@@ -5,7 +5,7 @@ param(
   [Parameter(Mandatory=$true)]
   $SubscriptionId,
   [Parameter(Mandatory=$false)]
-  $Location = "Central US"
+  $Location = "East US 2"
 )
 
 $OSType = "Linux"
