@@ -221,7 +221,7 @@ if ($Mode -eq "ADFS1") {
 }
 
     # Join the domain and create DCs
-    Write-Host "Creating ADDS domain controllers..."
-    New-AzureRmResourceGroupDeployment -Name "ra-adfs-adfs-join-domain-deployment" `
+    Write-Host "Creating First ADFS Farm Node ..."
+    New-AzureRmResourceGroupDeployment -Name "ra-adfs-adfs-farm-first-node-deployment" `
         -ResourceGroupName $adfsResourceGroupName `
         -TemplateUri $virtualMachineExtensionsTemplate.AbsoluteUri -TemplateParameterFile $azureAdfsFarmFirstExtensionParametersFile
