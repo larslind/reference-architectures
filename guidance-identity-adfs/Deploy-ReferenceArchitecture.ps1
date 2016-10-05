@@ -59,6 +59,7 @@ $gmsaExtensionParametersFile = [System.IO.Path]::Combine($PSScriptRoot, "paramet
 
 # Azure ADFS Parameter Files
 $adfsLoadBalancerParametersFile = [System.IO.Path]::Combine($PSScriptRoot, "parameters\azure\loadBalancer-adfs.parameters.json")
+$azureAdfsDomainjoinExtensionParametersFile = [System.IO.Path]::Combine($PSScriptRoot, "parameters\azure\adfs-domain-join.parameters.json")
 
 $azureVirtualNetworkGatewayParametersFile = [System.IO.Path]::Combine($PSScriptRoot, "parameters\azure\virtualNetworkGateway.parameters.json")
 $azureVirtualNetworkParametersFile = [System.IO.Path]::Combine($PSScriptRoot, "parameters\azure\virtualNetwork.parameters.json")
@@ -208,7 +209,7 @@ if ($Mode -eq "Workload" -Or $Mode -eq "All") {
     New-AzureRmResourceGroupDeployment -Name "ra-adfs-data-deployment" -ResourceGroupName $workloadResourceGroup.ResourceGroupName `
         -TemplateUri $loadBalancerTemplate.AbsoluteUri -TemplateParameterFile $dataLoadBalancerParametersFile
 }
-if ($Mode -eq "ADFS") {
+if ($Mode -eq "ADFS1") {
     # Deploy ADFS tier
     Write-Host "Creating ADFS resource group..."
     $adfsResourceGroup = New-AzureRmResourceGroup -Name $adfsResourceGroupName -Location $Location
@@ -218,3 +219,9 @@ if ($Mode -eq "ADFS") {
         -TemplateUri $loadBalancerTemplate.AbsoluteUri -TemplateParameterFile $adfsLoadBalancerParametersFile
 
 }
+
+    # Join the domain and create DCs
+    Write-Host "Creating ADDS domain controllers..."
+    New-AzureRmResourceGroupDeployment -Name "ra-adfs-adfs-join-domain-deployment" `
+        -ResourceGroupName $adfsResourceGroupName `
+        -TemplateUri $virtualMachineExtensionsTemplate.AbsoluteUri -TemplateParameterFile $azureAdfsDomainjoinExtensionParametersFile

@@ -34,6 +34,7 @@
     <None Include="extensions\adds-replication-site.ps1" />
     <None Include="extensions\adds.ps1" />
     <None Include="extensions\gmsa.ps1" />
+    <None Include="parameters\azure\adfs-domain-join-controller.parameters.json" />
     <None Include="parameters\azure\gmsa.parameters.json" />
     <None Include="parameters\azure\add-adds-domain-controller.parameters.json" />
     <None Include="parameters\azure\dmz-private.parameters.json" />
