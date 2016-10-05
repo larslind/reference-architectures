@@ -5,7 +5,7 @@
     "virtualMachinesExtensionSettings": {
       "value": [
         {
-          "vms": [ "ra-adfs-ad-vm1", "ra-adfs-ad-vm2" ],
+          "vms": [ "ra-adfs-adfs-vm1"],
           "extensions": [
             {
               "name": "join-ad-domain",
@@ -26,22 +26,24 @@
               }
             },
             {
-              "name": "install-adds",
+              "name": "install-adfs",
               "publisher": "Microsoft.Compute",
               "type": "CustomScriptExtension",
               "typeHandlerVersion": "1.8",
               "autoUpgradeMinorVersion": false,
-              "settingsConfigMapperUri": "https://raw.githubusercontent.com/mspnp/reference-architectures/master/guidance-identity-adfs/templates/onpremise/adds-domain-controller-extension-settings-mapper.json",
+              "settingsConfigMapperUri": "https://raw.githubusercontent.com/mspnp/reference-architectures/master/guidance-identity-adfs/templates/onpremise/adfs-farm-first-extension-settings-mapper.json",
               "settingsConfig": {
                 "activeDirectorySettings": {
-                  "domainName": "contoso.com",
                   "adminUser": "testuser",
                   "adminPassword": "AweS0me@PW",
-                  "siteName": "Azure-Vnet-Site",
-                  "safeModePassword": "Saf3M0de@PW"
+                  "netBiosDomainName": "CONTOSO",
+                  "fqDomainName": "contoso.com",
+                  "gmsaName": "adfsgmsa",
+                  "federationName": "adfs.contoso.com",
+                  "description": "Contoso Corporation"
                 },
                 "fileUris": [
-                  "https://raw.githubusercontent.com/mspnp/reference-architectures/master/guidance-identity-adfs/extensions/adds.ps1"
+                  "https://raw.githubusercontent.com/mspnp/reference-architectures/master/guidance-identity-adfs/extensions/adfs-farm-first.ps1"
                 ]
               },
               "protectedSettingsConfig": {

@@ -59,7 +59,7 @@ $gmsaExtensionParametersFile = [System.IO.Path]::Combine($PSScriptRoot, "paramet
 
 # Azure ADFS Parameter Files
 $adfsLoadBalancerParametersFile = [System.IO.Path]::Combine($PSScriptRoot, "parameters\azure\loadBalancer-adfs.parameters.json")
-$azureAdfsDomainjoinExtensionParametersFile = [System.IO.Path]::Combine($PSScriptRoot, "parameters\azure\adfs-domain-join.parameters.json")
+$azureAdfsFarmFirstExtensionParametersFile = [System.IO.Path]::Combine($PSScriptRoot, "parameters\azure\adfs-farm-first.parameters.json")
 
 $azureVirtualNetworkGatewayParametersFile = [System.IO.Path]::Combine($PSScriptRoot, "parameters\azure\virtualNetworkGateway.parameters.json")
 $azureVirtualNetworkParametersFile = [System.IO.Path]::Combine($PSScriptRoot, "parameters\azure\virtualNetwork.parameters.json")
@@ -224,4 +224,4 @@ if ($Mode -eq "ADFS1") {
     Write-Host "Creating ADDS domain controllers..."
     New-AzureRmResourceGroupDeployment -Name "ra-adfs-adfs-join-domain-deployment" `
         -ResourceGroupName $adfsResourceGroupName `
-        -TemplateUri $virtualMachineExtensionsTemplate.AbsoluteUri -TemplateParameterFile $azureAdfsDomainjoinExtensionParametersFile
+        -TemplateUri $virtualMachineExtensionsTemplate.AbsoluteUri -TemplateParameterFile $azureAdfsFarmFirstExtensionParametersFile
