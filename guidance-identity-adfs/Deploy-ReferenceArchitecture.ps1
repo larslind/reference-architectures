@@ -56,6 +56,7 @@ $azureVirtualNetworkOnpremiseAndAzureDnsParametersFile = [System.IO.Path]::Combi
 $azureAddsVirtualMachinesParametersFile = [System.IO.Path]::Combine($PSScriptRoot, "parameters\azure\virtualMachines-adds.parameters.json")
 $azureAddAddsDomainControllerExtensionParametersFile = [System.IO.Path]::Combine($PSScriptRoot, "parameters\azure\add-adds-domain-controller.parameters.json")
 $gmsaExtensionParametersFile = [System.IO.Path]::Combine($PSScriptRoot, "parameters\azure\gmsa.parameters.json")
+$joinAddsVmsToDomainExtensionParametersFile = [System.IO.Path]::Combine($PSScriptRoot, "parameters\azure\adds-domain-join.parameters.json")
 
 # Azure ADFS Parameter Files
 $adfsLoadBalancerParametersFile = [System.IO.Path]::Combine($PSScriptRoot, "parameters\azure\loadBalancer-adfs.parameters.json")
@@ -172,7 +173,13 @@ if ($Mode -eq "AzureADDS" -Or $Mode -eq "All") {
         -ResourceGroupName $azureNetworkResourceGroup.ResourceGroupName `
         -TemplateUri $virtualNetworkTemplate.AbsoluteUri -TemplateParameterFile $azureVirtualNetworkOnpremiseAndAzureDnsParametersFile
 
-    # Join the domain and create DCs
+    # Join the domain
+    Write-Host "Joining ADDS Vms to domain..."
+    New-AzureRmResourceGroupDeployment -Name "ra-adfs-adds-join-domain-deployment" `
+        -ResourceGroupName $addsResourceGroup.ResourceGroupName `
+        -TemplateUri $virtualMachineExtensionsTemplate.AbsoluteUri -TemplateParameterFile $joinAddsVmsToDomainExtensionParametersFile
+
+    # Create DCs
     Write-Host "Creating ADDS domain controllers..."
     New-AzureRmResourceGroupDeployment -Name "ra-adfs-adds-dc-deployment" `
         -ResourceGroupName $addsResourceGroup.ResourceGroupName `
