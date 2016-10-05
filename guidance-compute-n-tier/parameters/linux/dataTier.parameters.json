@@ -20,7 +20,7 @@
             "publicIPAllocationMethod": "dynamic",
             "privateIPAllocationMethod": "dynamic",
             "enableIPForwarding": false,
-            "domainNameLabelPrefix": "rantierdatanode",
+            "domainNameLabelPrefix": "rantierdatavm",
             "dnsServers": [ ]
           }
         ],

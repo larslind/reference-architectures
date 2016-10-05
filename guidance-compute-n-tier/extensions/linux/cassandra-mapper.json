@@ -12,8 +12,8 @@
     "cassandraInstallerUri": "[uri(deployment().properties.templateLink.uri, variables('scriptName'))]",
     "dataCenterName": "[concat(variables('refArchPrefix'), 'dc-', variables('location'))]",
     "location": "[resourceGroup().location]",
-    "seedNodeName": "rantierdatanode1",
-    "opsCenterNodeName": "rantierops1",
+    "seedNodeName": "rantierdatavm1",
+    "opsCenterNodeName": "rantierops01",
     "instance": {
       "settings": {
         "fileUris": [ "[variables('cassandraInstallerUri')]" ],
