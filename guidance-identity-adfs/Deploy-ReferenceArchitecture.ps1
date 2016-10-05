@@ -9,7 +9,7 @@ param(
   $Location,
   
   [Parameter(Mandatory=$false)]
-  [ValidateSet("All", "Onpremise", "Infrastructure", "CreateVpn", "AzureADDS", "Workload", "ADFS")]
+  [ValidateSet("All", "Onpremise", "Infrastructure", "CreateVpn", "AzureADDS", "Workload", "ADFSVM", "ADFSService")]
   $Mode = "All"
 )
 
@@ -210,22 +210,57 @@ if ($Mode -eq "Workload" -Or $Mode -eq "All") {
     New-AzureRmResourceGroupDeployment -Name "ra-adfs-data-deployment" -ResourceGroupName $workloadResourceGroup.ResourceGroupName `
         -TemplateUri $loadBalancerTemplate.AbsoluteUri -TemplateParameterFile $dataLoadBalancerParametersFile
 }
-if ($Mode -eq "ADFS1") {
-    # Deploy ADFS tier
+
+if ($Mode -eq "ADFSVM" -Or $Mode -eq "All") {
+    # Deploy ADFS VMs
     Write-Host "Creating ADFS resource group..."
     $adfsResourceGroup = New-AzureRmResourceGroup -Name $adfsResourceGroupName -Location $Location
 
     Write-Host "Deploying adfs load balancer..."
     New-AzureRmResourceGroupDeployment -Name "ra-adfs-adfs-deployment" -ResourceGroupName $adfsResourceGroup.ResourceGroupName `
         -TemplateUri $loadBalancerTemplate.AbsoluteUri -TemplateParameterFile $adfsLoadBalancerParametersFile
+}
+if ($Mode -eq "ADFSService") {
+
+    Write-Host "Please install certificate to adfs and adfs-proxy first..."
+
+	# ###############################################
+	#  Manual steps to create a fake root certificate and and use it to create adfs.contoso.com.pfx
+	#  1. Log on your developer machine
+	#  2. Download makecert.exe to 
+	#        C:/temp/makecert.exe 
+	#  3. Create my fake root certificate authority use command prompt
+	#        makecert -sky exchange -pe -a sha256 -n "CN=MyFakeRootCertificateAuthority" -r -sv MyFakeRootCertificateAuthority.pvk MyFakeRootCertificateAuthority.cer -len 2048
+	#  4. Verify that the foloiwng files are created
+	# 	     C:/temp/MyFakeRootCertificateAuthority.cer
+	# 	     C:/temp/MyFakeRootCertificateAuthority.pvk
+	#  5. Run command prompt as admin to use my fake root certificate authority to generate a certificate for adfs.contoso.com
+	#        makecert -sk pkey -iv MyFakeRootCertificateAuthority.pvk -a sha256 -n "CN=adfs.contoso.com , CN=enterpriseregistration.contoso.com" -ic MyFakeRootCertificateAuthority.cer -sr localmachine -ss my -sky exchange -pe
+	#  6. Start MMC certificates console, expand to /Certificates (Local Computer)/Personal/Certificate/adfs.contoso.com and export the certificate with the private key to 
+	#        C:/temp/adfs.contoso.com.pfx
+	# ###############################################
+	# Install certificate to the ADFS and ADFS Proxy VMs:
+	# 1. Make sure you have a certificate adfs.contoso.com.pfx either self created or signed by VerifSign, Go Daddy, DigiCert, and etc.
+	# 2. RDP to the each ADFS VM adfs1, adfs2, ...and each ADFS Proxy VM proxy1, proxy2, ...
+	# 3. Copy to c:\temp the following file
+	#		c:\temp\adfs.contoso.com.pfx 
+	#       c:\MyFakeRootCertificateAuthority.cer  (if you created the above cert yourself )
+	# 4. Run the following command prompt as admin:
+	#    	certutil.exe -privatekey -importPFX my C:\temp\adfs.contoso.com.pfx NoExport
+    #	    certutil.exe -addstore Root C:\temp\MyFakeRootCertificateAuthority.cer 
+	# 5. Start MMC, Add Certificates Snap-in, sellect Computer account, and verify that the following certificate is installed:
+	#      \Certificates (Local Computer)\Personal\Certificates\adfs.contoso.com
+	#      \Certificates (Local Computer)\Trusted Root Certification Authorities\Certificates\MyFakeRootCertificateAuthority 
 
     Write-Host "Creating the first ADFS farm node ..."
     New-AzureRmResourceGroupDeployment -Name "ra-adfs-adfs-farm-first-node-deployment" `
         -ResourceGroupName $adfsResourceGroupName `
         -TemplateUri $virtualMachineExtensionsTemplate.AbsoluteUri -TemplateParameterFile $azureAdfsFarmFirstExtensionParametersFile
-}
 
-    Write-Host "Creating The rest ADFS farm nodes ..."
+    Write-Host "Creating the rest ADFS farm nodes ..."
     New-AzureRmResourceGroupDeployment -Name "ra-adfs-adfs-farm-rest-node-deployment" `
         -ResourceGroupName $adfsResourceGroupName `
         -TemplateUri $virtualMachineExtensionsTemplate.AbsoluteUri -TemplateParameterFile $azureAdfsFarmRestExtensionParametersFile
+
+	Write-Host  "browse to https://adfs.contoso.com/adfs/ls/idpinitiatedsignon.htm from jumpbox to test the adfs installation"
+}
