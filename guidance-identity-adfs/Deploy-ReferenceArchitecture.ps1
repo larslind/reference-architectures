@@ -61,6 +61,7 @@ $gmsaExtensionParametersFile = [System.IO.Path]::Combine($PSScriptRoot, "paramet
 $adfsLoadBalancerParametersFile = [System.IO.Path]::Combine($PSScriptRoot, "parameters\azure\loadBalancer-adfs.parameters.json")
 $azureAdfsFarmFirstExtensionParametersFile = [System.IO.Path]::Combine($PSScriptRoot, "parameters\azure\adfs-farm-first.parameters.json")
 $azureAdfsFarmRestExtensionParametersFile = [System.IO.Path]::Combine($PSScriptRoot, "parameters\azure\adfs-farm-rest.parameters.json")
+$azureAdfsFarmDomainJoinExtensionParametersFile = [System.IO.Path]::Combine($PSScriptRoot, "parameters\azure\adfs-farm-domain-join.parameters.json")
 
 $azureVirtualNetworkGatewayParametersFile = [System.IO.Path]::Combine($PSScriptRoot, "parameters\azure\virtualNetworkGateway.parameters.json")
 $azureVirtualNetworkParametersFile = [System.IO.Path]::Combine($PSScriptRoot, "parameters\azure\virtualNetwork.parameters.json")
@@ -219,6 +220,11 @@ if ($Mode -eq "ADFSVM" -Or $Mode -eq "All") {
     Write-Host "Deploying adfs load balancer..."
     New-AzureRmResourceGroupDeployment -Name "ra-adfs-adfs-deployment" -ResourceGroupName $adfsResourceGroup.ResourceGroupName `
         -TemplateUri $loadBalancerTemplate.AbsoluteUri -TemplateParameterFile $adfsLoadBalancerParametersFile
+
+    Write-Host "Joining ADFS Vms to domain..."
+    New-AzureRmResourceGroupDeployment -Name "ra-adfs-adfs-farm-join-domain-deployment" `
+        -ResourceGroupName $adfsResourceGroupName `
+        -TemplateUri $virtualMachineExtensionsTemplate.AbsoluteUri -TemplateParameterFile $azureAdfsFarmDomainJoinExtensionParametersFile
 }
 if ($Mode -eq "ADFSService") {
 
