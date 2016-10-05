@@ -219,13 +219,13 @@ if ($Mode -eq "ADFS1") {
     New-AzureRmResourceGroupDeployment -Name "ra-adfs-adfs-deployment" -ResourceGroupName $adfsResourceGroup.ResourceGroupName `
         -TemplateUri $loadBalancerTemplate.AbsoluteUri -TemplateParameterFile $adfsLoadBalancerParametersFile
 
-    Write-Host "Creating The First ADFS Farm Node ..."
+    Write-Host "Creating the first ADFS farm node ..."
     New-AzureRmResourceGroupDeployment -Name "ra-adfs-adfs-farm-first-node-deployment" `
         -ResourceGroupName $adfsResourceGroupName `
         -TemplateUri $virtualMachineExtensionsTemplate.AbsoluteUri -TemplateParameterFile $azureAdfsFarmFirstExtensionParametersFile
 }
 
-    Write-Host "Creating The Rest ADFS Farm Nodes ..."
+    Write-Host "Creating The rest ADFS farm nodes ..."
     New-AzureRmResourceGroupDeployment -Name "ra-adfs-adfs-farm-rest-node-deployment" `
         -ResourceGroupName $adfsResourceGroupName `
         -TemplateUri $virtualMachineExtensionsTemplate.AbsoluteUri -TemplateParameterFile $azureAdfsFarmRestExtensionParametersFile

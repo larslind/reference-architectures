@@ -40,7 +40,7 @@
                   "fqDomainName": "contoso.com",
                   "gmsaName": "adfsgmsa",
                   "federationName": "adfs.contoso.com",
-                  "description": "Contoso Corporation"
+                  "primaryComputerName": "adfs1"
                 },
                 "fileUris": [
                   "https://raw.githubusercontent.com/mspnp/reference-architectures/master/guidance-identity-adfs/extensions/adfs-farm-rest.ps1"
