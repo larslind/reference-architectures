@@ -1,6 +1,6 @@
 #!/bin/bash
 
-RESOURCE_GROUP_NAME="ra-ntier-vm-rg"
+RESOURCE_GROUP_NAME="ra-ntier-cassandra-rg"
 LOCATION="centralus"
 OS_TYPE="linux"
 
@@ -99,8 +99,12 @@ echo "Using ${SCRIPT_DIR} to locate parameters"
 echo
 
 VIRTUAL_NETWORK_TEMPLATE_URI="${TEMPLATE_ROOT_URI}templates/buildingBlocks/vnet-n-subnet/azuredeploy.json"
-VIRTUAL_NETWORK_PARAMETERS_PATH="${SCRIPT_DIR}/parameters/${OS_TYPE}/virtualNetwork.parameters.json"
-VIRTUAL_NETWORK_DEPLOYMENT_NAME="ra-ntier-vnet-deployment"
+
+VIRTUAL_NETWORK_MGMT_PARAMETERS_PATH="${SCRIPT_DIR}/parameters/${OS_TYPE}/virtualNetworkManagement.parameters.json"
+VIRTUAL_NETWORK_MGMT_DEPLOYMENT_NAME="ra-ntier-mgmt-vnet-deployment"
+
+VIRTUAL_NETWORK_NODES_PARAMETERS_PATH="${SCRIPT_DIR}/parameters/${OS_TYPE}/virtualNetworkNodes.parameters.json"
+VIRTUAL_NETWORK_NODES_DEPLOYMENT_NAME="ra-ntier-nodes-vnet-deployment"
 
 AVAILABILITY_SET_TEMPLATE_URI="${TEMPLATE_ROOT_URI}templates/resources/Microsoft.Compute/virtualMachines/availabilitySet-new.json"
 AVAILABILITY_SET_PARAMETERS_PATH="${SCRIPT_DIR}/parameters/${OS_TYPE}/availabilitySet.parameters.json"
@@ -134,10 +138,15 @@ azure config mode arm
 # Create the resource group, saving the output for later.
 RESOURCE_GROUP_OUTPUT=$(azure group create --name $RESOURCE_GROUP_NAME --location $LOCATION --subscription $SUBSCRIPTION_ID --json) || exit 1
 
-# Create the virtual network
-echo "Deploying virtual network..."
-azure group deployment create --resource-group $RESOURCE_GROUP_NAME --name $VIRTUAL_NETWORK_DEPLOYMENT_NAME \
---template-uri $VIRTUAL_NETWORK_TEMPLATE_URI --parameters-file $VIRTUAL_NETWORK_PARAMETERS_PATH \
+# Create the virtual networks
+echo "Deploying virtual network for nodes..."
+azure group deployment create --resource-group $RESOURCE_GROUP_NAME --name $VIRTUAL_NETWORK_NODES_DEPLOYMENT_NAME \
+--template-uri $VIRTUAL_NETWORK_TEMPLATE_URI --parameters-file $VIRTUAL_NETWORK_NODES_PARAMETERS_PATH \
+--subscription $SUBSCRIPTION_ID || exit 1
+
+echo "Deploying virtual network for management..."
+azure group deployment create --resource-group $RESOURCE_GROUP_NAME --name $VIRTUAL_NETWORK_MGMT_DEPLOYMENT_NAME \
+--template-uri $VIRTUAL_NETWORK_TEMPLATE_URI --parameters-file $VIRTUAL_NETWORK_MGMT_PARAMETERS_PATH \
 --subscription $SUBSCRIPTION_ID || exit 1
 
 # Create availability set for Cassandra cluster
@@ -181,7 +190,10 @@ echo "==================================="
 
 echo $RESOURCE_GROUP_OUTPUT
 
-azure group deployment show --resource-group $RESOURCE_GROUP_NAME --name $VIRTUAL_NETWORK_DEPLOYMENT_NAME \
+azure group deployment show --resource-group $RESOURCE_GROUP_NAME --name $VIRTUAL_NETWORK_NODES_DEPLOYMENT_NAME \
+--subscription $SUBSCRIPTION_ID --json || exit 1
+
+azure group deployment show --resource-group $RESOURCE_GROUP_NAME --name $VIRTUAL_NETWORK_MGMT_DEPLOYMENT_NAME \
 --subscription $SUBSCRIPTION_ID --json || exit 1
 
 azure group deployment show --resource-group $RESOURCE_GROUP_NAME --name $AVAILABILITY_SET_DEPLOYMENT_NAME \
