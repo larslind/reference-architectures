@@ -22,13 +22,13 @@
 )
 
 ###############################################
-# $AdminUser = "adminUser"
-# $AdminPassword = "adminP@ssw0rd"
+# $AdminUser = "testuser"
+# $AdminPassword = "AweS0me@PW"
 # $NetBiosDomainName = "CONTOSO"
 # $FqDomainName = "contoso.com"
 # $GmsaName = "adfsgmsa"
 # $FederationName = "adfs.contoso.com"
-# $PrimaryComputerName = "adfs1-vm"
+# $PrimaryComputerName = "adfs1"
 
 # get credential of the domain admin
 $secAdminPassword = ConvertTo-SecureString $AdminPassword -AsPlainText -Force

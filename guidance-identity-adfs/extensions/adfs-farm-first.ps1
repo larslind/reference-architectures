@@ -40,8 +40,8 @@
 
 ###############################################
 
-# $AdminUser = "adminUser"
-# $AdminPassword = "adminP@ssw0rd"
+# $AdminUser = "testuser"
+# $AdminPassword = "AweS0me@PW"
 # $NetBiosDomainName = "CONTOSO"
 # $FqDomainName = "contoso.com"
 # $GmsaName = "adfsgmsa"
