@@ -261,6 +261,7 @@ if ($Mode -eq "ADFSService") {
     New-AzureRmResourceGroupDeployment -Name "ra-adfs-adfs-farm-rest-node-deployment" `
         -ResourceGroupName $adfsResourceGroupName `
         -TemplateUri $virtualMachineExtensionsTemplate.AbsoluteUri -TemplateParameterFile $azureAdfsFarmRestExtensionParametersFile
-
+	
+	# To test the adfs deployment:
 	Write-Host  "browse to https://adfs.contoso.com/adfs/ls/idpinitiatedsignon.htm from jumpbox to test the adfs installation"
 }
