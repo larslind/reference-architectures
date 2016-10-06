@@ -9,7 +9,7 @@ param(
   $Location,
   
   [Parameter(Mandatory=$false)]
-  [ValidateSet("All", "Onpremise", "Infrastructure", "CreateVpn", "AzureADDS", "Workload", "ADFSVM", "ADFSService")]
+  [ValidateSet("All", "Onpremise", "Infrastructure", "CreateVpn", "AzureADDS", "Workload", "ADFSVM", "ADFSService", "AdfsproxyVM")]
   $Mode = "All"
 )
 
@@ -60,9 +60,16 @@ $joinAddsVmsToDomainExtensionParametersFile = [System.IO.Path]::Combine($PSScrip
 
 # Azure ADFS Parameter Files
 $adfsLoadBalancerParametersFile = [System.IO.Path]::Combine($PSScriptRoot, "parameters\azure\loadBalancer-adfs.parameters.json")
+$azureAdfsFarmDomainJoinExtensionParametersFile = [System.IO.Path]::Combine($PSScriptRoot, "parameters\azure\adfs-farm-domain-join.parameters.json")
 $azureAdfsFarmFirstExtensionParametersFile = [System.IO.Path]::Combine($PSScriptRoot, "parameters\azure\adfs-farm-first.parameters.json")
 $azureAdfsFarmRestExtensionParametersFile = [System.IO.Path]::Combine($PSScriptRoot, "parameters\azure\adfs-farm-rest.parameters.json")
-$azureAdfsFarmDomainJoinExtensionParametersFile = [System.IO.Path]::Combine($PSScriptRoot, "parameters\azure\adfs-farm-domain-join.parameters.json")
+
+# Azure ADFS Proxy Parameter Files
+$adfsproxyLoadBalancerParametersFile = [System.IO.Path]::Combine($PSScriptRoot, "parameters\azure\loadBalancer-adfsproxy.parameters.json")
+$azureAdfsproxyFarmDomainJoinExtensionParametersFile = [System.IO.Path]::Combine($PSScriptRoot, "parameters\azure\adfsproxy-farm-domain-join.parameters.json")
+$azureAdfsproxyFarmFirstExtensionParametersFile = [System.IO.Path]::Combine($PSScriptRoot, "parameters\azure\adfsproxy-farm-first.parameters.json")
+$azureAdfsproxyFarmRestExtensionParametersFile = [System.IO.Path]::Combine($PSScriptRoot, "parameters\azure\adfsproxy-farm-rest.parameters.json")
+
 
 $azureVirtualNetworkGatewayParametersFile = [System.IO.Path]::Combine($PSScriptRoot, "parameters\azure\virtualNetworkGateway.parameters.json")
 $azureVirtualNetworkParametersFile = [System.IO.Path]::Combine($PSScriptRoot, "parameters\azure\virtualNetwork.parameters.json")
@@ -83,6 +90,7 @@ $workloadResourceGroupName = "ra-adfs-workload-rg"
 $securityResourceGroupName = "ra-adfs-security-rg"
 $addsResourceGroupName = "ra-adfs-adds-rg"
 $adfsResourceGroupName = "ra-adfs-adfs-rg"
+$adfsproxyResourceGroupName = "ra-adfs-adfsproxy-rg"
 
 # Login to Azure and select your subscription
 Login-AzureRmAccount -SubscriptionId $SubscriptionId | Out-Null
@@ -233,9 +241,23 @@ if ($Mode -eq "ADFSVM" -Or $Mode -eq "All") {
         -ResourceGroupName $adfsResourceGroupName `
         -TemplateUri $virtualMachineExtensionsTemplate.AbsoluteUri -TemplateParameterFile $azureAdfsFarmDomainJoinExtensionParametersFile
 }
-if ($Mode -eq "ADFSService") {
 
-    Write-Host "Please install certificate to adfs and adfs-proxy first..."
+if ($Mode -eq "AdfsproxyVM" -Or $Mode -eq "All") {
+    # Deploy Adfs Proxy VMs
+    Write-Host "Creating Adfs Proxy resource group..."
+    $adfsproxyResourceGroup = New-AzureRmResourceGroup -Name $adfsproxyResourceGroupName -Location $Location
+
+    Write-Host "Deploying Adfs proxy load balancer..."
+    New-AzureRmResourceGroupDeployment -Name "ra-adfs-adfs-deployment" -ResourceGroupName $adfsproxyResourceGroup.ResourceGroupName `
+        -TemplateUri $loadBalancerTemplate.AbsoluteUri -TemplateParameterFile $adfsproxyLoadBalancerParametersFile
+
+    Write-Host "Joining Adfs proxy Vms to domain..."
+    New-AzureRmResourceGroupDeployment -Name "ra-adfs-adfs-farm-join-domain-deployment" `
+        -ResourceGroupName $adfsproxyResourceGroup.ResourceGroupName `
+        -TemplateUri $virtualMachineExtensionsTemplate.AbsoluteUri -TemplateParameterFile $azureAdfsproxyFarmDomainJoinExtensionParametersFile
+}
+
+    Write-Host "Please install certificate to adfs and adfsproxy first..."
 
 	# ###############################################
 	#  Manual steps to create a fake root certificate and and use it to create adfs.contoso.com.pfx
@@ -264,6 +286,9 @@ if ($Mode -eq "ADFSService") {
 	# 5. Start MMC, Add Certificates Snap-in, sellect Computer account, and verify that the following certificate is installed:
 	#      \Certificates (Local Computer)\Personal\Certificates\adfs.contoso.com
 	#      \Certificates (Local Computer)\Trusted Root Certification Authorities\Certificates\MyFakeRootCertificateAuthority 
+
+if ($Mode -eq "ADFSService") {
+
 
     Write-Host "Creating the first ADFS farm node ..."
     New-AzureRmResourceGroupDeployment -Name "ra-adfs-adfs-farm-first-node-deployment" `
