@@ -5,15 +5,15 @@
     "virtualMachinesExtensionSettings": {
       "value": [
         {
-          "vms": [ "ra-adfs-adfs-vm1"],
+          "vms": [ "ra-adfs-proxy-vm1"],
           "extensions": [
             {
-              "name": "install-adfs",
+              "name": "install-proxy",
               "publisher": "Microsoft.Compute",
               "type": "CustomScriptExtension",
               "typeHandlerVersion": "1.8",
               "autoUpgradeMinorVersion": false,
-              "settingsConfigMapperUri": "https://raw.githubusercontent.com/mspnp/reference-architectures/master/guidance-identity-adfs/templates/onpremise/adfs-farm-first-extension-settings-mapper.json",
+              "settingsConfigMapperUri": "https://raw.githubusercontent.com/mspnp/reference-architectures/master/guidance-identity-adfs/templates/onpremise/adfsproxy-farm-first-extension-settings-mapper.json",
               "settingsConfig": {
                 "activeDirectorySettings": {
                   "adminUser": "testuser",
@@ -25,7 +25,7 @@
                   "description": "Contoso Corporation"
                 },
                 "fileUris": [
-                  "https://raw.githubusercontent.com/mspnp/reference-architectures/master/guidance-identity-adfs/extensions/adfs-farm-first.ps1"
+                  "https://raw.githubusercontent.com/mspnp/reference-architectures/master/guidance-identity-adfs/extensions/adfsproxy-farm-first.ps1"
                 ]
               },
               "protectedSettingsConfig": {
