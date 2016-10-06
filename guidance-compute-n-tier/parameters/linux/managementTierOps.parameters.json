@@ -20,7 +20,7 @@
             "privateIPAllocationMethod": "dynamic",
             "publicIPAllocationMethod": "dynamic",
             "enableIPForwarding": false,
-            "domainNameLabelPrefix": "rantierops",
+            "domainNameLabelPrefix": "rantieropscenter",
             "dnsServers": [ ]
           }
         ],

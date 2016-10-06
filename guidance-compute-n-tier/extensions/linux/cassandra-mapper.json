@@ -13,7 +13,7 @@
     "dataCenterName": "[concat(variables('refArchPrefix'), 'dc-', variables('location'))]",
     "location": "[resourceGroup().location]",
     "seedNodeName": "rantierdatavm1",
-    "opsCenterNodeName": "rantierops01",
+    "opsCenterNodeName": "rantieropscenter1",
     "instance": {
       "settings": {
         "fileUris": [ "[variables('cassandraInstallerUri')]" ],
