@@ -1,0 +1,137 @@
+﻿{
+  "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "loadBalancerSettings": {
+      "value": {
+        "name": "service-a-lb",
+        "frontendIPConfigurations": [
+          {
+            "name": "service-a-lb-fe-config1",
+            "loadBalancerType": "public",
+            "domainNameLabel": "",
+            "internalLoadBalancerSettings": { }
+          }
+        ],
+        "loadBalancingRules": [
+          {
+            "name": "lbr1",
+            "frontendPort": 80,
+            "backendPort": 80,
+            "protocol": "Tcp",
+            "backendPoolName": "lb-bep1",
+            "frontendIPConfigurationName": "service-a-lb-fe-config1",
+            "enableFloatingIP": false,
+            "probeName": "lbp1"
+          }
+        ],
+        "probes": [
+          {
+            "name": "lbp1",
+            "port": 80,
+            "protocol": "Http",
+            "requestPath": "/"
+          }
+        ],
+        "backendPools": [
+          {
+            "name": "lb-bep1",
+            "nicIndex": 0
+          }
+        ],
+        "inboundNatRules": [ ]
+      }
+    },
+    "virtualMachinesSettings": {
+      "value": {
+        "namePrefix": "service-a",
+        "computerNamePrefix": "svca",
+        "size": "Standard_DS1_v2",
+        "adminUsername": "testuser",
+        "adminPassword": "AweS0me@PW",
+        "osType": "windows",
+        "osAuthenticationType": "password",
+        "sshPublicKey": "",
+        "nics": [
+          {
+            "isPublic": "false",
+            "isPrimary": "true",
+            "subnetName": "service-a",
+            "privateIPAllocationMethod": "dynamic",
+            "enableIPForwarding": false,
+            "domainNameLabelPrefix": "",
+            "dnsServers": [ ]
+          }
+        ],
+        "imageReference": {
+          "publisher": "MicrosoftWindowsServer",
+          "offer": "WindowsServer",
+          "sku": "2012-R2-Datacenter",
+          "version": "latest"
+        },
+        "osDisk": {
+          "caching": "ReadWrite"
+        },
+        "dataDisks": {
+          "count": 1,
+          "properties": {
+            "diskSizeGB": 128,
+            "caching": "None",
+            "createOption": "Empty"
+          }
+        },
+        "extensions": [
+          {
+            "name": "join-ad-domain",
+            "publisher": "Microsoft.Compute",
+            "type": "JsonADDomainExtension",
+            "typeHandlerVersion": "1.3",
+            "autoUpgradeMinorVersion": true,
+            "settingsConfigMapperUri": "https://raw.githubusercontent.com/mspnp/template-building-blocks/master/templates/resources/Microsoft.Compute/virtualMachines/extensions/vm-extension-passthrough-settings-mapper.json",
+            "settingsConfig": {
+              "Name": "contoso.com",
+              "OUPath": "",
+              "User": "contoso.com\\testuser",
+              "Restart": true,
+              "Options": 3
+            },
+            "protectedSettingsConfig": {
+              "Password": "AweS0me@PW"
+            }
+          },
+          {
+            "name": "iis-config-ext",
+            "settingsConfigMapperUri": "https://raw.githubusercontent.com/mspnp/template-building-blocks/master/templates/resources/Microsoft.Compute/virtualMachines/extensions/vm-extension-passthrough-settings-mapper.json",
+            "publisher": "Microsoft.Powershell",
+            "type": "DSC",
+            "typeHandlerVersion": "2.20",
+            "autoUpgradeMinorVersion": true,
+            "settingsConfig": {
+              "modulesUrl": "https://aotemplates.blob.core.windows.net/ratemplates/iisaspnet.ps1.zip",
+              "configurationFunction": "iisaspnet.ps1\\iisaspnet"
+            },
+            "protectedSettingsConfig": { }
+          }
+        ],
+        "availabilitySet": {
+          "useExistingAvailabilitySet": "No",
+          "name": "service-a-as"
+        }
+      }
+    },
+    "virtualNetworkSettings": {
+      "value": {
+        "name": "ra-ntier-sql-vnet",
+        "resourceGroup": "ra-ntier-sql-network-rg"
+      }
+    },
+    "buildingBlockSettings": {
+      "value": {
+        "storageAccountsCount": 1,
+        "vmCount": 2,
+        "vmStartIndex": 1
+      }
+    }
+  }
+}
+
