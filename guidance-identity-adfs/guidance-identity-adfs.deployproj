@@ -34,8 +34,8 @@
     <None Include="extensions\adds-replication-site.ps1" />
     <None Include="extensions\adds.ps1" />
     <None Include="extensions\adfs-farm-first.ps1" />
-    <None Include="extensions\adfs-proxy-first.ps1" />
-    <None Include="extensions\adfs-proxy-rest.ps1" />
+    <None Include="extensions\adfsproxy-first.ps1" />
+    <None Include="extensions\adfsproxy-rest.ps1" />
     <None Include="extensions\adfs-farm-rest.ps1" />
     <None Include="extensions\gmsa.ps1" />
     <None Include="parameters\azure\adds-domain-join.parameters.json" />

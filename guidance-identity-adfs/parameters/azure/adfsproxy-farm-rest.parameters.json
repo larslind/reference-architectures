@@ -19,10 +19,7 @@
                   "adminUser": "testuser",
                   "adminPassword": "AweS0me@PW",
                   "netBiosDomainName": "CONTOSO",
-                  "fqDomainName": "contoso.com",
-                  "gmsaName": "adfsgmsa",
-                  "federationName": "adfs.contoso.com",
-                  "primaryComputerName": "proxy1"
+                  "federationName": "adfs.contoso.com"
                 },
                 "fileUris": [
                   "https://raw.githubusercontent.com/mspnp/reference-architectures/master/guidance-identity-adfs/extensions/adfsproxy-farm-rest.ps1"
