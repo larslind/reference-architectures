@@ -9,7 +9,7 @@ param(
   $Location,
   
   [Parameter(Mandatory=$false)]
-  [ValidateSet("All", "Onpremise", "Infrastructure", "CreateVpn", "AzureADDS", "Workload", "ADFSVM", "ADFSService", "AdfsproxyVM")]
+  [ValidateSet("All", "Onpremise", "Infrastructure", "CreateVpn", "AzureADDS", "Workload", "ADFSVM", "ADFSService", "AdfsproxyVM", "AdfsproxyService")]
   $Mode = "All"
 )
 
@@ -302,4 +302,21 @@ if ($Mode -eq "ADFSService") {
 	
 	# To test the adfs deployment:
 	Write-Host  "browse to https://adfs.contoso.com/adfs/ls/idpinitiatedsignon.htm from jumpbox to test the adfs installation"
+}
+
+if ($Mode -eq "AdfsProxyservice") {
+
+
+    Write-Host "Creating the first ADFS farm node ..."
+    New-AzureRmResourceGroupDeployment -Name "ra-adfs-proxy-farm-first-node-deployment" `
+        -ResourceGroupName $adfsproxyResourceGroupName `
+        -TemplateUri $virtualMachineExtensionsTemplate.AbsoluteUri -TemplateParameterFile $azureAdfsproxyFarmFirstExtensionParametersFile
+
+    Write-Host "Creating the rest ADFS farm nodes ..."
+    New-AzureRmResourceGroupDeployment -Name "ra-adfs-proxy-farm-rest-node-deployment" `
+        -ResourceGroupName $adfsproxyResourceGroupName `
+        -TemplateUri $virtualMachineExtensionsTemplate.AbsoluteUri -TemplateParameterFile $azureAdfsproxyFarmRestExtensionParametersFile
+	
+	# To test the adfs deployment:
+	Write-Host  "browse to https://adfs.contoso.com/adfs/ls/idpinitiatedsignon.htm from your development machine to test the adfs installation"
 }
