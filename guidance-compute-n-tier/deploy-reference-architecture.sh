@@ -1,7 +1,8 @@
 #!/bin/bash
 
-RESOURCE_GROUP_NAME="ra-ntier-vm-rg"
+RESOURCE_GROUP_NAME="ra-ntier-cassandra-rg"
 LOCATION="centralus"
+OS_TYPE="linux"
 
 TEMPLATE_ROOT_URI=${TEMPLATE_ROOT_URI:="https://raw.githubusercontent.com/mspnp/template-building-blocks/master/"}
 # Make sure we have a trailing slash
@@ -41,7 +42,6 @@ showErrorAndUsage() {
   echo "  usage:  $(basename ${0}) [options]"
   echo "  options:"
   echo "    -l, --location <location>"
-  echo "    -o, --os-type <windows | linux>"
   echo "    -s, --subscription <subscription-id>"
   echo
   exit 1
@@ -56,10 +56,6 @@ while [[ $# > 0 ]]
 do
   key="$1"
   case $key in
-    -o|--os-type)
-      OS_TYPE="$2"
-      shift
-      ;;
     -s|--subscription)
       # Explicitly set the subscription to avoid confusion as to which subscription
       # is active/default
@@ -80,11 +76,6 @@ done
 if ! [[ $SUBSCRIPTION_ID =~ ^[0-9a-f]{8}-([0-9a-f]{4}-){3}[0-9a-f]{12}$  ]];
 then
   showErrorAndUsage "Invalid Subscription ID"
-fi
-
-if validate $OS_TYPE "windows" "linux";
-then
-  showErrorAndUsage "Invalid OS Type: '${OS_TYPE}'  Valid values are 'windows' or 'linux'"
 fi
 
 if validateNotEmpty $LOCATION;
@@ -108,13 +99,24 @@ echo "Using ${SCRIPT_DIR} to locate parameters"
 echo
 
 VIRTUAL_NETWORK_TEMPLATE_URI="${TEMPLATE_ROOT_URI}templates/buildingBlocks/vnet-n-subnet/azuredeploy.json"
-VIRTUAL_NETWORK_PARAMETERS_PATH="${SCRIPT_DIR}/parameters/${OS_TYPE}/virtualNetwork.parameters.json"
-VIRTUAL_NETWORK_DEPLOYMENT_NAME="ra-ntier-vnet-deployment"
+
+VIRTUAL_NETWORK_MGMT_PARAMETERS_PATH="${SCRIPT_DIR}/parameters/${OS_TYPE}/virtualNetworkManagement.parameters.json"
+VIRTUAL_NETWORK_MGMT_DEPLOYMENT_NAME="ra-ntier-mgmt-vnet-deployment"
+
+VIRTUAL_NETWORK_NODES_PARAMETERS_PATH="${SCRIPT_DIR}/parameters/${OS_TYPE}/virtualNetworkNodes.parameters.json"
+VIRTUAL_NETWORK_NODES_DEPLOYMENT_NAME="ra-ntier-nodes-vnet-deployment"
+
+AVAILABILITY_SET_TEMPLATE_URI="${TEMPLATE_ROOT_URI}templates/resources/Microsoft.Compute/virtualMachines/availabilitySet-new.json"
+AVAILABILITY_SET_PARAMETERS_PATH="${SCRIPT_DIR}/parameters/${OS_TYPE}/availabilitySet.parameters.json"
+AVAILABILITY_SET_DEPLOYMENT_NAME="ra-ntier-data-avset-deployment"
 
 VIRTUAL_MACHINE_TEMPLATE_URI="${TEMPLATE_ROOT_URI}templates/buildingBlocks/multi-vm-n-nic-m-storage/azuredeploy.json"
 
-MGMT_TIER_PARAMETERS_PATH="${SCRIPT_DIR}/parameters/${OS_TYPE}/managementTier.parameters.json"
-MGMT_TIER_DEPLOYMENT_NAME="ra-ntier-mgmt-deployment"
+MGMT_TIER_JUMPBOX_PARAMETERS_PATH="${SCRIPT_DIR}/parameters/${OS_TYPE}/managementTierJumpbox.parameters.json"
+MGMT_TIER_JUMPBOX_DEPLOYMENT_NAME="ra-ntier-mgmt-jb-deployment"
+
+MGMT_TIER_OPS_PARAMETERS_PATH="${SCRIPT_DIR}/parameters/${OS_TYPE}/managementTierOps.parameters.json"
+MGMT_TIER_OPS_DEPLOYMENT_NAME="ra-ntier-mgmt-ops-deployment"
 
 LOAD_BALANCER_TEMPLATE_URI="${TEMPLATE_ROOT_URI}templates/buildingBlocks/loadBalancer-backend-n-vm/azuredeploy.json"
 
@@ -136,10 +138,21 @@ azure config mode arm
 # Create the resource group, saving the output for later.
 RESOURCE_GROUP_OUTPUT=$(azure group create --name $RESOURCE_GROUP_NAME --location $LOCATION --subscription $SUBSCRIPTION_ID --json) || exit 1
 
-# Create the virtual network
-echo "Deploying virtual network..."
-azure group deployment create --resource-group $RESOURCE_GROUP_NAME --name $VIRTUAL_NETWORK_DEPLOYMENT_NAME \
---template-uri $VIRTUAL_NETWORK_TEMPLATE_URI --parameters-file $VIRTUAL_NETWORK_PARAMETERS_PATH \
+# Create the virtual networks
+echo "Deploying virtual network for nodes..."
+azure group deployment create --resource-group $RESOURCE_GROUP_NAME --name $VIRTUAL_NETWORK_NODES_DEPLOYMENT_NAME \
+--template-uri $VIRTUAL_NETWORK_TEMPLATE_URI --parameters-file $VIRTUAL_NETWORK_NODES_PARAMETERS_PATH \
+--subscription $SUBSCRIPTION_ID || exit 1
+
+echo "Deploying virtual network for management..."
+azure group deployment create --resource-group $RESOURCE_GROUP_NAME --name $VIRTUAL_NETWORK_MGMT_DEPLOYMENT_NAME \
+--template-uri $VIRTUAL_NETWORK_TEMPLATE_URI --parameters-file $VIRTUAL_NETWORK_MGMT_PARAMETERS_PATH \
+--subscription $SUBSCRIPTION_ID || exit 1
+
+# Create availability set for Cassandra cluster
+echo "Deploying availability set for data tier..."
+azure group deployment create --resource-group $RESOURCE_GROUP_NAME --name $AVAILABILITY_SET_DEPLOYMENT_NAME \
+--template-uri $AVAILABILITY_SET_TEMPLATE_URI --parameters-file $AVAILABILITY_SET_PARAMETERS_PATH \
 --subscription $SUBSCRIPTION_ID || exit 1
 
 echo "Deploying web tier..."
@@ -157,9 +170,14 @@ azure group deployment create --resource-group $RESOURCE_GROUP_NAME --name $DATA
 --template-uri $VIRTUAL_MACHINE_TEMPLATE_URI --parameters-file $DATA_TIER_PARAMETERS_PATH \
 --subscription $SUBSCRIPTION_ID || exit 1
 
-echo "Deploying management tier..."
-azure group deployment create --resource-group $RESOURCE_GROUP_NAME --name $MGMT_TIER_DEPLOYMENT_NAME \
---template-uri $VIRTUAL_MACHINE_TEMPLATE_URI --parameters-file $MGMT_TIER_PARAMETERS_PATH \
+echo "Deploying jumpbox in management tier..."
+azure group deployment create --resource-group $RESOURCE_GROUP_NAME --name $MGMT_TIER_JUMPBOX_DEPLOYMENT_NAME \
+--template-uri $VIRTUAL_MACHINE_TEMPLATE_URI --parameters-file $MGMT_TIER_JUMPBOX_PARAMETERS_PATH \
+--subscription $SUBSCRIPTION_ID || exit 1
+
+echo "Deploying operations center in management tier..."
+azure group deployment create --resource-group $RESOURCE_GROUP_NAME --name $MGMT_TIER_OPS_DEPLOYMENT_NAME \
+--template-uri $VIRTUAL_MACHINE_TEMPLATE_URI --parameters-file $MGMT_TIER_OPS_PARAMETERS_PATH \
 --subscription $SUBSCRIPTION_ID || exit 1
 
 echo "Deploying network security group..."
@@ -172,7 +190,13 @@ echo "==================================="
 
 echo $RESOURCE_GROUP_OUTPUT
 
-azure group deployment show --resource-group $RESOURCE_GROUP_NAME --name $VIRTUAL_NETWORK_DEPLOYMENT_NAME \
+azure group deployment show --resource-group $RESOURCE_GROUP_NAME --name $VIRTUAL_NETWORK_NODES_DEPLOYMENT_NAME \
+--subscription $SUBSCRIPTION_ID --json || exit 1
+
+azure group deployment show --resource-group $RESOURCE_GROUP_NAME --name $VIRTUAL_NETWORK_MGMT_DEPLOYMENT_NAME \
+--subscription $SUBSCRIPTION_ID --json || exit 1
+
+azure group deployment show --resource-group $RESOURCE_GROUP_NAME --name $AVAILABILITY_SET_DEPLOYMENT_NAME \
 --subscription $SUBSCRIPTION_ID --json || exit 1
 
 azure group deployment show --resource-group $RESOURCE_GROUP_NAME --name $WEB_TIER_DEPLOYMENT_NAME \
@@ -184,7 +208,10 @@ azure group deployment show --resource-group $RESOURCE_GROUP_NAME --name $BIZ_TI
 azure group deployment show --resource-group $RESOURCE_GROUP_NAME --name $DATA_TIER_DEPLOYMENT_NAME \
 --subscription $SUBSCRIPTION_ID --json || exit 1
 
-azure group deployment show --resource-group $RESOURCE_GROUP_NAME --name $MGMT_TIER_DEPLOYMENT_NAME \
+azure group deployment show --resource-group $RESOURCE_GROUP_NAME --name $MGMT_TIER_JUMPBOX_DEPLOYMENT_NAME \
+--subscription $SUBSCRIPTION_ID --json || exit 1
+
+azure group deployment show --resource-group $RESOURCE_GROUP_NAME --name $MGMT_TIER_OPS_DEPLOYMENT_NAME \
 --subscription $SUBSCRIPTION_ID --json || exit 1
 
 azure group deployment show --resource-group $RESOURCE_GROUP_NAME --name $NETWORK_SECURITY_GROUP_DEPLOYMENT_NAME \

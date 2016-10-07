@@ -5,7 +5,7 @@
     "virtualNetworkSettings": {
       "value": {
         "name": "ra-ntier-vnet",
-        "resourceGroup": "ra-ntier-vm-rg"
+        "resourceGroup": "ra-ntier-cassandra-rg"
 	}
     },
     "networkSecurityGroupsSettings": {
@@ -34,7 +34,7 @@
               "name": "allow-mgmt-ssh",
               "direction": "Inbound",
               "priority": 110,
-              "sourceAddressPrefix": "10.0.0.128/25",
+              "sourceAddressPrefix": "10.1.0.128/25",
               "destinationAddressPrefix": "*",
               "sourcePortRange": "*",
               "destinationPortRange": "22",
@@ -51,63 +51,6 @@
               "destinationAddressPrefix": "*",
               "access": "Deny",
               "priority": 120,
-              "direction": "Inbound"
-            }
-          ]
-        },
-        {
-          "name": "ra-ntier-data-nsg",
-          "subnets": [
-            "data"
-          ],
-          "networkInterfaces": [
-          ],
-          "securityRules": [
-            {
-              "name": "allow-biz-traffic",
-              "description": "Allow traffic originating from biz layer.",
-              "protocol": "*",
-              "sourcePortRange": "*",
-              "destinationPortRange": "9042",
-              "sourceAddressPrefix": "10.0.2.0/24",
-              "destinationAddressPrefix": "*",
-              "access": "Allow",
-              "priority": 100,
-              "direction": "Inbound"
-            },
-            {
-              "name": "allow-mgmt-ssh",
-              "direction": "Inbound",
-              "priority": 110,
-              "sourceAddressPrefix": "10.0.0.128/25",
-              "destinationAddressPrefix": "*",
-              "sourcePortRange": "*",
-              "destinationPortRange": "22",
-              "access": "Allow",
-              "protocol": "Tcp"
-            },
-            {
-              "name": "allow-ops-center-web-traffic",
-              "description": "Allow web traffic to ops center.",
-              "protocol": "*",
-              "sourcePortRange": "*",
-              "destinationPortRange": "8888",
-              "sourceAddressPrefix": "*",
-              "destinationAddressPrefix": "*",
-              "access": "Allow",
-              "priority": 120,
-              "direction": "Inbound"
-            },
-            {
-              "name": "deny-other-traffic",
-              "description": "Deny all other traffic",
-              "protocol": "*",
-              "sourcePortRange": "*",
-              "destinationPortRange": "*",
-              "sourceAddressPrefix": "*",
-              "destinationAddressPrefix": "*",
-              "access": "Deny",
-              "priority": 130,
               "direction": "Inbound"
             }
           ]
@@ -148,7 +91,7 @@
               "name": "allow-mgmt-ssh",
               "direction": "Inbound",
               "priority": 120,
-              "sourceAddressPrefix": "10.0.0.128/25",
+              "sourceAddressPrefix": "10.1.0.128/25",
               "destinationAddressPrefix": "*",
               "sourcePortRange": "*",
               "destinationPortRange": "22",
@@ -170,7 +113,61 @@
           ]
         },
         {
-          "name": "ra-ntier-mgmt-nsg",
+          "name": "ra-ntier-data-nsg",
+          "subnets": [
+            "data"
+          ],
+          "networkInterfaces": [
+          ],
+          "securityRules": [
+            {
+              "name": "allow-mgmt-ssh",
+              "direction": "Inbound",
+              "priority": 100,
+              "sourceAddressPrefix": "10.1.0.128/25",
+              "destinationAddressPrefix": "*",
+              "sourcePortRange": "*",
+              "destinationPortRange": "22",
+              "access": "Allow",
+              "protocol": "Tcp"
+            },            
+            {
+              "name": "allow-ops-center-http",
+              "protocol": "*",
+              "sourcePortRange": "*",
+              "destinationPortRange": "8888-65535",
+              "sourceAddressPrefix": "*",
+              "destinationAddressPrefix": "*",
+              "access": "Allow",
+              "priority": 110,
+              "direction": "Inbound"
+            },
+            {
+              "name": "allow-native",
+              "protocol": "TCP",
+              "sourcePortRange": "*",
+              "destinationPortRange": "9042",
+              "sourceAddressPrefix": "*",
+              "destinationAddressPrefix": "*",
+              "access": "Allow",
+              "priority": 120,
+              "direction": "Inbound"
+            },
+            {
+              "name": "allow-jmx",
+              "protocol": "TCP",
+              "sourcePortRange": "*",
+              "destinationPortRange": "7199",
+              "sourceAddressPrefix": "*",
+              "destinationAddressPrefix": "*",
+              "access": "Allow",
+              "priority": 130,
+              "direction": "Inbound"
+            }
+          ]
+        },
+        {
+          "name": "ra-ntier-mgmt-jb-nsg",
           "subnets": [ ],
           "networkInterfaces": [
             "ra-ntier-mgmt-vm1-nic1"
@@ -186,6 +183,49 @@
               "destinationPortRange": "22",
               "access": "Allow",
               "protocol": "Tcp"
+            },
+            {
+              "name": "deny-other-traffic",
+              "description": "Deny all other traffic",
+              "protocol": "*",
+              "sourcePortRange": "*",
+              "destinationPortRange": "*",
+              "sourceAddressPrefix": "*",
+              "destinationAddressPrefix": "*",
+              "access": "Deny",
+              "priority": 120,
+              "direction": "Inbound"
+            }
+          ]
+        },
+        {
+          "name": "ra-ntier-mgmt-ops-nsg",
+          "subnets": [ ],
+          "networkInterfaces": [
+            "ra-ntier-ops-vm1-nic1"
+          ],
+          "securityRules": [
+            {
+              "name": "allow-mgmt-ssh",
+              "direction": "Inbound",
+              "priority": 100,
+              "sourceAddressPrefix": "10.1.0.128/25",
+              "destinationAddressPrefix": "*",
+              "sourcePortRange": "*",
+              "destinationPortRange": "22",
+              "access": "Allow",
+              "protocol": "Tcp"
+            },
+            {
+              "name": "allow-http",
+              "protocol": "*",
+              "sourcePortRange": "*",
+              "destinationPortRange": "8888",
+              "sourceAddressPrefix": "*",
+              "destinationAddressPrefix": "*",
+              "access": "Allow",
+              "priority": 110,
+              "direction": "Inbound"
             },
             {
               "name": "deny-other-traffic",

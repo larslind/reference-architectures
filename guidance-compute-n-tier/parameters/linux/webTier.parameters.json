@@ -21,8 +21,8 @@
             "protocol": "Tcp",
             "backendPoolName": "lb-bep1",
             "frontendIPConfigurationName": "ra-ntier-web-lb-fe-config1",
-            "enableFloatingIP": false,
-            "probeName": "lbp1"
+            "probeName": "lbp1",
+            "enableFloatingIP": false
           }
         ],
         "probes": [
@@ -45,7 +45,7 @@
     "virtualMachinesSettings": {
       "value": {
         "namePrefix": "ra-ntier-web",
-        "computerNamePrefix": "cn",
+        "computerNamePrefix": "web",
         "size": "Standard_DS1",
         "adminUsername": "testuser",
         "adminPassword": "AweS0me@PW",
@@ -103,7 +103,7 @@
     "virtualNetworkSettings": {
       "value": {
         "name": "ra-ntier-vnet",
-        "resourceGroup": "ra-ntier-vm-rg"
+        "resourceGroup": "ra-ntier-cassandra-rg"
       }
     },
     "buildingBlockSettings": {

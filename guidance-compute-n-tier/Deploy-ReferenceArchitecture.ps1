@@ -5,11 +5,10 @@ param(
   [Parameter(Mandatory=$true)]
   $SubscriptionId,
   [Parameter(Mandatory=$false)]
-  $Location = "Central US",
-  [Parameter(Mandatory=$false)]
-  [ValidateSet("Windows", "Linux")]
-  $OSType = "Linux"
+  $Location = "East US 2"
 )
+
+$OSType = "Linux"
 
 $ErrorActionPreference = "Stop"
 
@@ -36,16 +35,20 @@ $virtualNetworkTemplate = New-Object System.Uri -ArgumentList @($templateRootUri
 $loadBalancedVmSetTemplate = New-Object System.Uri -ArgumentList @($templateRootUri, 'templates/buildingBlocks/loadBalancer-backend-n-vm/azuredeploy.json')
 $virtualMachineTemplate = New-Object System.Uri -ArgumentList @($templateRootUri, 'templates/buildingBlocks/multi-vm-n-nic-m-storage/azuredeploy.json')
 $networkSecurityGroupTemplate = New-Object System.Uri -ArgumentList @($templateRootUri, 'templates/buildingBlocks/networkSecurityGroups/azuredeploy.json')
+$availabilitySetTemplate = New-Object System.Uri -ArgumentList @($templateRootUri, 'templates/resources/Microsoft.Compute/virtualMachines/availabilitySet-new.json')
 
 # Template parameters for respective deployments
-$virtualNetworkParametersFile = [System.IO.Path]::Combine($PSScriptRoot, 'parameters', $OSType.ToLower(), 'virtualNetwork.parameters.json')
+$virtualNetworkNodesParametersFile = [System.IO.Path]::Combine($PSScriptRoot, 'parameters', $OSType.ToLower(), 'virtualNetworkNodes.parameters.json')
+$virtualNetworkMgmtParametersFile = [System.IO.Path]::Combine($PSScriptRoot, 'parameters', $OSType.ToLower(), 'virtualNetworkManagement.parameters.json')
 $businessTierParametersFile = [System.IO.Path]::Combine($PSScriptRoot, 'parameters', $OSType.ToLower(), 'businessTier.parameters.json')
 $dataTierParametersFile = [System.IO.Path]::Combine($PSScriptRoot, 'parameters', $OSType.ToLower(), 'dataTier.parameters.json')
 $webTierParametersFile = [System.IO.Path]::Combine($PSScriptRoot, 'parameters', $OSType.ToLower(), 'webTier.parameters.json')
-$managementTierParametersFile = [System.IO.Path]::Combine($PSScriptRoot, 'parameters', $OSType.ToLower(), 'managementTier.parameters.json')
+$managementTierJumpboxParametersFile = [System.IO.Path]::Combine($PSScriptRoot, 'parameters', $OSType.ToLower(), 'managementTierJumpbox.parameters.json')
+$managementTierOpsParametersFile = [System.IO.Path]::Combine($PSScriptRoot, 'parameters', $OSType.ToLower(), 'managementTierOps.parameters.json')
 $networkSecurityGroupParametersFile = [System.IO.Path]::Combine($PSScriptRoot, 'parameters', $OSType.ToLower(), 'networkSecurityGroups.parameters.json')
+$availabilitySetParametersFile = [System.IO.Path]::Combine($PSScriptRoot, 'parameters', $OSType.ToLower(), 'availabilitySet.parameters.json')
 
-$resourceGroupName = "ra-ntier-vm-rg"
+$resourceGroupName = "ra-ntier-cassandra-rg"
 
 # Login to Azure and select your subscription
 Login-AzureRmAccount -SubscriptionId $SubscriptionId | Out-Null
@@ -53,9 +56,17 @@ Login-AzureRmAccount -SubscriptionId $SubscriptionId | Out-Null
 # Create the resource group
 $resourceGroup = New-AzureRmResourceGroup -Name $resourceGroupName -Location $Location
 
-Write-Host "Deploying virtual network..."
-New-AzureRmResourceGroupDeployment -Name "ra-ntier-vnet-deployment" -ResourceGroupName $resourceGroup.ResourceGroupName `
-    -TemplateUri $virtualNetworkTemplate.AbsoluteUri -TemplateParameterFile $virtualNetworkParametersFile
+Write-Host "Deploying virtual network for nodes..."
+New-AzureRmResourceGroupDeployment -Name "ra-ntier-nodes-vnet-deployment" -ResourceGroupName $resourceGroup.ResourceGroupName `
+    -TemplateUri $virtualNetworkTemplate.AbsoluteUri -TemplateParameterFile $virtualNetworkNodesParametersFile
+
+Write-Host "Deploying virtual network for management..."
+New-AzureRmResourceGroupDeployment -Name "ra-ntier-mgmt-vnet-deployment" -ResourceGroupName $resourceGroup.ResourceGroupName `
+    -TemplateUri $virtualNetworkTemplate.AbsoluteUri -TemplateParameterFile $virtualNetworkMgmtParametersFile    
+
+Write-Host "Deploying availability set for data tier..."
+New-AzureRmResourceGroupDeployment -Name "ra-ntier-data-avset-deployment" -ResourceGroupName $resourceGroup.ResourceGroupName `
+    -TemplateUri $availabilitySetTemplate.AbsoluteUri -TemplateParameterFile $availabilitySetParametersFile
 
 Write-Host "Deploying business tier..."
 New-AzureRmResourceGroupDeployment -Name "ra-ntier-biz-deployment" -ResourceGroupName $resourceGroup.ResourceGroupName `
@@ -69,9 +80,13 @@ Write-Host "Deploying web tier..."
 New-AzureRmResourceGroupDeployment -Name "ra-ntier-web-deployment" -ResourceGroupName $resourceGroup.ResourceGroupName `
     -TemplateUri $loadBalancedVmSetTemplate.AbsoluteUri -TemplateParameterFile $webTierParametersFile
 
-Write-Host "Deploying management tier..."
-New-AzureRmResourceGroupDeployment -Name "ra-ntier-mgmt-deployment" -ResourceGroupName $resourceGroup.ResourceGroupName `
-    -TemplateUri $virtualMachineTemplate.AbsoluteUri -TemplateParameterFile $managementTierParametersFile
+Write-Host "Deploying jumpbox in management tier..."
+New-AzureRmResourceGroupDeployment -Name "ra-ntier-mgmt-jb-deployment" -ResourceGroupName $resourceGroup.ResourceGroupName `
+    -TemplateUri $virtualMachineTemplate.AbsoluteUri -TemplateParameterFile $managementTierJumpboxParametersFile
+
+Write-Host "Deploying operations center in management tier..."
+New-AzureRmResourceGroupDeployment -Name "ra-ntier-mgmt-ops-deployment" -ResourceGroupName $resourceGroup.ResourceGroupName `
+    -TemplateUri $virtualMachineTemplate.AbsoluteUri -TemplateParameterFile $managementTierOpsParametersFile
 
 Write-Host "Deploying network security group"
 New-AzureRmResourceGroupDeployment -Name "ra-ntier-nsg-deployment" -ResourceGroupName $resourceGroup.ResourceGroupName `

@@ -34,15 +34,19 @@
         "loadBalancer": "[concat(parameters('templateRootUri'), 'templates/buildingBlocks/loadBalancer-backend-n-vm/azuredeploy.json')]",
         "virtualNetwork": "[concat(parameters('templateRootUri'), 'templates/buildingBlocks/vnet-n-subnet/azuredeploy.json')]",
         "virtualMachine": "[concat(parameters('templateRootUri'), 'templates/buildingBlocks/multi-vm-n-nic-m-storage/azuredeploy.json')]",
-        "networkSecurityGroup": "[concat(parameters('templateRootUri'), 'templates/buildingBlocks/networkSecurityGroups/azuredeploy.json')]"
+        "networkSecurityGroup": "[concat(parameters('templateRootUri'), 'templates/buildingBlocks/networkSecurityGroups/azuredeploy.json')]",
+        "availabilitySet": "[concat(parameters('templateRootUri'), 'templates/resources/Microsoft.Compute/virtualMachines/availabilitySet-new.json')]"
       },
       "parameter": {
-        "virtualNetwork": "[concat(parameters('parameterRootUri'), 'guidance-compute-n-tier/parameters/', parameters('osType'), '/virtualNetwork.parameters.json')]",
+        "virtualNetworkNodes": "[concat(parameters('parameterRootUri'), 'guidance-compute-n-tier/parameters/', parameters('osType'), '/virtualNetworkNodes.parameters.json')]",
+        "virtualNetworkManagement": "[concat(parameters('parameterRootUri'), 'guidance-compute-n-tier/parameters/', parameters('osType'), '/virtualNetworkManagement.parameters.json')]",
         "networkSecurityGroup": "[concat(parameters('parameterRootUri'), 'guidance-compute-n-tier/parameters/', parameters('osType'), '/networkSecurityGroups.parameters.json')]",
         "webTier": "[concat(parameters('parameterRootUri'), 'guidance-compute-n-tier/parameters/', parameters('osType'), '/webTier.parameters.json')]",
         "dataTier": "[concat(parameters('parameterRootUri'), 'guidance-compute-n-tier/parameters/', parameters('osType'), '/dataTier.parameters.json')]",
         "businessTier": "[concat(parameters('parameterRootUri'), 'guidance-compute-n-tier/parameters/', parameters('osType'), '/businessTier.parameters.json')]",
-        "managementTier": "[concat(parameters('parameterRootUri'), 'guidance-compute-n-tier/parameters/', parameters('osType'), '/managementTier.parameters.json')]"
+        "managementTierJumpbox": "[concat(parameters('parameterRootUri'), 'guidance-compute-n-tier/parameters/', parameters('osType'), '/managementTierJumpbox.parameters.json')]",
+        "availabilitySet": "[concat(parameters('parameterRootUri'), 'guidance-compute-n-tier/parameters/', parameters('osType'), '/availabilitySet.parameters.json')]",
+        "managementTierOps": "[concat(parameters('parameterRootUri'), 'guidance-compute-n-tier/parameters/', parameters('osType'), '/managementTierOps.parameters.json')]"
       }
     }
   },
@@ -50,14 +54,17 @@
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2015-01-01",
-      "name": "ra-ntier-vnet-deployment",
+      "name": "ra-ntier-data-avset-deployment",
+      "dependsOn": [
+        "Microsoft.Resources/deployments/ra-ntier-nodes-vnet-deployment"
+      ],
       "properties": {
         "mode": "Incremental",
         "templateLink": {
-          "uri": "[variables('templates').deployment.virtualNetwork]"
+          "uri": "[variables('templates').deployment.availabilitySet]"
         },
         "parametersLink": {
-          "uri": "[variables('templates').parameter.virtualNetwork]",
+          "uri": "[variables('templates').parameter.availabilitySet]",
           "contentVersion": "1.0.0.0"
         }
       }
@@ -65,9 +72,39 @@
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2015-01-01",
+      "name": "ra-ntier-nodes-vnet-deployment",
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[variables('templates').deployment.virtualNetwork]"
+        },
+        "parametersLink": {
+          "uri": "[variables('templates').parameter.virtualNetworkNodes]",
+          "contentVersion": "1.0.0.0"
+        }
+      }
+    },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2015-01-01",
+      "name": "ra-ntier-mgmt-vnet-deployment",
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[variables('templates').deployment.virtualNetwork]"
+        },
+        "parametersLink": {
+          "uri": "[variables('templates').parameter.virtualNetworkManagement]",
+          "contentVersion": "1.0.0.0"
+        }
+      }
+    },    
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2015-01-01",
       "name": "ra-ntier-web-deployment",
       "dependsOn": [
-        "Microsoft.Resources/deployments/ra-ntier-vnet-deployment"
+        "Microsoft.Resources/deployments/ra-ntier-nodes-vnet-deployment"
       ],
       "properties": {
         "mode": "Incremental",
@@ -85,7 +122,7 @@
       "apiVersion": "2015-01-01",
       "name": "ra-ntier-biz-deployment",
       "dependsOn": [
-        "Microsoft.Resources/deployments/ra-ntier-vnet-deployment"
+        "Microsoft.Resources/deployments/ra-ntier-nodes-vnet-deployment"
       ],
       "properties": {
         "mode": "Incremental",
@@ -103,7 +140,8 @@
       "apiVersion": "2015-01-01",
       "name": "ra-ntier-data-deployment",
       "dependsOn": [
-        "Microsoft.Resources/deployments/ra-ntier-vnet-deployment"
+        "Microsoft.Resources/deployments/ra-ntier-nodes-vnet-deployment",
+        "Microsoft.Resources/deployments/ra-ntier-data-avset-deployment"
       ],
       "properties": {
         "mode": "Incremental",
@@ -119,9 +157,9 @@
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2015-01-01",
-      "name": "ra-ntier-mgmt-deployment",
+      "name": "ra-ntier-mgmt-jb-deployment",
       "dependsOn": [
-        "Microsoft.Resources/deployments/ra-ntier-vnet-deployment"
+        "Microsoft.Resources/deployments/ra-ntier-mgmt-vnet-deployment"
       ],
       "properties": {
         "mode": "Incremental",
@@ -129,7 +167,25 @@
           "uri": "[variables('templates').deployment.virtualMachine]"
         },
         "parametersLink": {
-          "uri": "[variables('templates').parameter.managementTier]",
+          "uri": "[variables('templates').parameter.managementTierJumpbox]",
+          "contentVersion": "1.0.0.0"
+        }
+      }
+    },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2015-01-01",
+      "name": "ra-ntier-mgmt-ops-deployment",
+      "dependsOn": [
+        "Microsoft.Resources/deployments/ra-ntier-mgmt-vnet-deployment"
+      ],
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[variables('templates').deployment.virtualMachine]"
+        },
+        "parametersLink": {
+          "uri": "[variables('templates').parameter.managementTierOps]",
           "contentVersion": "1.0.0.0"
         }
       }
@@ -139,8 +195,10 @@
       "name": "ra-ntier-nsg-deployment",
       "apiVersion": "2015-01-01",
       "dependsOn": [
-        "Microsoft.Resources/deployments/ra-ntier-vnet-deployment",
-        "Microsoft.Resources/deployments/ra-ntier-mgmt-deployment",
+        "Microsoft.Resources/deployments/ra-ntier-nodes-vnet-deployment",
+        "Microsoft.Resources/deployments/ra-ntier-mgmt-vnet-deployment",        
+        "Microsoft.Resources/deployments/ra-ntier-mgmt-jb-deployment",
+        "Microsoft.Resources/deployments/ra-ntier-mgmt-ops-deployment",
         "Microsoft.Resources/deployments/ra-ntier-data-deployment",
         "Microsoft.Resources/deployments/ra-ntier-biz-deployment",
         "Microsoft.Resources/deployments/ra-ntier-web-deployment"

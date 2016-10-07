@@ -1,0 +1,32 @@
+﻿{
+  "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "deploymentContext": { "type": "object" },
+    "source": { "type": "object" },
+    "context": { "type": "object" }
+  },
+  "variables": {
+    "scriptName": "install-cassandra.sh",
+    "refArchPrefix": "ra-ntier-",
+    "cassandraInstallerUri": "[uri(deployment().properties.templateLink.uri, variables('scriptName'))]",
+    "dataCenterName": "[concat(variables('refArchPrefix'), 'dc-', variables('location'))]",
+    "location": "[resourceGroup().location]",
+    "seedNodeName": "rantierdatavm1",
+    "opsCenterNodeName": "rantieropscenter1",
+    "instance": {
+      "settings": {
+        "fileUris": [ "[variables('cassandraInstallerUri')]" ],
+        "commandToExecute": "[concat('bash ', variables('scriptName'), ' ', variables('seedNodeName'), ' ', variables('opsCenterNodeName'), ' ', variables('dataCenterName'), ' ', variables('location'))]"
+      },
+      "protectedSettings": { }
+    }
+  },
+  "resources": [ ],
+  "outputs": {
+    "settings": {
+      "type": "object",
+      "value": "[variables('instance')]"
+    }
+  }
+}

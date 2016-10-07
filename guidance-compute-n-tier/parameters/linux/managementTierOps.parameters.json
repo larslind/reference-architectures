@@ -4,12 +4,12 @@
   "parameters": {
     "virtualMachinesSettings": {
       "value": {
-        "namePrefix": "ra-ntier-mgmt",
-        "computerNamePrefix": "cn",
+        "namePrefix": "ra-ntier-ops",
+        "computerNamePrefix": "opscenter",
         "size": "Standard_DS1",
         "adminUsername": "testuser",
         "adminPassword": "AweS0me@PW",
-        "osType": "windows",
+        "osType": "linux",
         "osAuthenticationType": "password",
         "sshPublicKey": "",
         "nics": [
@@ -18,16 +18,16 @@
             "isPrimary": "true",
             "subnetName": "mgmt",
             "privateIPAllocationMethod": "dynamic",
-            "publicIPAllocationMethod": "static",
+            "publicIPAllocationMethod": "dynamic",
             "enableIPForwarding": false,
-            "domainNameLabelPrefix": "",
+            "domainNameLabelPrefix": "rantieropscenter",
             "dnsServers": [ ]
           }
         ],
         "imageReference": {
-          "publisher": "MicrosoftWindowsServer",
-          "offer": "WindowsServer",
-          "sku": "2012-R2-Datacenter",
+          "publisher": "Canonical",
+          "offer": "UbuntuServer",
+          "sku": "14.04.5-LTS",
           "version": "latest"
         },
         "dataDisks": {
@@ -41,7 +41,17 @@
         "osDisk": {
           "caching": "ReadWrite"
         },
-        "extensions": [ ],
+        "extensions": [
+          {
+            "name": "ra-ntier-install-opscenter-ext",
+            "settingsConfigMapperUri": "https://raw.githubusercontent.com/mspnp/reference-architectures/kirpas/ra-ntier-db/guidance-compute-n-tier/extensions/linux/opscenter-mapper.json",
+            "publisher": "Microsoft.OSTCExtensions",
+            "type": "CustomScriptForLinux",
+            "typeHandlerVersion": "1.5",
+            "autoUpgradeMinorVersion": true,
+            "properties": { }
+          }
+        ],
         "availabilitySet": {
           "useExistingAvailabilitySet": "No",
           "name": ""
@@ -50,8 +60,8 @@
     },
     "virtualNetworkSettings": {
       "value": {
-        "name": "ra-ntier-vnet",
-        "resourceGroup": "ra-ntier-vm-rg"
+        "name": "ra-ntier-mgmt-vnet",
+        "resourceGroup": "ra-ntier-cassandra-rg"
       }
     },
     "buildingBlockSettings": {

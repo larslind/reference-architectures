@@ -5,7 +5,7 @@
     "virtualMachinesSettings": {
       "value": {
         "namePrefix": "ra-ntier-data",
-        "computerNamePrefix": "cn",
+        "computerNamePrefix": "data",
         "size": "Standard_DS1",
         "adminUsername": "testuser",
         "adminPassword": "AweS0me@PW",
@@ -14,12 +14,13 @@
         "sshPublicKey": "",
         "nics": [
           {
-            "isPublic": "false",
+            "isPublic": "true",
             "isPrimary": "true",
             "subnetName": "data",
+            "publicIPAllocationMethod": "dynamic",
             "privateIPAllocationMethod": "dynamic",
             "enableIPForwarding": false,
-            "domainNameLabelPrefix": "",
+            "domainNameLabelPrefix": "rantierdatavm",
             "dnsServers": [ ]
           }
         ],
@@ -40,9 +41,19 @@
         "osDisk": {
           "caching": "ReadWrite"
         },
-        "extensions": [ ],
+        "extensions": [
+          {
+            "name": "ra-ntier-install-cassandra-ext",
+            "settingsConfigMapperUri": "https://raw.githubusercontent.com/mspnp/reference-architectures/kirpas/ra-ntier-db/guidance-compute-n-tier/extensions/linux/cassandra-mapper.json",
+            "publisher": "Microsoft.OSTCExtensions",
+            "type": "CustomScriptForLinux",
+            "typeHandlerVersion": "1.5",
+            "autoUpgradeMinorVersion": true,
+            "properties": { }
+          }
+        ],
         "availabilitySet": {
-          "useExistingAvailabilitySet": "No",
+          "useExistingAvailabilitySet": "Yes",
           "name": "ra-ntier-data-as"
         }
       }
@@ -50,13 +61,13 @@
     "virtualNetworkSettings": {
       "value": {
         "name": "ra-ntier-vnet",
-        "resourceGroup": "ra-ntier-vm-rg"
+        "resourceGroup": "ra-ntier-cassandra-rg"
       }
     },
     "buildingBlockSettings": {
       "value": {
-        "storageAccountsCount": 2,
-        "vmCount": 2,
+        "storageAccountsCount": 3,
+        "vmCount": 3,
         "vmStartIndex": 1
       }
     }
