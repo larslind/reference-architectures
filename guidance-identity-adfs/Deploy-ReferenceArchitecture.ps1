@@ -188,13 +188,6 @@ if ($Mode -eq "AzureADDS" -Or $Mode -eq "Basic") {
     New-AzureRmResourceGroupDeployment -Name "ra-adfs-adds-deployment" -ResourceGroupName $addsResourceGroup.ResourceGroupName `
         -TemplateUri $virtualMachineTemplate.AbsoluteUri -TemplateParameterFile $azureAddsVirtualMachinesParametersFile
 
-    $azureNetworkResourceGroup = Get-AzureRmResourceGroup -Name $azureNetworkResourceGroupName
-    # Update DNS server to point to onpremise and azure
-    Write-Host "Updating virtual network DNS..."
-    New-AzureRmResourceGroupDeployment -Name "ra-adfs-vnet-onpremise-azure-dns-deployment" `
-        -ResourceGroupName $azureNetworkResourceGroup.ResourceGroupName `
-        -TemplateUri $virtualNetworkTemplate.AbsoluteUri -TemplateParameterFile $azureVirtualNetworkOnpremiseAndAzureDnsParametersFile
-
     # Join the domain
     Write-Host "Joining ADDS Vms to domain..."
     New-AzureRmResourceGroupDeployment -Name "ra-adfs-adds-join-domain-deployment" `
@@ -206,6 +199,13 @@ if ($Mode -eq "AzureADDS" -Or $Mode -eq "Basic") {
     New-AzureRmResourceGroupDeployment -Name "ra-adfs-adds-dc-deployment" `
         -ResourceGroupName $addsResourceGroup.ResourceGroupName `
         -TemplateUri $virtualMachineExtensionsTemplate.AbsoluteUri -TemplateParameterFile $azureAddAddsDomainControllerExtensionParametersFile
+
+    $azureNetworkResourceGroup = Get-AzureRmResourceGroup -Name $azureNetworkResourceGroupName
+    # Update DNS server to point to onpremise and azure
+    Write-Host "Updating virtual network DNS..."
+    New-AzureRmResourceGroupDeployment -Name "ra-adfs-vnet-onpremise-azure-dns-deployment" `
+        -ResourceGroupName $azureNetworkResourceGroup.ResourceGroupName `
+        -TemplateUri $virtualNetworkTemplate.AbsoluteUri -TemplateParameterFile $azureVirtualNetworkOnpremiseAndAzureDnsParametersFile
 
     Write-Host "Create group management service account and DNS record for ADFS..."
     New-AzureRmResourceGroupDeployment -Name "ra-adfs-adds-create-gmsa-and-dns-entry-for-adfs-deployment" `
