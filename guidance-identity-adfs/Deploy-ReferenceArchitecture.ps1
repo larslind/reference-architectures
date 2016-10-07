@@ -304,7 +304,7 @@ if ($Mode -eq "ADFSService") {
 	Write-Host  "browse to https://adfs.contoso.com/adfs/ls/idpinitiatedsignon.htm from jumpbox to test the adfs installation"
 }
 
-if ($Mode -eq "AdfsProxyservice") {
+if ($Mode -eq "Adfsproxyservice") {
 
 
     Write-Host "Creating the first ADFS farm node ..."
