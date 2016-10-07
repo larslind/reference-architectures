@@ -4,8 +4,7 @@
   "parameters": {
     "virtualNetworkSettings": {
       "value": {
-        "name": "ra-single-vm-vnet",
-        "resourceGroup": "ra-single-vm-rg"
+        "name": "ra-single-vm-vnet"
       }
     },
     "networkSecurityGroupsSettings": {
@@ -13,7 +12,7 @@
         {
           "name": "ra-single-vm-nsg",
           "subnets": [
-            "ra-single-vm-sn"
+            "web"
           ],
           "networkInterfaces": [
           ],

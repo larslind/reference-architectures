@@ -5,14 +5,13 @@
     "virtualNetworkSettings": {
       "value": {
         "name": "ra-single-vm-vnet",
-        "resourceGroup": "ra-single-vm-rg",
         "addressPrefixes": [
-          "172.17.0.0/16"
+          "10.0.0.0/16"
         ],
         "subnets": [
           {
-            "name": "ra-single-vm-sn",
-            "addressPrefix": "172.17.0.0/24"
+            "name": "web",
+            "addressPrefix": "10.0.1.0/24"
           }
         ],
         "dnsServers": [ ]
