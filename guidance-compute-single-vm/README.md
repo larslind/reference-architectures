@@ -13,15 +13,12 @@ You can deploy these template building blocks by using:
 - [a PowerShell script][solution-psscript]
 - [a bash script][solution-shscript]
 
-[AZURE.NOTE] The [Solution deployment][deployment] section details how you can deploy the sample solution.
-
 Each building block consumes a parameter file that you can download and modify for your own environment. The parameters used in this deployment scenario are as follows.
 
 ### Virtual network
 
 Download the [virtualNetwork.parameters.json][vnet-parameters] and make any necessary changes. You can learn about each parameter used in this file in the [vnet-n-subnet][bb-vnet] building block **readme** page. The parameter file used in this scenario creates a vnet with a single subnet, using 10.0.1.0/24 as its CIDR as follows.
 
-    ```json
 	  "parameters": {
 	    "virtualNetworkSettings": {
 	      "value": {
@@ -39,13 +36,11 @@ Download the [virtualNetwork.parameters.json][vnet-parameters] and make any nece
 	      }
 	    }
 	  }
-    ```
 
 ### Network security group
 
 Download the [networkSecurityGroup.parameters.json][nsg-parameters] and make any necessary changes. You can learn about each parameter used in this file in the [networkSecurityGroups][bb-nsg] building block **readme** page. The parameter file used in this scenario creates an NSG with a single rule, allowing SSH access, linked to the **web** subnet as follows.
 
-    ```json
 	  "parameters": {
 	    "virtualNetworkSettings": {
 	      "value": {
@@ -79,12 +74,11 @@ Download the [networkSecurityGroup.parameters.json][nsg-parameters] and make any
 	      ]
 	    }
 	  }
-    ```
+
 ### Virtual machine
 
-Download the [virtualMachineParameters.json][vm-parameters]] and make any necessary changes. You can learn about each parameter used in this file in the [multi-vm-n-nic-m-storage][bb-vm] building block **readme** page. The parameter file used in this scenario creates a single Linux VM with a NIC, a public IP address, and two data disks as follows.
+Download the [virtualMachineParameters.json][vm-parameters] and make any necessary changes. You can learn about each parameter used in this file in the [multi-vm-n-nic-m-storage][bb-vm] building block **readme** page. The parameter file used in this scenario creates a single Linux VM with a NIC, a public IP address, and two data disks as follows.
 
-	```json
 	  "parameters": {
 	    "virtualMachinesSettings": {
 	      "value": {
@@ -145,7 +139,6 @@ Download the [virtualMachineParameters.json][vm-parameters]] and make any necess
 	      }
 	    }
 	  }
-	```
 
 ## Solution deployment
 
@@ -167,7 +160,7 @@ You can deploy this reference architecture by using PowerShell, bash, or the Azu
 
 3. In the Azure portal, specify the **Subscription**, **Resource group**, and **Location** you want to use for your deployment.
 
-**Note** Make sure the **Resource group** name used matches the value used in your parameter files.
+	**Note** Make sure the **Resource group** name used matches the value used in your parameter files.
 
 4. In the **Parameter Root Uri** textbox, type the URL where you copied your parameter files to. Remember, this must be a publicly accessible URL.
 
@@ -180,18 +173,15 @@ You can deploy this reference architecture by using PowerShell, bash, or the Azu
 
 2. Run the cmdlet below using your own subscription id, location, OS type, and resource group name.
 
-	```powershell
 	.\Deploy-ReferenceArchitecture -SubscriptionId <id> -Location <location> -OSType <linux|windows> -ResourceGroup <resource group>
-	``` 
 
 ### Bash
 1. Open a bash console and navigate to the folder where you downloaded the script and parameter files.
 
 2. Run the command below using your own subscription id, location, OS type, and resource group name.
 
-	```powershell
 	sh deploy-reference-architecture.sh -s <subscription id> -l <location> -o <linux|windows> -r <resource group>
-	``` 
+
 <!-- links -->
 [0]: ./diagram.png
 [bb]: https://github.com/mspnp/template-building-blocks
