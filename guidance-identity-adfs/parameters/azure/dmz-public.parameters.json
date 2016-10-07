@@ -17,6 +17,11 @@
               "port": 80,
               "protocol": "Tcp",
               "healthProbe": "hp1"
+            },
+            {
+              "port": 443,
+              "protocol": "Tcp",
+              "healthProbe": "hp2"
             }
           ],
           "healthProbes": [
@@ -25,6 +30,12 @@
               "port": 80,
               "protocol": "http",
               "requestPath": "/"
+            },
+            {
+              "name": "hp2",
+              "port": 443,
+              "protocol": "Tcp",
+              "requestPath": null
             }
           ],
           "virtualMachineSettings": {

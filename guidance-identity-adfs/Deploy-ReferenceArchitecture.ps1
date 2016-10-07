@@ -307,12 +307,12 @@ if ($Mode -eq "ADFSService") {
 if ($Mode -eq "Adfsproxyservice") {
 
 
-    Write-Host "Creating the first ADFS farm node ..."
+    Write-Host "Creating the first ADFS proxy farm node ..."
     New-AzureRmResourceGroupDeployment -Name "ra-adfs-proxy-farm-first-node-deployment" `
         -ResourceGroupName $adfsproxyResourceGroupName `
         -TemplateUri $virtualMachineExtensionsTemplate.AbsoluteUri -TemplateParameterFile $azureAdfsproxyFarmFirstExtensionParametersFile
 
-    Write-Host "Creating the rest ADFS farm nodes ..."
+    Write-Host "Creating the rest ADFS proxy farm nodes ..."
     New-AzureRmResourceGroupDeployment -Name "ra-adfs-proxy-farm-rest-node-deployment" `
         -ResourceGroupName $adfsproxyResourceGroupName `
         -TemplateUri $virtualMachineExtensionsTemplate.AbsoluteUri -TemplateParameterFile $azureAdfsproxyFarmRestExtensionParametersFile
