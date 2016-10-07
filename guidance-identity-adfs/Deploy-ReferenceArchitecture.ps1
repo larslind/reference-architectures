@@ -90,7 +90,7 @@ $workloadResourceGroupName = "ra-adfs-workload-rg"
 $securityResourceGroupName = "ra-adfs-security-rg"
 $addsResourceGroupName = "ra-adfs-adds-rg"
 $adfsResourceGroupName = "ra-adfs-adfs-rg"
-$adfsproxyResourceGroupName = "ra-adfs-adfsproxy-rg"
+$adfsproxyResourceGroupName = "ra-adfs-proxy-rg"
 
 # Login to Azure and select your subscription
 Login-AzureRmAccount -SubscriptionId $SubscriptionId | Out-Null
