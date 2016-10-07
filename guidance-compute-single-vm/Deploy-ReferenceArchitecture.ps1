@@ -4,6 +4,8 @@
 param(
   [Parameter(Mandatory=$true)]
   $SubscriptionId,
+  [Parameter(Mandatory=$true)]
+  $ResourceGroupName,
   [Parameter(Mandatory=$false)]
   $Location = "Central US",
   [Parameter(Mandatory=$false)]
@@ -34,12 +36,11 @@ $virtualNetworkParametersFile = [System.IO.Path]::Combine($PSScriptRoot, "parame
 $virtualMachineParametersFile = [System.IO.Path]::Combine($PSScriptRoot, "parameters", $OSType.ToLower(), "virtualMachine.parameters.json")
 $networkSecurityGroupParametersFile = [System.IO.Path]::Combine($PSScriptRoot, "parameters", $OSType.ToLower(), "networkSecurityGroups.parameters.json")
 
-$resourceGroupName = "ra-single-vm-rg"
 # Login to Azure and select your subscription
 Login-AzureRmAccount -SubscriptionId $SubscriptionId | Out-Null
 
 # Create the resource group
-$resourceGroup = New-AzureRmResourceGroup -Name $resourceGroupName -Location $Location
+$resourceGroup = New-AzureRmResourceGroup -Name $ResourceGroupName -Location $Location
 
 Write-Host "Deploying virtual network..."
 New-AzureRmResourceGroupDeployment -Name "ra-single-vm-vnet-deployment" -ResourceGroupName $resourceGroup.ResourceGroupName `
