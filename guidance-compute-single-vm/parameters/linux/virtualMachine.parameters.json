@@ -14,7 +14,7 @@
         "nics": [
           {
             "isPublic": "true",
-            "subnetName": "ra-single-vm-sn",
+            "subnetName": "subnet1",
             "privateIPAllocationMethod": "dynamic",
             "publicIPAllocationMethod": "dynamic",
             "enableIPForwarding": false,
