@@ -173,7 +173,7 @@ You can deploy this reference architecture by using PowerShell, bash, or the Azu
 
 2. Run the cmdlet below using your own subscription id, location, OS type, and resource group name.
 
-	.\Deploy-ReferenceArchitecture -SubscriptionId <id> -Location <location> -OSType <linux|windows> -ResourceGroup <resource group>
+	.\Deploy-ReferenceArchitecture -SubscriptionId <id> -Location <location> -OSType <linux|windows> -ResourceGroupName <resource group>
 
 ### Bash
 1. Open a bash console and navigate to the folder where you downloaded the script and parameter files.
