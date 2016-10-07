@@ -21,72 +21,69 @@ Each building block consumes a parameter file that you can download and modify f
 
 Download the [virtualNetwork.parameters.json][vnet-parameters] and make any necessary changes. You can learn about each parameter used in this file in the [vnet-n-subnet][bb-vnet] building block **readme** page. The parameter file used in this scenario creates a vnet with a single subnet, using 10.0.1.0/24 as its CIDR as follows.
 
-    <!-- source: https://github.com/mspnp/reference-architectures/blob/master/guidance-compute-single-vm/parameters/linux/virtualNetwork.parameters.json#L4-L21 -->
     ```json
-  "parameters": {
-    "virtualNetworkSettings": {
-      "value": {
-        "name": "ra-single-vm-vnet",
-        "addressPrefixes": [
-          "10.0.0.0/16"
-        ],
-        "subnets": [
-          {
-            "name": "web",
-            "addressPrefix": "10.0.1.0/24"
-          }
-        ],
-        "dnsServers": [ ]
-      }
-    }
-  }
+	  "parameters": {
+	    "virtualNetworkSettings": {
+	      "value": {
+	        "name": "ra-single-vm-vnet",
+	        "addressPrefixes": [
+	          "10.0.0.0/16"
+	        ],
+	        "subnets": [
+	          {
+	            "name": "web",
+	            "addressPrefix": "10.0.1.0/24"
+	          }
+	        ],
+	        "dnsServers": [ ]
+	      }
+	    }
+	  }
     ```
 
 ### Network security group
 
 Download the [networkSecurityGroup.parameters.json][nsg-parameters] and make any necessary changes. You can learn about each parameter used in this file in the [networkSecurityGroups][bb-nsg] building block **readme** page. The parameter file used in this scenario creates an NSG with a single rule, allowing SSH access, linked to the **web** subnet as follows.
 
-    <!-- source: https://github.com/mspnp/reference-architectures/blob/master/guidance-compute-single-vm/parameters/linux/networkSecurityGroups.parameters.json#L4-L36 -->
     ```json
-  "parameters": {
-    "virtualNetworkSettings": {
-      "value": {
-        "name": "ra-single-vm-vnet",
-        "resourceGroup": "ra-single-vm-rg"
-      }
-    },
-    "networkSecurityGroupsSettings": {
-      "value": [
-        {
-          "name": "ra-single-vm-nsg",
-          "subnets": [
-            "web"
-          ],
-          "networkInterfaces": [
-          ],
-          "securityRules": [
-            {
-              "name": "default-allow-ssh",
-              "direction": "Inbound",
-              "priority": 1000,
-              "sourceAddressPrefix": "*",
-              "destinationAddressPrefix": "*",
-              "sourcePortRange": "*",
-              "destinationPortRange": "22",
-              "access": "Allow",
-              "protocol": "Tcp"
-            }
-          ]
-        }
-      ]
-    }
-  }
+	  "parameters": {
+	    "virtualNetworkSettings": {
+	      "value": {
+	        "name": "ra-single-vm-vnet",
+	        "resourceGroup": "ra-single-vm-rg"
+	      }
+	    },
+	    "networkSecurityGroupsSettings": {
+	      "value": [
+	        {
+	          "name": "ra-single-vm-nsg",
+	          "subnets": [
+	            "web"
+	          ],
+	          "networkInterfaces": [
+	          ],
+	          "securityRules": [
+	            {
+	              "name": "default-allow-ssh",
+	              "direction": "Inbound",
+	              "priority": 1000,
+	              "sourceAddressPrefix": "*",
+	              "destinationAddressPrefix": "*",
+	              "sourcePortRange": "*",
+	              "destinationPortRange": "22",
+	              "access": "Allow",
+	              "protocol": "Tcp"
+	            }
+	          ]
+	        }
+	      ]
+	    }
+	  }
     ```
 ### Virtual machine
 
 Download the [virtualMachineParameters.json][vm-parameters]] and make any necessary changes. You can learn about each parameter used in this file in the [multi-vm-n-nic-m-storage][bb-vm] building block **readme** page. The parameter file used in this scenario creates a single Linux VM with a NIC, a public IP address, and two data disks as follows.
 
-	<!-- source: https://github.com/mspnp/reference-architectures/blob/master/guidance-compute-single-vm/parameters/linux/virtualMachine.parameters.json#L4-L63 -->
 	```json
 	  "parameters": {
 	    "virtualMachinesSettings": {
