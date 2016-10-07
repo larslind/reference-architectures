@@ -1,0 +1,66 @@
+﻿{
+  "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "templateRootUri": {
+      "type": "string",
+      "defaultValue": "https://raw.githubusercontent.com/mspnp/template-building-blocks/master/",
+      "metadata": {
+        "description": "Root path for templates"
+      }
+    },
+    "parameterRootUri": {
+      "type": "string",
+      "defaultValue": "https://aotemplates.blob.core.windows.net/ratemplates/guidance-compute-n-tier-sql/parameters/",
+      "metadata": {
+        "decription": "Root path for parameters"
+      }
+    }
+  },
+  "variables": {
+    "templates": {
+      "deployment": {
+        "loadBalancer": "[concat(parameters('templateRootUri'), 'templates/buildingBlocks/loadBalancer-backend-n-vm/azuredeploy.json')]",
+        "virtualMachine": "[concat(parameters('templateRootUri'), 'templates/buildingBlocks/multi-vm-n-nic-m-storage/azuredeploy.json')]"
+      },
+      "parameter": {
+        "serviceA": "[concat(parameters('parameterRootUri'), 'serviceA.parameters.json')]",
+        "serviceB": "[concat(parameters('parameterRootUri'), 'serviceB.parameters.json')]",
+        "managementTier": "[concat(parameters('parameterRootUri'), 'virtualMachines-mgmt.parameters.json')]"
+      }
+    }
+  },
+  "resources": [
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2015-01-01",
+      "name": "ra-ntier-sql-serviceA-deployment",
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[variables('templates').deployment.loadBalancer]"
+        },
+        "parametersLink": {
+          "uri": "[variables('templates').parameter.serviceA]",
+          "contentVersion": "1.0.0.0"
+        }
+      }
+    },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2015-01-01",
+      "name": "ra-ntier-sql-serviceB-deployment",
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[variables('templates').deployment.loadBalancer]"
+        },
+        "parametersLink": {
+          "uri": "[variables('templates').parameter.serviceB]",
+          "contentVersion": "1.0.0.0"
+        }
+      }
+    }
+  ]
+}
+
