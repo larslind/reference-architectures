@@ -6,6 +6,8 @@ You can read the [guidance on deploying a single VM to Azure][guidance] document
 
 ## Solution components
 
+The reference architecture above is deployed using different building blocks for virtual network, network security group, and virtual machine.
+
 You can deploy these template building blocks by using:
 - [a template file][solution-template]
 - [a PowerShell script][solution-psscript]
@@ -163,7 +165,7 @@ You can deploy this reference architecture by using PowerShell, bash, or the Azu
 	<a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fmspnp%2Freference-architectures%2Fmaster%2Fguidance-compute-single-vm%2Fazuredeploy.json" target="_blank">
     <img src="http://azuredeploy.net/deploybutton.png"/></a>
 3. In the Azure portal, specify the **Subscription**, **Resource group**, and **Location** you want to use for your deployment.
-[AZURE.NOTE] Make sure the **Resource group** name used matches the value used in your parameter files.
+**Note** Make sure the **Resource group** name used matches the value used in your parameter files.
 4. In the **Parameter Root Uri** textbox, type the URL where you copied your parameter files to. Remember, this must be a publicly accessible URL.
 5. Specify the **OS Type** (Windows or Linux).
 6. Click **I agree to the terms and conditions stated above** and then click **Purchase**.
