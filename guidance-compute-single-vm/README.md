@@ -152,23 +152,32 @@ Download the [virtualMachineParameters.json][vm-parameters]] and make any necess
 You can deploy this reference architecture by using PowerShell, bash, or the Azure portal. To do so using your own parameter files, follow the instructions below.
 
 1. Download all the files and folders in this folder.
+
 2. In the **parameters** folder, customize each parameter file according to your needs.
+
 3. Follow the steps in one of the following sections to deploy your solution.
 
 ### Portal
 1. Copy your parameters files to a URI that is publicly accessible.
+
 2. Click the button below.
 
 	<a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fmspnp%2Freference-architectures%2Fmaster%2Fguidance-compute-single-vm%2Fazuredeploy.json" target="_blank">
     <img src="http://azuredeploy.net/deploybutton.png"/></a>
+
 3. In the Azure portal, specify the **Subscription**, **Resource group**, and **Location** you want to use for your deployment.
+
 **Note** Make sure the **Resource group** name used matches the value used in your parameter files.
+
 4. In the **Parameter Root Uri** textbox, type the URL where you copied your parameter files to. Remember, this must be a publicly accessible URL.
+
 5. Specify the **OS Type** (Windows or Linux).
+
 6. Click **I agree to the terms and conditions stated above** and then click **Purchase**.
 
 ### PowerShell
 1. Open a PowerShell console and navigate to the folder where you downloaded the script and parameter files.
+
 2. Run the cmdlet below using your own subscription id, location, OS type, and resource group name.
 
 	```powershell
@@ -177,6 +186,7 @@ You can deploy this reference architecture by using PowerShell, bash, or the Azu
 
 ### Bash
 1. Open a bash console and navigate to the folder where you downloaded the script and parameter files.
+
 2. Run the command below using your own subscription id, location, OS type, and resource group name.
 
 	```powershell
