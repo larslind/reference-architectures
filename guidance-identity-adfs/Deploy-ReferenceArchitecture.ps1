@@ -66,7 +66,7 @@ $azureAdfsFarmRestExtensionParametersFile = [System.IO.Path]::Combine($PSScriptR
 
 # Azure ADFS Proxy Parameter Files
 $adfsproxyLoadBalancerParametersFile = [System.IO.Path]::Combine($PSScriptRoot, "parameters\azure\loadBalancer-adfsproxy.parameters.json")
-$azureAdfsproxyFarmDomainJoinExtensionParametersFile = [System.IO.Path]::Combine($PSScriptRoot, "parameters\azure\adfsproxy-farm-domain-join.parameters.json")
+#$azureAdfsproxyFarmDomainJoinExtensionParametersFile = [System.IO.Path]::Combine($PSScriptRoot, "parameters\azure\adfsproxy-farm-domain-join.parameters.json")
 $azureAdfsproxyFarmFirstExtensionParametersFile = [System.IO.Path]::Combine($PSScriptRoot, "parameters\azure\adfsproxy-farm-first.parameters.json")
 $azureAdfsproxyFarmRestExtensionParametersFile = [System.IO.Path]::Combine($PSScriptRoot, "parameters\azure\adfsproxy-farm-rest.parameters.json")
 
@@ -251,17 +251,17 @@ if ($Mode -eq "AdfsproxyVM" -Or $Mode -eq "All") {
     New-AzureRmResourceGroupDeployment -Name "ra-adfs-adfs-deployment" -ResourceGroupName $adfsproxyResourceGroup.ResourceGroupName `
         -TemplateUri $loadBalancerTemplate.AbsoluteUri -TemplateParameterFile $adfsproxyLoadBalancerParametersFile
 
-    Write-Host "Joining Adfs proxy Vms to domain..."
-    New-AzureRmResourceGroupDeployment -Name "ra-adfs-adfs-farm-join-domain-deployment" `
-        -ResourceGroupName $adfsproxyResourceGroup.ResourceGroupName `
-        -TemplateUri $virtualMachineExtensionsTemplate.AbsoluteUri -TemplateParameterFile $azureAdfsproxyFarmDomainJoinExtensionParametersFile
+#    Write-Host "Joining Adfs proxy Vms to domain..."
+#    New-AzureRmResourceGroupDeployment -Name "ra-adfs-adfs-farm-join-domain-deployment" `
+#        -ResourceGroupName $adfsproxyResourceGroup.ResourceGroupName `
+#        -TemplateUri $virtualMachineExtensionsTemplate.AbsoluteUri -TemplateParameterFile $azureAdfsproxyFarmDomainJoinExtensionParametersFile
 }
 
     Write-Host "Please install certificate to adfs and adfsproxy first..."
 
 	# ###############################################
 	#  Manual steps to create a fake root certificate and and use it to create adfs.contoso.com.pfx
-	#  1. Log on your developer machine
+	#  1. Log on your developer machine (note: adfs boxes are domain joined, proxy boxes are not domain joined)
 	#  2. Download makecert.exe to 
 	#        C:/temp/makecert.exe 
 	#  3. Create my fake root certificate authority use command prompt
