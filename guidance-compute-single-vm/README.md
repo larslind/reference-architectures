@@ -86,66 +86,66 @@ Download the [virtualMachineParameters.json][vm-parameters]] and make any necess
 
 	<!-- source: https://github.com/mspnp/reference-architectures/blob/master/guidance-compute-single-vm/parameters/linux/virtualMachine.parameters.json#L4-L63 -->
 	```json
-  "parameters": {
-    "virtualMachinesSettings": {
-      "value": {
-        "namePrefix": "ra-single-vm",
-        "computerNamePrefix": "cn",
-        "size": "Standard_DS1_v2",
-        "osType": "linux",
-        "adminUsername": "",
-        "adminPassword": "",
-        "osAuthenticationType": "password",
-        "nics": [
-          {
-            "isPublic": "true",
-            "subnetName": "subnet1",
-            "privateIPAllocationMethod": "dynamic",
-            "publicIPAllocationMethod": "dynamic",
-            "enableIPForwarding": false,
-            "dnsServers": [
-            ],
-            "isPrimary": "true"
-          }
-        ],
-        "imageReference": {
-          "publisher": "Canonical",
-          "offer": "UbuntuServer",
-          "sku": "14.04.5-LTS",
-          "version": "latest"
-        },
-        "dataDisks": {
-          "count": 2,
-          "properties": {
-            "diskSizeGB": 128,
-            "caching": "None",
-            "createOption": "Empty"
-          }
-        },
-        "osDisk": {
-          "caching": "ReadWrite"
-        },
-        "extensions": [ ],
-        "availabilitySet": {
-          "useExistingAvailabilitySet": "No",
-          "name": ""
-        }
-      }
-    },
-    "virtualNetworkSettings": {
-      "value": {
-        "name": "ra-single-vm-vnet",
-        "resourceGroup": "ra-single-vm-rg"
-      }
-    },
-    "buildingBlockSettings": {
-      "value": {
-        "storageAccountsCount": 1,
-        "vmCount": 1,
-        "vmStartIndex": 0
-      }
-    }
-  }
+	  "parameters": {
+	    "virtualMachinesSettings": {
+	      "value": {
+	        "namePrefix": "ra-single-vm",
+	        "computerNamePrefix": "cn",
+	        "size": "Standard_DS1_v2",
+	        "osType": "linux",
+	        "adminUsername": "",
+	        "adminPassword": "",
+	        "osAuthenticationType": "password",
+	        "nics": [
+	          {
+	            "isPublic": "true",
+	            "subnetName": "subnet1",
+	            "privateIPAllocationMethod": "dynamic",
+	            "publicIPAllocationMethod": "dynamic",
+	            "enableIPForwarding": false,
+	            "dnsServers": [
+	            ],
+	            "isPrimary": "true"
+	          }
+	        ],
+	        "imageReference": {
+	          "publisher": "Canonical",
+	          "offer": "UbuntuServer",
+	          "sku": "14.04.5-LTS",
+	          "version": "latest"
+	        },
+	        "dataDisks": {
+	          "count": 2,
+	          "properties": {
+	            "diskSizeGB": 128,
+	            "caching": "None",
+	            "createOption": "Empty"
+	          }
+	        },
+	        "osDisk": {
+	          "caching": "ReadWrite"
+	        },
+	        "extensions": [ ],
+	        "availabilitySet": {
+	          "useExistingAvailabilitySet": "No",
+	          "name": ""
+	        }
+	      }
+	    },
+	    "virtualNetworkSettings": {
+	      "value": {
+	        "name": "ra-single-vm-vnet",
+	        "resourceGroup": "ra-single-vm-rg"
+	      }
+	    },
+	    "buildingBlockSettings": {
+	      "value": {
+	        "storageAccountsCount": 1,
+	        "vmCount": 1,
+	        "vmStartIndex": 0
+	      }
+	    }
+	  }
 	```
 
 ## Solution deployment
