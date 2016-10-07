@@ -66,7 +66,6 @@ $azureAdfsFarmRestExtensionParametersFile = [System.IO.Path]::Combine($PSScriptR
 
 # Azure ADFS Proxy Parameter Files
 $adfsproxyLoadBalancerParametersFile = [System.IO.Path]::Combine($PSScriptRoot, "parameters\azure\loadBalancer-adfsproxy.parameters.json")
-#$azureAdfsproxyFarmDomainJoinExtensionParametersFile = [System.IO.Path]::Combine($PSScriptRoot, "parameters\azure\adfsproxy-farm-domain-join.parameters.json")
 $azureAdfsproxyFarmFirstExtensionParametersFile = [System.IO.Path]::Combine($PSScriptRoot, "parameters\azure\adfsproxy-farm-first.parameters.json")
 $azureAdfsproxyFarmRestExtensionParametersFile = [System.IO.Path]::Combine($PSScriptRoot, "parameters\azure\adfsproxy-farm-rest.parameters.json")
 
@@ -250,11 +249,6 @@ if ($Mode -eq "AdfsproxyVM" -Or $Mode -eq "All") {
     Write-Host "Deploying Adfs proxy load balancer..."
     New-AzureRmResourceGroupDeployment -Name "ra-adfs-adfs-deployment" -ResourceGroupName $adfsproxyResourceGroup.ResourceGroupName `
         -TemplateUri $loadBalancerTemplate.AbsoluteUri -TemplateParameterFile $adfsproxyLoadBalancerParametersFile
-
-#    Write-Host "Joining Adfs proxy Vms to domain..."
-#    New-AzureRmResourceGroupDeployment -Name "ra-adfs-adfs-farm-join-domain-deployment" `
-#        -ResourceGroupName $adfsproxyResourceGroup.ResourceGroupName `
-#        -TemplateUri $virtualMachineExtensionsTemplate.AbsoluteUri -TemplateParameterFile $azureAdfsproxyFarmDomainJoinExtensionParametersFile
 }
 
     Write-Host "Please install certificate to adfs and adfsproxy first..."

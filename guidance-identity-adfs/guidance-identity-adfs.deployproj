@@ -40,7 +40,6 @@
     <None Include="extensions\gmsa.ps1" />
     <None Include="parameters\azure\adds-domain-join.parameters.json" />
     <None Include="parameters\azure\adfsproxy-farm-rest.parameters.json" />
-    <None Include="parameters\azure\adfsproxy-farm-domain-join.parameters.json" />
     <None Include="parameters\azure\adfsproxy-farm-first.parameters.json" />
     <None Include="parameters\azure\adfs-farm-domain-join.parameters.json" />
     <None Include="parameters\azure\adfs-farm-rest.parameters.json" />
