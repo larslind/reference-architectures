@@ -14,7 +14,7 @@
         "nics": [
           {
             "isPublic": "true",
-            "subnetName": "subnet1",
+            "subnetName": "web",
             "privateIPAllocationMethod": "dynamic",
             "publicIPAllocationMethod": "dynamic",
             "enableIPForwarding": false,

@@ -12,7 +12,7 @@
         {
           "name": "ra-single-vm-nsg",
           "subnets": [
-            "subnet1"
+            "web"
           ],
           "networkInterfaces": [
           ],
