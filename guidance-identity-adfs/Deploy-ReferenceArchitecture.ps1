@@ -9,8 +9,8 @@ param(
   $Location,
   
   [Parameter(Mandatory=$false)]
-  [ValidateSet("Basic", "Onpremise", "Infrastructure", "CreateVpn", "AzureADDS", "AdfsVm", "Adfs", "ProxyVm", "Proxy1", "Proxy2", "Workload", "PrivateDmz")]
-  $Mode = "Basic"
+  [ValidateSet("Prepare", "Onpremise", "Infrastructure", "CreateVpn", "AzureADDS", "AdfsVm", "Adfs", "ProxyVm", "Proxy1", "Proxy2", "Workload", "PrivateDmz")]
+  $Mode = "Prepare"
 )
 
 $ErrorActionPreference = "Stop"
@@ -98,7 +98,7 @@ Login-AzureRmAccount -SubscriptionId $SubscriptionId | Out-Null
 # Deploy On premises network and on premise ADDS
 ##########################################################################
 
-if ($Mode -eq "Onpremise" -Or $Mode -eq "Basic") {
+if ($Mode -eq "Onpremise" -Or $Mode -eq "Prepare") {
     $onpremiseNetworkResourceGroup = New-AzureRmResourceGroup -Name $onpremiseNetworkResourceGroupName -Location $Location
     Write-Host "Creating onpremise virtual network..."
     New-AzureRmResourceGroupDeployment -Name "ra-adfs-onpremise-vnet-deployment" `
@@ -131,7 +131,7 @@ if ($Mode -eq "Onpremise" -Or $Mode -eq "Basic") {
 # Deploy Vnet and VPN Infrastructure in cloud
 ##########################################################################
 
-if ($Mode -eq "Infrastructure" -Or $Mode -eq "Basic") {
+if ($Mode -eq "Infrastructure" -Or $Mode -eq "Prepare") {
     Write-Host "Creating ADDS resource group..."
     $azureNetworkResourceGroup = New-AzureRmResourceGroup -Name $azureNetworkResourceGroupName -Location $Location
 
@@ -149,7 +149,7 @@ if ($Mode -eq "Infrastructure" -Or $Mode -eq "Basic") {
         -TemplateUri $virtualMachineTemplate.AbsoluteUri -TemplateParameterFile $managementParametersFile
 }
 
-if ($Mode -eq "CreateVpn" -Or $Mode -eq "Basic") {
+if ($Mode -eq "CreateVpn" -Or $Mode -eq "Prepare") {
     $onpremiseNetworkResourceGroup = Get-AzureRmResourceGroup -Name $onpremiseNetworkResourceGroupName
     $azureNetworkResourceGroup = Get-AzureRmResourceGroup -Name $azureNetworkResourceGroupName
 
@@ -172,7 +172,7 @@ if ($Mode -eq "CreateVpn" -Or $Mode -eq "Basic") {
 # Deploy ADDS replication site in cloud
 ##########################################################################
 
-if ($Mode -eq "AzureADDS" -Or $Mode -eq "Basic") {
+if ($Mode -eq "AzureADDS" -Or $Mode -eq "Prepare") {
     # Add the replication site.
     $onpremiseNetworkResourceGroup = Get-AzureRmResourceGroup -Name $onpremiseNetworkResourceGroupName
     Write-Host "Creating ADDS replication site..."
@@ -218,7 +218,8 @@ if ($Mode -eq "AzureADDS" -Or $Mode -eq "Basic") {
 ##########################################################################
 
 if ($Mode -eq "AdfsVm") {
-    # Deploy ADFS VMs
+    # Create ADFS resoure group, loadbancer and VMs, then join Domain
+
     Write-Host "Creating ADFS resource group..."
     $adfsResourceGroup = New-AzureRmResourceGroup -Name $adfsResourceGroupName -Location $Location
 
@@ -233,13 +234,13 @@ if ($Mode -eq "AdfsVm") {
 }
 
 if ($Mode -eq "Adfs") {
-	#Deploy ADFS service in Adfs VMs
+	#Deploy ADFS service in the VMs
+
 	Write-Host  
     Write-Host "Please install certificate to all adfs VMs ..."
 	Write-Host  
 	Write-Host -NoNewLine 'Press any key to continue install ADFS services...'
 	$null = $Host.UI.RawUI.ReadKey('NoEcho,IncludeKeyDown');
-
 
     Write-Host "Creating the first ADFS farm node ..."
     New-AzureRmResourceGroupDeployment -Name "ra-adfs-adfs-farm-first-node-deployment" `
@@ -259,7 +260,7 @@ if ($Mode -eq "Adfs") {
 # Deploy ADFS Web Application Proxy Farm in cloud
 ##########################################################################
 if ($Mode -eq "ProxyVm") {
-    # Deploy Adfs Web Application Proxy VMs
+    # Create Web Application Proxy resoure group, loadbancer and VMs, and pubic DMZ
 
     Write-Host "Creating Adfs Proxy resource group..."
     $adfsproxyResourceGroup = New-AzureRmResourceGroup -Name $adfsproxyResourceGroupName -Location $Location
@@ -316,7 +317,8 @@ if ($Mode -eq "Proxy2") {
 ##########################################################################
 
 if ($Mode -eq "Workload") {
-    # Deploy workload tiers
+    # Deploy workload tiers: RG, web, biz, and data
+
     Write-Host "Creating workload resource group..."
     $workloadResourceGroup = New-AzureRmResourceGroup -Name $workloadResourceGroupName -Location $Location
 
