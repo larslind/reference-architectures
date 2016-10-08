@@ -258,7 +258,7 @@ if ($Mode -eq "Adfs") {
 ##########################################################################
 # Deploy ADFS Web Application Proxy Farm in cloud
 ##########################################################################
-if ($Mode -eq "ProxyVm" -Or $Mode -eq "Basic") {
+if ($Mode -eq "ProxyVm") {
     # Deploy Adfs Web Application Proxy VMs
 
     Write-Host "Creating Adfs Proxy resource group..."
