@@ -9,7 +9,7 @@ param(
   $Location,
   
   [Parameter(Mandatory=$false)]
-  [ValidateSet("Prepare", "Onpremise", "Infrastructure", "CreateVpn", "AzureADDS", "AdfsVm", "ProxyVm", "Adfs",  "Proxy", "Workload", "PrivateDmz")]
+  [ValidateSet("Prepare", "Adfs",  "Proxy", "Onpremise", "Infrastructure", "CreateVpn", "AzureADDS", "AdfsVm", "ProxyVm", "Workload", "PrivateDmz")]
   $Mode = "Prepare"
 )
 
