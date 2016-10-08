@@ -9,7 +9,7 @@ param(
   $Location,
   
   [Parameter(Mandatory=$false)]
-  [ValidateSet("Prepare", "Onpremise", "Infrastructure", "CreateVpn", "AzureADDS", "AdfsVm", "Adfs", "ProxyVm", "Proxy1", "Proxy2", "Workload", "PrivateDmz")]
+  [ValidateSet("Prepare", "Onpremise", "Infrastructure", "CreateVpn", "AzureADDS", "AdfsVm", "ProxyVm", "Adfs",  "Proxy", "Workload", "PrivateDmz")]
   $Mode = "Prepare"
 )
 
@@ -214,10 +214,10 @@ if ($Mode -eq "AzureADDS" -Or $Mode -eq "Prepare") {
 }
 
 ##########################################################################
-# Deploy ADFS Farm in cloud
+# Prepare ADFS Farm VMs in cloud (ADFS service is not installed here)
 ##########################################################################
 
-if ($Mode -eq "AdfsVm") {
+if ($Mode -eq "AdfsVm" -Or $Mode -eq "Prepare") {
     # Create ADFS resoure group, loadbancer and VMs, then join Domain
 
     Write-Host "Creating ADFS resource group..."
@@ -233,14 +233,47 @@ if ($Mode -eq "AdfsVm") {
         -TemplateUri $virtualMachineExtensionsTemplate.AbsoluteUri -TemplateParameterFile $azureAdfsFarmDomainJoinExtensionParametersFile
 }
 
-if ($Mode -eq "Adfs") {
-	#Deploy ADFS service in the VMs
+##########################################################################
+# Prepare ADFS Web Application Proxy Vms in cloud (Proxy service is not installed here)
+##########################################################################
+if ($Mode -eq "ProxyVm" -Or $Mode -eq "Prepare") {
+    # Create Web Application Proxy resoure group, loadbancer and VMs, and pubic DMZ
 
+    Write-Host "Creating Adfs Proxy resource group..."
+    $adfsproxyResourceGroup = New-AzureRmResourceGroup -Name $adfsproxyResourceGroupName -Location $Location
+
+    Write-Host "Deploying Adfs proxy load balancer..."
+    New-AzureRmResourceGroupDeployment -Name "ra-adfs-adfs-deployment" -ResourceGroupName $adfsproxyResourceGroup.ResourceGroupName `
+        -TemplateUri $loadBalancerTemplate.AbsoluteUri -TemplateParameterFile $adfsproxyLoadBalancerParametersFile
+
+    # Deploy Public DMZ for ADFS Web Application Proxy
+    $azureNetworkResourceGroup = Get-AzureRmResourceGroup -Name $azureNetworkResourceGroupName
+
+    Write-Host "Deploying public DMZ..."
+    New-AzureRmResourceGroupDeployment -Name "ra-adfs-dmz-public-deployment" -ResourceGroupName $azureNetworkResourceGroup.ResourceGroupName `
+        -TemplateUri $dmzTemplate.AbsoluteUri -TemplateParameterFile $publicDmzParametersFile
+
+	Write-Host "Preparation is completed."
+	Write-Host  
+    Write-Host "Please install certificate to all adfs and proxy VMs"
+}
+
+
+
+##########################################################################
+# Install ADFS Services in ADFS Farm Vms in cloud
+##########################################################################
+if ($Mode -eq "Adfs") {
+	# Deploy ADFS service in the VMs
+
+	####################
+	### Manual steps ...
 	Write-Host  
     Write-Host "Please install certificate to all adfs VMs ..."
 	Write-Host  
 	Write-Host -NoNewLine 'Press any key to continue install ADFS services...'
 	$null = $Host.UI.RawUI.ReadKey('NoEcho,IncludeKeyDown');
+	####################
 
     Write-Host "Creating the first ADFS farm node ..."
     New-AzureRmResourceGroupDeployment -Name "ra-adfs-adfs-farm-first-node-deployment" `
@@ -257,59 +290,46 @@ if ($Mode -eq "Adfs") {
 }
 
 ##########################################################################
-# Deploy ADFS Web Application Proxy Farm in cloud
+# Install Web Application Proxy in ADFS Farm in cloud
 ##########################################################################
-if ($Mode -eq "ProxyVm") {
-    # Create Web Application Proxy resoure group, loadbancer and VMs, and pubic DMZ
 
-    Write-Host "Creating Adfs Proxy resource group..."
-    $adfsproxyResourceGroup = New-AzureRmResourceGroup -Name $adfsproxyResourceGroupName -Location $Location
-
-    Write-Host "Deploying Adfs proxy load balancer..."
-    New-AzureRmResourceGroupDeployment -Name "ra-adfs-adfs-deployment" -ResourceGroupName $adfsproxyResourceGroup.ResourceGroupName `
-        -TemplateUri $loadBalancerTemplate.AbsoluteUri -TemplateParameterFile $adfsproxyLoadBalancerParametersFile
-
-    # Deploy Public DMZ for ADFS Web Application Proxy
-    $azureNetworkResourceGroup = Get-AzureRmResourceGroup -Name $azureNetworkResourceGroupName
-
-    Write-Host "Deploying public DMZ..."
-    New-AzureRmResourceGroupDeployment -Name "ra-adfs-dmz-public-deployment" -ResourceGroupName $azureNetworkResourceGroup.ResourceGroupName `
-        -TemplateUri $dmzTemplate.AbsoluteUri -TemplateParameterFile $publicDmzParametersFile
-}
-
-
-if ($Mode -eq "Proxy1") {
+if ($Mode -eq "Proxy" ) {
 	# Install the first Adfs Web Appication Proxy in the VM proxy1
+
+	####################
+	### Manual steps ...
 	Write-Host  
-    Write-Host "Please install certificate to all adfs proxy VMs ..."
+    Write-Host "Please install certificate to all proxy VMs ..."
 	Write-Host  
 	Write-Host -NoNewLine 'Press any key to continue install ADFS web application proxy ...'
 	$null = $Host.UI.RawUI.ReadKey('NoEcho,IncludeKeyDown');
+	####################
 
     Write-Host "Creating the first ADFS proxy farm node ..."
     New-AzureRmResourceGroupDeployment -Name "ra-adfs-proxy-farm-first-node-deployment" `
         -ResourceGroupName $adfsproxyResourceGroupName `
         -TemplateUri $virtualMachineExtensionsTemplate.AbsoluteUri -TemplateParameterFile $azureAdfsproxyFarmFirstExtensionParametersFile
 
-	# To test the adfs deployment:
-	Write-Host  "browse to https://adfs.contoso.com/adfs/ls/idpinitiatedsignon.htm from your development machine to test the adfs proxy installation"
-}
-
-if ($Mode -eq "Proxy2") {
-	# Install the Adfs Web Appication Proxy in the rest VMs (proxy2 ..., )
-
+	####################
+	### Manual test ...
 	Write-Host  
 	Write-Host  "browse to https://adfs.contoso.com/adfs/ls/idpinitiatedsignon.htm from your development machine to test the adfs proxy installation before continueing deploy the rest proxy servers"
 	Write-Host  
 	Write-Host -NoNewLine 'Press any key to continue creating the rest ADFS web application proxy...'
 	$null = $Host.UI.RawUI.ReadKey('NoEcho,IncludeKeyDown');
+	####################
 
+	# Install the Adfs Web Appication Proxy in the rest VMs (proxy2 ..., )
     New-AzureRmResourceGroupDeployment -Name "ra-adfs-proxy-farm-rest-node-deployment" `
         -ResourceGroupName $adfsproxyResourceGroupName `
         -TemplateUri $virtualMachineExtensionsTemplate.AbsoluteUri -TemplateParameterFile $azureAdfsproxyFarmRestExtensionParametersFile
 	
-	# To test the adfs deployment:
-	Write-Host  "browse to https://adfs.contoso.com/adfs/ls/idpinitiatedsignon.htm from your development machine to test the adfs proxy installation"
+	####################
+	### Final test ...
+	Write-Host  
+	Write-Host  "Deployment Completed"
+	Write-Host  
+	Write-Host  "Please browse to https://adfs.contoso.com/adfs/ls/idpinitiatedsignon.htm from your development machine to test the adfs proxy installation"
 }
 
 ##########################################################################
