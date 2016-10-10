@@ -363,15 +363,17 @@ if ($Mode -eq "Proxy" ) {
 	Write-Host
 	Write-Host  "2. Select Resourece groups and go to ra-adfs-network-rg"
 	Write-Host
-	Write-Host  "3. Find the ip address of dmz-public-lb"
+	Write-Host  "3. write down the ip address of dmz-public-lb (e.g. 11.22.33.44)"
 	Write-Host
-	Write-Host  "4. Start notepad as admin and open c:\Windows\System32\drivers\etc\host"
+	Write-Host  "4. Start command prompt as admin and run:"
 	Write-Host
-	Write-Host  "5. Add the following line to the host file"
+	Write-Host  "      Notepad.exe c:\Windows\System32\drivers\etc\hosts"
 	Write-Host
-	Write-Host  "     11.22.33.44 adfs.contoso.com"
+	Write-Host  "5. Add the following line"
 	Write-Host
-	Write-Host  "6. Save host file and run the following command"
+	Write-Host  "      11.22.33.44 adfs.contoso.com (note: assume the ip is 11.22.33.44)"
+	Write-Host
+	Write-Host  "6. Save host file and run the following command to restart the dns client"
 	Write-Host
 	Write-Host  "     net stop ""dns client"""
 	Write-Host
