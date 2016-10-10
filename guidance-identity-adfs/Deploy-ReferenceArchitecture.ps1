@@ -271,15 +271,17 @@ if ($Mode -eq "Adfs") {
 	Write-Host  
     Write-Host "Please install certificate to all adfs VMs ..."
 	Write-Host  
-	Write-Host -NoNewLine 'Press any key to continue install ADFS services...'
+	Write-Host -NoNewLine 'Press any key to continue installing ADFS services...'
 	$null = $Host.UI.RawUI.ReadKey('NoEcho,IncludeKeyDown');
 	####################
 
+	Write-Host  
     Write-Host "Creating the first ADFS farm node ..."
     New-AzureRmResourceGroupDeployment -Name "ra-adfs-adfs-farm-first-node-deployment" `
         -ResourceGroupName $adfsResourceGroupName `
         -TemplateUri $virtualMachineExtensionsTemplate.AbsoluteUri -TemplateParameterFile $azureAdfsFarmFirstExtensionParametersFile
 
+	Write-Host  
     Write-Host "Creating the rest ADFS farm nodes ..."
     New-AzureRmResourceGroupDeployment -Name "ra-adfs-adfs-farm-rest-node-deployment" `
         -ResourceGroupName $adfsResourceGroupName `
@@ -290,7 +292,7 @@ if ($Mode -eq "Adfs") {
 }
 
 ##########################################################################
-# Install Web Application Proxy in ADFS Farm in cloud
+# Install Web Application Proxy in ADFS Proxy Farm in cloud
 ##########################################################################
 
 if ($Mode -eq "Proxy" ) {
@@ -301,10 +303,11 @@ if ($Mode -eq "Proxy" ) {
 	Write-Host  
     Write-Host "Please install certificate to all proxy VMs ..."
 	Write-Host  
-	Write-Host -NoNewLine 'Press any key to continue install ADFS web application proxy ...'
+	Write-Host -NoNewLine 'Press any key to continue installing ADFS web application proxy ...'
 	$null = $Host.UI.RawUI.ReadKey('NoEcho,IncludeKeyDown');
 	####################
 
+	Write-Host  
     Write-Host "Creating the first ADFS proxy farm node ..."
     New-AzureRmResourceGroupDeployment -Name "ra-adfs-proxy-farm-first-node-deployment" `
         -ResourceGroupName $adfsproxyResourceGroupName `
