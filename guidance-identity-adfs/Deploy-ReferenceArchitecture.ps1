@@ -259,6 +259,39 @@ if ($Mode -eq "ProxyVm" -Or $Mode -eq "Prepare") {
 }
 
 
+##########################################################################
+# Install certificate to ADFS VMs and ADFS Web Application Proxy VMs (manual step)
+##########################################################################
+#  Manual steps to create a fake root certificate and and use it to create adfs.contoso.com.pfx
+#  1. Log on your developer machine (note: adfs boxes are domain joined, proxy boxes are not domain joined)
+#  2. Download makecert.exe to 
+#        C:/temp/makecert.exe 
+#  3. Create my fake root certificate authority use command prompt
+#        makecert -sky exchange -pe -a sha256 -n "CN=MyFakeRootCertificateAuthority" -r -sv MyFakeRootCertificateAuthority.pvk MyFakeRootCertificateAuthority.cer -len 2048
+#  4. Verify that the foloiwng files are created
+# 	     C:/temp/MyFakeRootCertificateAuthority.cer
+# 	     C:/temp/MyFakeRootCertificateAuthority.pvk
+#  5. Run command prompt as admin to use my fake root certificate authority to generate a certificate for adfs.contoso.com
+#        makecert -sk pkey -iv MyFakeRootCertificateAuthority.pvk -a sha256 -n "CN=adfs.contoso.com , CN=enterpriseregistration.contoso.com" -ic MyFakeRootCertificateAuthority.cer -sr localmachine -ss my -sky exchange -pe
+#  6. Start MMC certificates console, expand to /Certificates (Local Computer)/Personal/Certificate/adfs.contoso.com and export the certificate with the private key to 
+#        C:/temp/adfs.contoso.com.pfx
+# ###############################################
+# Install certificate to the ADFS and ADFS Proxy VMs:
+# 1. Make sure you have a certificate adfs.contoso.com.pfx either self created or signed by VerifSign, Go Daddy, DigiCert, and etc.
+# 2. RDP to the each ADFS VM adfs1, adfs2, ...and each ADFS Proxy VM proxy1, proxy2, ...
+# 3. Copy to c:\temp the following file
+#		c:\temp\adfs.contoso.com.pfx 
+#       c:\MyFakeRootCertificateAuthority.cer  (if you created the above cert yourself )
+# 4. Run the following command prompt as admin:
+#    	certutil.exe -privatekey -importPFX my C:\temp\adfs.contoso.com.pfx NoExport
+#	    certutil.exe -addstore Root C:\temp\MyFakeRootCertificateAuthority.cer 
+# 5. Start MMC, Add Certificates Snap-in, sellect Computer account, and verify that the following certificate is installed:
+#      \Certificates (Local Computer)\Personal\Certificates\adfs.contoso.com
+#      \Certificates (Local Computer)\Trusted Root Certification Authorities\Certificates\MyFakeRootCertificateAuthority 
+##########################################################################
+
+
+
 
 ##########################################################################
 # Install ADFS Services in ADFS Farm Vms in cloud
@@ -320,13 +353,36 @@ if ($Mode -eq "Proxy" ) {
         -ResourceGroupName $adfsproxyResourceGroupName `
         -TemplateUri $virtualMachineExtensionsTemplate.AbsoluteUri -TemplateParameterFile $azureAdfsproxyFarmFirstExtensionParametersFile
 
+
 	####################
 	### Manual test ...
-	Write-Host  
-	Write-Host  "browse to https://adfs.contoso.com/adfs/ls/idpinitiatedsignon.htm from your development machine to test the adfs proxy installation before continueing deploy the rest proxy servers"
-	Write-Host  
+	Write-Host
+	Write-Host  "To test the adfs proxy deploment:"
+	Write-Host
+	Write-Host  "1. Start Azure Portal"
+	Write-Host
+	Write-Host  "2. Select Resourece groups and go to ra-adfs-network-rg"
+	Write-Host
+	Write-Host  "3. Find the ip address of dmz-public-lb"
+	Write-Host
+	Write-Host  "4. Start notepad as admin and open c:\Windows\System32\drivers\etc\host"
+	Write-Host
+	Write-Host  "5. Add the following line to the host file"
+	Write-Host
+	Write-Host  "     11.22.33.44 adfs.contoso.com"
+	Write-Host
+	Write-Host  "6. Save host file and run the following command"
+	Write-Host
+	Write-Host  "     net stop ""dns client"""
+	Write-Host
+	Write-Host  "7. Browse to:"
+	Write-Host
+	Write-Host  "     https://adfs.contoso.com/adfs/ls/idpinitiatedsignon.htm"
+	Write-Host
+	Write-Host
 	Write-Host -NoNewLine 'Press any key to continue creating the rest ADFS web application proxy...'
 	$null = $Host.UI.RawUI.ReadKey('NoEcho,IncludeKeyDown');
+	Write-Host
 	####################
 
 	# Install the Adfs Web Appication Proxy in the rest VMs (proxy2 ..., )
@@ -340,7 +396,36 @@ if ($Mode -eq "Proxy" ) {
 	Write-Host  "Deployment Completed"
 	Write-Host  
 	Write-Host  "Please browse to https://adfs.contoso.com/adfs/ls/idpinitiatedsignon.htm from your development machine to test the adfs proxy installation"
+	Write-Host  
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 ##########################################################################
 # Deployment workload and Private Dmz in cloud (optional for this guidance)
@@ -374,33 +459,3 @@ if ($Mode -eq "PrivateDmz") {
         -TemplateUri $dmzTemplate.AbsoluteUri -TemplateParameterFile $privateDmzParametersFile
 }
 
-##########################################################################
-# Install certificate to ADFS VMs and ADFS Web Application Proxy VMs (manual step)
-##########################################################################
-#  Manual steps to create a fake root certificate and and use it to create adfs.contoso.com.pfx
-#  1. Log on your developer machine (note: adfs boxes are domain joined, proxy boxes are not domain joined)
-#  2. Download makecert.exe to 
-#        C:/temp/makecert.exe 
-#  3. Create my fake root certificate authority use command prompt
-#        makecert -sky exchange -pe -a sha256 -n "CN=MyFakeRootCertificateAuthority" -r -sv MyFakeRootCertificateAuthority.pvk MyFakeRootCertificateAuthority.cer -len 2048
-#  4. Verify that the foloiwng files are created
-# 	     C:/temp/MyFakeRootCertificateAuthority.cer
-# 	     C:/temp/MyFakeRootCertificateAuthority.pvk
-#  5. Run command prompt as admin to use my fake root certificate authority to generate a certificate for adfs.contoso.com
-#        makecert -sk pkey -iv MyFakeRootCertificateAuthority.pvk -a sha256 -n "CN=adfs.contoso.com , CN=enterpriseregistration.contoso.com" -ic MyFakeRootCertificateAuthority.cer -sr localmachine -ss my -sky exchange -pe
-#  6. Start MMC certificates console, expand to /Certificates (Local Computer)/Personal/Certificate/adfs.contoso.com and export the certificate with the private key to 
-#        C:/temp/adfs.contoso.com.pfx
-# ###############################################
-# Install certificate to the ADFS and ADFS Proxy VMs:
-# 1. Make sure you have a certificate adfs.contoso.com.pfx either self created or signed by VerifSign, Go Daddy, DigiCert, and etc.
-# 2. RDP to the each ADFS VM adfs1, adfs2, ...and each ADFS Proxy VM proxy1, proxy2, ...
-# 3. Copy to c:\temp the following file
-#		c:\temp\adfs.contoso.com.pfx 
-#       c:\MyFakeRootCertificateAuthority.cer  (if you created the above cert yourself )
-# 4. Run the following command prompt as admin:
-#    	certutil.exe -privatekey -importPFX my C:\temp\adfs.contoso.com.pfx NoExport
-#	    certutil.exe -addstore Root C:\temp\MyFakeRootCertificateAuthority.cer 
-# 5. Start MMC, Add Certificates Snap-in, sellect Computer account, and verify that the following certificate is installed:
-#      \Certificates (Local Computer)\Personal\Certificates\adfs.contoso.com
-#      \Certificates (Local Computer)\Trusted Root Certification Authorities\Certificates\MyFakeRootCertificateAuthority 
-##########################################################################
