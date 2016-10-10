@@ -288,7 +288,14 @@ if ($Mode -eq "Adfs") {
         -TemplateUri $virtualMachineExtensionsTemplate.AbsoluteUri -TemplateParameterFile $azureAdfsFarmRestExtensionParametersFile
 	
 	# To test the adfs deployment:
-	Write-Host  "browse to https://adfs.contoso.com/adfs/ls/idpinitiatedsignon.htm from jumpbox to test the adfs installation"
+	Write-Host
+	Write-Host  "To test the adfs deploment:"
+	Write-Host
+	Write-Host  "1. Restart the jumpbox for the new DNS setting to take effect on the jumpbox"
+	Write-Host
+	Write-Host  "2. Remote Desktop to the jumpbox"
+	Write-Host
+	Write-Host  "3. Browse to https://adfs.contoso.com/adfs/ls/idpinitiatedsignon.htm"
 }
 
 ##########################################################################
