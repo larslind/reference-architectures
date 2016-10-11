@@ -13,7 +13,7 @@
         "osAuthenticationType": "password",
         "nics": [
           {
-            "isPublic": "true",
+            "isPublic": true,
             "subnetName": "web",
             "privateIPAllocationMethod": "dynamic",
             "publicIPAllocationMethod": "dynamic",
@@ -21,7 +21,7 @@
             "domainNameLabelPrefix": "",
             "dnsServers": [
             ],
-            "isPrimary": "true"
+            "isPrimary": true
           }
         ],
         "imageReference": {
