@@ -9,7 +9,7 @@ param(
   $Location,
   
   [Parameter(Mandatory=$false)]
-  [ValidateSet("Prepare", "Adfs",  "Proxy", "Onpremise", "Infrastructure", "CreateVpn", "AzureADDS", "AdfsVm", "ProxyVm", "Workload", "PrivateDmz")]
+  [ValidateSet("Prepare", "Adfs",  "Proxy", "Onpremise", "Infrastructure", "CreateVpn", "AzureADDS", "AdfsVm", "PublicDmz", "ProxyVm", "Workload", "PrivateDmz")]
   $Mode = "Prepare"
 )
 
@@ -236,8 +236,18 @@ if ($Mode -eq "AdfsVm" -Or $Mode -eq "Prepare") {
 ##########################################################################
 # Prepare ADFS Web Application Proxy Vms in cloud (Proxy service is not installed here)
 ##########################################################################
+
+if ($Mode -eq "PublicDMZ" -Or $Mode -eq "Prepare") {
+    # Deploy Public DMZ for ADFS Web Application Proxy
+    $azureNetworkResourceGroup = Get-AzureRmResourceGroup -Name $azureNetworkResourceGroupName
+
+    Write-Host "Deploying public DMZ..."
+    New-AzureRmResourceGroupDeployment -Name "ra-adfs-dmz-public-deployment" -ResourceGroupName $azureNetworkResourceGroup.ResourceGroupName `
+        -TemplateUri $dmzTemplate.AbsoluteUri -TemplateParameterFile $publicDmzParametersFile
+}
+
 if ($Mode -eq "ProxyVm" -Or $Mode -eq "Prepare") {
-    # Create Web Application Proxy resoure group, loadbancer and VMs, and pubic DMZ
+    # Create Web Application Proxy resoure group, loadbancer and VMs
 
     Write-Host "Creating Adfs Proxy resource group..."
     $adfsproxyResourceGroup = New-AzureRmResourceGroup -Name $adfsproxyResourceGroupName -Location $Location
@@ -246,13 +256,7 @@ if ($Mode -eq "ProxyVm" -Or $Mode -eq "Prepare") {
     New-AzureRmResourceGroupDeployment -Name "ra-adfs-adfs-deployment" -ResourceGroupName $adfsproxyResourceGroup.ResourceGroupName `
         -TemplateUri $loadBalancerTemplate.AbsoluteUri -TemplateParameterFile $adfsproxyLoadBalancerParametersFile
 
-    # Deploy Public DMZ for ADFS Web Application Proxy
-    $azureNetworkResourceGroup = Get-AzureRmResourceGroup -Name $azureNetworkResourceGroupName
-
-    Write-Host "Deploying public DMZ..."
-    New-AzureRmResourceGroupDeployment -Name "ra-adfs-dmz-public-deployment" -ResourceGroupName $azureNetworkResourceGroup.ResourceGroupName `
-        -TemplateUri $dmzTemplate.AbsoluteUri -TemplateParameterFile $publicDmzParametersFile
-
+	Write-Host  
 	Write-Host "Preparation is completed."
 	Write-Host  
     Write-Host "Please install certificate to all adfs and proxy VMs"
