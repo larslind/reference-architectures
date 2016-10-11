@@ -46,3 +46,5 @@ $thumbprint=(Get-ChildItem -DnsName $FederationName -Path cert:\LocalMachine\My)
 Install-WindowsFeature -IncludeManagementTools -name Web-Application-Proxy
 
 Install-WebApplicationProxy -FederationServiceTrustCredential $credential -CertificateThumbprint $thumbprint -FederationServiceName $FederationName 
+
+Restart-Computer

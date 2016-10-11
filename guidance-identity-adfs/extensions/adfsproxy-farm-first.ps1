@@ -48,3 +48,5 @@ Install-WindowsFeature -IncludeManagementTools -name Web-Application-Proxy
 Install-WebApplicationProxy -FederationServiceTrustCredential $credential -CertificateThumbprint $thumbprint -FederationServiceName $FederationName 
 
 Add-WebApplicationProxyApplication -BackendServerUrl "https://$FederationName" -ExternalCertificateThumbprint $thumbprint -ExternalUrl "https://$FederationName" -Name "Contoso App" -ExternalPreAuthentication PassThrough
+
+Restart-Computer
