@@ -9,7 +9,7 @@ param(
   $Location,
   
   [Parameter(Mandatory=$false)]
-  [ValidateSet("Prepare", "Adfs",  "Proxy", "Onpremise", "Infrastructure", "CreateVpn", "AzureADDS", "AdfsVm", "PublicDmz", "ProxyVm", "Workload", "PrivateDmz")]
+  [ValidateSet("Prepare", "Adfs",  "Proxy1", "Proxy2", "Onpremise", "Infrastructure", "CreateVpn", "AzureADDS", "AdfsVm", "PublicDmz", "ProxyVm", "Workload", "PrivateDmz")]
   $Mode = "Prepare"
 )
 
@@ -306,7 +306,7 @@ if ($Mode -eq "Adfs") {
 	####################
 	### Manual steps ...
 	Write-Host  
-    Write-Host "Please install certificate to all adfs VMs ..."
+    Write-Host "Please make sure that certificate is installed to all adfs VMs ..."
 	Write-Host  
 	Write-Host -NoNewLine 'Press any key to continue installing ADFS services...'
 	$null = $Host.UI.RawUI.ReadKey('NoEcho,IncludeKeyDown');
@@ -339,20 +339,20 @@ if ($Mode -eq "Adfs") {
 # Install Web Application Proxy in ADFS Proxy Farm in cloud
 ##########################################################################
 
-if ($Mode -eq "Proxy" ) {
+if ($Mode -eq "Proxy1" ) {
 	# Install the first Adfs Web Appication Proxy in the VM proxy1
 
 	####################
 	### Manual steps ...
 	Write-Host  
-    Write-Host "Please install certificate to all proxy VMs ..."
+    Write-Host "Please make sure that certificate is installed to all proxy VMs ..."
 	Write-Host  
 	Write-Host -NoNewLine 'Press any key to continue installing ADFS web application proxy ...'
 	$null = $Host.UI.RawUI.ReadKey('NoEcho,IncludeKeyDown');
 	####################
 
 	Write-Host  
-    Write-Host "Creating the first ADFS proxy farm node ..."
+    Write-Host "Install ADFS proxy in the first node ..."
     New-AzureRmResourceGroupDeployment -Name "ra-adfs-proxy-farm-first-node-deployment" `
         -ResourceGroupName $adfsproxyResourceGroupName `
         -TemplateUri $virtualMachineExtensionsTemplate.AbsoluteUri -TemplateParameterFile $azureAdfsproxyFarmFirstExtensionParametersFile
@@ -385,13 +385,17 @@ if ($Mode -eq "Proxy" ) {
 	Write-Host
 	Write-Host  "     https://adfs.contoso.com/adfs/ls/idpinitiatedsignon.htm"
 	Write-Host
+	Write-Host  " Please login to proxy1 to check any errors if the test fail. If proxy1 is OK, then stop proxy2 to test again"
 	Write-Host
-	Write-Host -NoNewLine 'Press any key to continue creating the rest ADFS web application proxy...'
-	$null = $Host.UI.RawUI.ReadKey('NoEcho,IncludeKeyDown');
+	Write-Host  " ReRun the deployment with -Mode Proy1 if there is a failure. "
 	Write-Host
 	####################
+}
 
+if ($Mode -eq "Proxy2" ) {
 	# Install the Adfs Web Appication Proxy in the rest VMs (proxy2 ..., )
+	Write-Host  
+    Write-Host "Install the Adfs Web Appication Proxy in the rest VMs (proxy2 ..., )"
     New-AzureRmResourceGroupDeployment -Name "ra-adfs-proxy-farm-rest-node-deployment" `
         -ResourceGroupName $adfsproxyResourceGroupName `
         -TemplateUri $virtualMachineExtensionsTemplate.AbsoluteUri -TemplateParameterFile $azureAdfsproxyFarmRestExtensionParametersFile
@@ -401,8 +405,13 @@ if ($Mode -eq "Proxy" ) {
 	Write-Host  
 	Write-Host  "Deployment Completed"
 	Write-Host  
-	Write-Host  "Please browse to https://adfs.contoso.com/adfs/ls/idpinitiatedsignon.htm from your development machine to test the adfs proxy installation"
+	Write-Host  "Please login to proxy2 to verify the web application proxy installation"
 	Write-Host  
+	Write-Host  "Please browse to https://adfs.contoso.com/adfs/ls/idpinitiatedsignon.htm from your development machine to test the adfs proxy installation. You may want to stop proxy1"
+	Write-Host  
+	Write-Host  " Run the deployment again with -Mode Proy2 if the proxy2 deployment fails. "
+	Write-Host
+
 }
 
 
