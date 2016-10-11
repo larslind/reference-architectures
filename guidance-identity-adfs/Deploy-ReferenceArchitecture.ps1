@@ -377,7 +377,7 @@ if ($Mode -eq "Proxy" ) {
 	Write-Host
 	Write-Host  "      11.22.33.44 adfs.contoso.com (note: assume the ip is 11.22.33.44)"
 	Write-Host
-	Write-Host  "6. Save host file and run the following command to restart the dns client"
+	Write-Host  "6. Save the hosts file and run the following command to restart the dns client"
 	Write-Host
 	Write-Host  "     net stop ""dns client"""
 	Write-Host
