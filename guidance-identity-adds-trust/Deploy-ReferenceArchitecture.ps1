@@ -47,7 +47,6 @@ $onpremiseVirtualNetworkDnsParametersFile = [System.IO.Path]::Combine($PSScriptR
 $onpremiseADDSVirtualMachinesParametersFile = [System.IO.Path]::Combine($PSScriptRoot, "parameters\onpremise\virtualMachines-adds.parameters.json")
 $onpremiseCreateAddsForestExtensionParametersFile = [System.IO.Path]::Combine($PSScriptRoot, "parameters\onpremise\create-adds-forest-extension.parameters.json")
 $onpremiseAddAddsDomainControllerExtensionParametersFile = [System.IO.Path]::Combine($PSScriptRoot, "parameters\onpremise\add-adds-domain-controller.parameters.json")
-$onpremiseReplicationSiteForestExtensionParametersFile = [System.IO.Path]::Combine($PSScriptRoot, "parameters\onpremise\create-azure-replication-site.parameters.json")
 $onpremiseVirtualNetworkGatewayParametersFile = [System.IO.Path]::Combine($PSScriptRoot, "parameters\onpremise\virtualNetworkGateway.parameters.json")
 $onpremiseConnectionParametersFile = [System.IO.Path]::Combine($PSScriptRoot, "parameters\onpremise\connection.parameters.json")
 
@@ -156,16 +155,12 @@ if ($Mode -eq "CreateVpn" -Or $Mode -eq "Prepare") {
 }
 
 ##########################################################################
-# Deploy ADDS replication site in cloud
+# Deploy ADDS forest in cloud
 ##########################################################################
 
 if ($Mode -eq "AzureADDS" -Or $Mode -eq "Prepare") {
-    # Add the replication site.
+    # Add the ADDS forest.
     $onpremiseNetworkResourceGroup = Get-AzureRmResourceGroup -Name $onpremiseNetworkResourceGroupName
-    Write-Host "Creating ADDS replication site..."
-    New-AzureRmResourceGroupDeployment -Name "ra-adtrust-site-replication-deployment" `
-        -ResourceGroupName $onpremiseNetworkResourceGroup.ResourceGroupName `
-        -TemplateUri $virtualMachineExtensionsTemplate.AbsoluteUri -TemplateParameterFile $onpremiseReplicationSiteForestExtensionParametersFile
 
     # Deploy AD tier
     Write-Host "Creating ADDS resource group..."
