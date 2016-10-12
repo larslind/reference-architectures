@@ -32,8 +32,8 @@
     <Content Include="parameters\azure\virtualNetwork.parameters.json" />
     <None Include="extensions\adds-forest.ps1" />
     <None Include="extensions\adds.ps1" />
-    <None Include="parameters\azure\adds-domain-join.parameters.json" />
     <None Include="parameters\azure\add-adds-domain-controller.parameters.json" />
+    <None Include="parameters\azure\create-adds-forest-extension.parameters.json" />
     <None Include="parameters\azure\dmz-private.parameters.json" />
     <None Include="parameters\azure\dmz-public.parameters.json" />
     <None Include="parameters\azure\loadBalancer-biz.parameters.json" />
