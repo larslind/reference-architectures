@@ -167,12 +167,13 @@ if ($Mode -eq "AzureADDS" -Or $Mode -eq "Prepare") {
 
     # "Deploying ADDS servers..."
     Write-Host "Deploying ADDS servers..."
-    New-AzureRmResourceGroupDeployment -Name "ra-adtrust-adds-deployment" -ResourceGroupName $addsResourceGroup.ResourceGroupName `
+    New-AzureRmResourceGroupDeployment -Name "ra-adtrust-adds-deployment" `
+		-ResourceGroupName $addsResourceGroup.ResourceGroupName `
         -TemplateUri $virtualMachineTemplate.AbsoluteUri -TemplateParameterFile $azureAddsVirtualMachinesParametersFile
 
     Write-Host "Creating ADDS forest..."
-    New-AzureRmResourceGroupDeployment -Name "ra-adtrust-onpremise-adds-forest-deployment" `
-        -ResourceGroupName $onpremiseNetworkResourceGroup.ResourceGroupName `
+    New-AzureRmResourceGroupDeployment -Name "ra-adtrust-azure-adds-forest-deployment" `
+        -ResourceGroupName $addsResourceGroup.ResourceGroupName `
         -TemplateUri $virtualMachineExtensionsTemplate.AbsoluteUri -TemplateParameterFile $azureCreateAddsForestExtensionParametersFile
 
     # Update DNS server to point to azure dns
