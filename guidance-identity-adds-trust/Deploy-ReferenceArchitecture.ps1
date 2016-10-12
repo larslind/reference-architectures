@@ -175,12 +175,6 @@ if ($Mode -eq "AzureADDS" -Or $Mode -eq "Prepare") {
         -ResourceGroupName $onpremiseNetworkResourceGroup.ResourceGroupName `
         -TemplateUri $virtualMachineExtensionsTemplate.AbsoluteUri -TemplateParameterFile $azureCreateAddsForestExtensionParametersFile
 
-    Write-Host "Creating ADDS domain controller..."
-    New-AzureRmResourceGroupDeployment -Name "ra-adtrust-azure-adds-dc-deployment" `
-        -ResourceGroupName $addsResourceGroup.ResourceGroupName `
-        -TemplateUri $virtualMachineExtensionsTemplate.AbsoluteUri -TemplateParameterFile $azureAddAddsDomainControllerExtensionParametersFile
-
-
     # Update DNS server to point to azure dns
     $azureNetworkResourceGroup = Get-AzureRmResourceGroup -Name $azureNetworkResourceGroupName
     Write-Host "Updating virtual network DNS..."
@@ -188,6 +182,10 @@ if ($Mode -eq "AzureADDS" -Or $Mode -eq "Prepare") {
         -ResourceGroupName $azureNetworkResourceGroup.ResourceGroupName `
         -TemplateUri $virtualNetworkTemplate.AbsoluteUri -TemplateParameterFile $azureVirtualNetworkOnpremiseAndAzureDnsParametersFile
 
+    Write-Host "Creating ADDS domain controller..."
+    New-AzureRmResourceGroupDeployment -Name "ra-adtrust-azure-adds-dc-deployment" `
+        -ResourceGroupName $addsResourceGroup.ResourceGroupName `
+        -TemplateUri $virtualMachineExtensionsTemplate.AbsoluteUri -TemplateParameterFile $azureAddAddsDomainControllerExtensionParametersFile
 }
 
 
