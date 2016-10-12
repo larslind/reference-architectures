@@ -9,7 +9,7 @@ param(
   $Location,
   
   [Parameter(Mandatory=$false)]
-  [ValidateSet("Prepare", "Adfs",  "Proxy1", "Proxy2", "Onpremise", "Infrastructure", "CreateVpn", "AzureADDS", "AdfsVm", "PublicDmz", "ProxyVm", "Workload", "PrivateDmz")]
+  [ValidateSet("Prepare", "Onpremise", "Infrastructure", "CreateVpn", "AzureADDS", "Workload", "PublicDmz", "PrivateDmz")]
   $Mode = "Prepare"
 )
 
@@ -57,17 +57,6 @@ $azureAddsVirtualMachinesParametersFile = [System.IO.Path]::Combine($PSScriptRoo
 $azureAddAddsDomainControllerExtensionParametersFile = [System.IO.Path]::Combine($PSScriptRoot, "parameters\azure\add-adds-domain-controller.parameters.json")
 $gmsaExtensionParametersFile = [System.IO.Path]::Combine($PSScriptRoot, "parameters\azure\gmsa.parameters.json")
 $joinAddsVmsToDomainExtensionParametersFile = [System.IO.Path]::Combine($PSScriptRoot, "parameters\azure\adds-domain-join.parameters.json")
-
-# Azure ADFS Parameter Files
-$adfsLoadBalancerParametersFile = [System.IO.Path]::Combine($PSScriptRoot, "parameters\azure\loadBalancer-adfs.parameters.json")
-$azureAdfsFarmDomainJoinExtensionParametersFile = [System.IO.Path]::Combine($PSScriptRoot, "parameters\azure\adfs-farm-domain-join.parameters.json")
-$azureAdfsFarmFirstExtensionParametersFile = [System.IO.Path]::Combine($PSScriptRoot, "parameters\azure\adfs-farm-first.parameters.json")
-$azureAdfsFarmRestExtensionParametersFile = [System.IO.Path]::Combine($PSScriptRoot, "parameters\azure\adfs-farm-rest.parameters.json")
-
-# Azure ADFS Proxy Parameter Files
-$adfsproxyLoadBalancerParametersFile = [System.IO.Path]::Combine($PSScriptRoot, "parameters\azure\loadBalancer-adfsproxy.parameters.json")
-$azureAdfsproxyFarmFirstExtensionParametersFile = [System.IO.Path]::Combine($PSScriptRoot, "parameters\azure\adfsproxy-farm-first.parameters.json")
-$azureAdfsproxyFarmRestExtensionParametersFile = [System.IO.Path]::Combine($PSScriptRoot, "parameters\azure\adfsproxy-farm-rest.parameters.json")
 
 
 $azureVirtualNetworkGatewayParametersFile = [System.IO.Path]::Combine($PSScriptRoot, "parameters\azure\virtualNetworkGateway.parameters.json")
@@ -213,225 +202,6 @@ if ($Mode -eq "AzureADDS" -Or $Mode -eq "Prepare") {
         -TemplateUri $virtualMachineExtensionsTemplate.AbsoluteUri -TemplateParameterFile $gmsaExtensionParametersFile
 }
 
-##########################################################################
-# Prepare ADFS Farm VMs in cloud (ADFS service is not installed here)
-##########################################################################
-
-if ($Mode -eq "AdfsVm" -Or $Mode -eq "Prepare") {
-    # Create ADFS resoure group, loadbancer and VMs, then join Domain
-
-    Write-Host "Creating ADFS resource group..."
-    $adfsResourceGroup = New-AzureRmResourceGroup -Name $adfsResourceGroupName -Location $Location
-
-    Write-Host "Deploying adfs load balancer..."
-    New-AzureRmResourceGroupDeployment -Name "ra-adfs-adfs-deployment" -ResourceGroupName $adfsResourceGroup.ResourceGroupName `
-        -TemplateUri $loadBalancerTemplate.AbsoluteUri -TemplateParameterFile $adfsLoadBalancerParametersFile
-
-    Write-Host "Joining ADFS Vms to domain..."
-    New-AzureRmResourceGroupDeployment -Name "ra-adfs-adfs-farm-join-domain-deployment" `
-        -ResourceGroupName $adfsResourceGroupName `
-        -TemplateUri $virtualMachineExtensionsTemplate.AbsoluteUri -TemplateParameterFile $azureAdfsFarmDomainJoinExtensionParametersFile
-}
-
-##########################################################################
-# Prepare ADFS Web Application Proxy Vms in cloud (Proxy service is not installed here)
-##########################################################################
-
-if ($Mode -eq "PublicDMZ" -Or $Mode -eq "Prepare") {
-    # Deploy Public DMZ for ADFS Web Application Proxy
-    $azureNetworkResourceGroup = Get-AzureRmResourceGroup -Name $azureNetworkResourceGroupName
-
-    Write-Host "Deploying public DMZ..."
-    New-AzureRmResourceGroupDeployment -Name "ra-adfs-dmz-public-deployment" -ResourceGroupName $azureNetworkResourceGroup.ResourceGroupName `
-        -TemplateUri $dmzTemplate.AbsoluteUri -TemplateParameterFile $publicDmzParametersFile
-}
-
-if ($Mode -eq "ProxyVm" -Or $Mode -eq "Prepare") {
-    # Create Web Application Proxy resoure group, loadbancer and VMs
-
-    Write-Host "Creating Adfs Proxy resource group..."
-    $adfsproxyResourceGroup = New-AzureRmResourceGroup -Name $adfsproxyResourceGroupName -Location $Location
-
-    Write-Host "Deploying Adfs proxy load balancer..."
-    New-AzureRmResourceGroupDeployment -Name "ra-adfs-adfs-deployment" -ResourceGroupName $adfsproxyResourceGroup.ResourceGroupName `
-        -TemplateUri $loadBalancerTemplate.AbsoluteUri -TemplateParameterFile $adfsproxyLoadBalancerParametersFile
-
-	Write-Host  
-	Write-Host "Preparation is completed."
-	Write-Host  
-    Write-Host "Please install certificate to all adfs and proxy VMs"
-}
-
-
-##########################################################################
-# Install certificate to ADFS VMs and ADFS Web Application Proxy VMs (manual step)
-##########################################################################
-#  Manual steps to create a fake root certificate and and use it to create adfs.contoso.com.pfx
-#  1. Log on your developer machine (note: adfs boxes are domain joined, proxy boxes are not domain joined)
-#  2. Download makecert.exe to 
-#        C:/temp/makecert.exe 
-#  3. Create my fake root certificate authority use command prompt
-#        makecert -sky exchange -pe -a sha256 -n "CN=MyFakeRootCertificateAuthority" -r -sv MyFakeRootCertificateAuthority.pvk MyFakeRootCertificateAuthority.cer -len 2048
-#  4. Verify that the foloiwng files are created
-# 	     C:/temp/MyFakeRootCertificateAuthority.cer
-# 	     C:/temp/MyFakeRootCertificateAuthority.pvk
-#  5. Run command prompt as admin to use my fake root certificate authority to generate a certificate for adfs.contoso.com
-#        makecert -sk pkey -iv MyFakeRootCertificateAuthority.pvk -a sha256 -n "CN=adfs.contoso.com , CN=enterpriseregistration.contoso.com" -ic MyFakeRootCertificateAuthority.cer -sr localmachine -ss my -sky exchange -pe
-#  6. Start MMC certificates console, expand to /Certificates (Local Computer)/Personal/Certificate/adfs.contoso.com and export the certificate with the private key to 
-#        C:/temp/adfs.contoso.com.pfx
-# ###############################################
-# Install certificate to the ADFS and ADFS Proxy VMs:
-# 1. Make sure you have a certificate adfs.contoso.com.pfx either self created or signed by VerifSign, Go Daddy, DigiCert, and etc.
-# 2. RDP to the each ADFS VM adfs1, adfs2, ...and each ADFS Proxy VM proxy1, proxy2, ...
-# 3. Copy to c:\temp the following file
-#		c:\temp\adfs.contoso.com.pfx 
-#       c:\MyFakeRootCertificateAuthority.cer  (if you created the above cert yourself )
-# 4. Run the following command prompt as admin:
-#    	certutil.exe -privatekey -importPFX my C:\temp\adfs.contoso.com.pfx NoExport
-#	    certutil.exe -addstore Root C:\temp\MyFakeRootCertificateAuthority.cer 
-# 5. Start MMC, Add Certificates Snap-in, sellect Computer account, and verify that the following certificate is installed:
-#      \Certificates (Local Computer)\Personal\Certificates\adfs.contoso.com
-#      \Certificates (Local Computer)\Trusted Root Certification Authorities\Certificates\MyFakeRootCertificateAuthority 
-##########################################################################
-
-
-
-
-##########################################################################
-# Install ADFS Services in ADFS Farm Vms in cloud
-##########################################################################
-if ($Mode -eq "Adfs") {
-	# Deploy ADFS service in the VMs
-
-	####################
-	### Manual steps ...
-	Write-Host  
-    Write-Host "Please make sure that certificate is installed to all adfs VMs ..."
-	Write-Host  
-	Write-Host -NoNewLine 'Press any key to continue installing ADFS services...'
-	$null = $Host.UI.RawUI.ReadKey('NoEcho,IncludeKeyDown');
-	####################
-
-	Write-Host  
-    Write-Host "Creating the first ADFS farm node ..."
-    New-AzureRmResourceGroupDeployment -Name "ra-adfs-adfs-farm-first-node-deployment" `
-        -ResourceGroupName $adfsResourceGroupName `
-        -TemplateUri $virtualMachineExtensionsTemplate.AbsoluteUri -TemplateParameterFile $azureAdfsFarmFirstExtensionParametersFile
-
-	Write-Host  
-    Write-Host "Creating the rest ADFS farm nodes ..."
-    New-AzureRmResourceGroupDeployment -Name "ra-adfs-adfs-farm-rest-node-deployment" `
-        -ResourceGroupName $adfsResourceGroupName `
-        -TemplateUri $virtualMachineExtensionsTemplate.AbsoluteUri -TemplateParameterFile $azureAdfsFarmRestExtensionParametersFile
-	
-	# To test the adfs deployment:
-	Write-Host
-	Write-Host  "To test the adfs deploment:"
-	Write-Host
-	Write-Host  "1. Restart the jumpbox for the new DNS setting to take effect on the jumpbox"
-	Write-Host
-	Write-Host  "2. Remote Desktop to the jumpbox"
-	Write-Host
-	Write-Host  "3. Browse to https://adfs.contoso.com/adfs/ls/idpinitiatedsignon.htm"
-}
-
-##########################################################################
-# Install Web Application Proxy in ADFS Proxy Farm in cloud
-##########################################################################
-
-if ($Mode -eq "Proxy1" ) {
-	# Install the first Adfs Web Appication Proxy in the VM proxy1
-
-	####################
-	### Manual steps ...
-	Write-Host  
-    Write-Host "Please make sure that certificate is installed to all proxy VMs ..."
-	Write-Host  
-	Write-Host -NoNewLine 'Press any key to continue installing ADFS web application proxy ...'
-	$null = $Host.UI.RawUI.ReadKey('NoEcho,IncludeKeyDown');
-	####################
-
-	Write-Host  
-    Write-Host "Install ADFS proxy in the first node ..."
-    New-AzureRmResourceGroupDeployment -Name "ra-adfs-proxy-farm-first-node-deployment" `
-        -ResourceGroupName $adfsproxyResourceGroupName `
-        -TemplateUri $virtualMachineExtensionsTemplate.AbsoluteUri -TemplateParameterFile $azureAdfsproxyFarmFirstExtensionParametersFile
-
-
-	####################
-	### Manual test ...
-	Write-Host
-	Write-Host  "To test the adfs proxy deploment:"
-	Write-Host
-	Write-Host  "1. Start Azure Portal"
-	Write-Host
-	Write-Host  "2. Select Resourece groups and go to ra-adfs-network-rg"
-	Write-Host
-	Write-Host  "3. write down the ip address of dmz-public-lb (e.g. 11.22.33.44)"
-	Write-Host
-	Write-Host  "4. Start command prompt as admin and run:"
-	Write-Host
-	Write-Host  "      Notepad.exe c:\Windows\System32\drivers\etc\hosts"
-	Write-Host
-	Write-Host  "5. Add the following line"
-	Write-Host
-	Write-Host  "      11.22.33.44 adfs.contoso.com (note: assume the ip is 11.22.33.44)"
-	Write-Host
-	Write-Host  "6. Save the hosts file and run the following command to restart the dns client"
-	Write-Host
-	Write-Host  "     net stop ""dns client"""
-	Write-Host
-	Write-Host  "7. Browse to:"
-	Write-Host
-	Write-Host  "     https://adfs.contoso.com/adfs/ls/idpinitiatedsignon.htm"
-	Write-Host
-	Write-Host  " Please login to proxy1 to check any errors if the test fail. If proxy1 is OK, then stop proxy2 to test again"
-	Write-Host
-	Write-Host  " ReRun the deployment with -Mode Proy1 if there is a failure. "
-	Write-Host
-	####################
-}
-
-if ($Mode -eq "Proxy2" ) {
-	# Install the Adfs Web Appication Proxy in the rest VMs (proxy2 ..., )
-	Write-Host  
-    Write-Host "Install the Adfs Web Appication Proxy in the rest VMs (proxy2 ..., )"
-    New-AzureRmResourceGroupDeployment -Name "ra-adfs-proxy-farm-rest-node-deployment" `
-        -ResourceGroupName $adfsproxyResourceGroupName `
-        -TemplateUri $virtualMachineExtensionsTemplate.AbsoluteUri -TemplateParameterFile $azureAdfsproxyFarmRestExtensionParametersFile
-	
-	####################
-	### Final test ...
-	Write-Host  
-	Write-Host  "Deployment Completed"
-	Write-Host  
-	Write-Host  "Please login to proxy2 to verify the web application proxy installation"
-	Write-Host  
-	Write-Host  "Please browse to https://adfs.contoso.com/adfs/ls/idpinitiatedsignon.htm from your development machine to test the adfs proxy installation. You may want to stop proxy1"
-	Write-Host  
-	Write-Host  " Run the deployment again with -Mode Proy2 if the proxy2 deployment fails. "
-	Write-Host
-
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -443,7 +213,7 @@ if ($Mode -eq "Proxy2" ) {
 
 
 ##########################################################################
-# Deployment workload and Private Dmz in cloud (optional for this guidance)
+# Deployment workload and Dmz in cloud (optional for this guidance)
 ##########################################################################
 
 if ($Mode -eq "Workload") {
@@ -463,6 +233,15 @@ if ($Mode -eq "Workload") {
     Write-Host "Deploying data load balancer..."
     New-AzureRmResourceGroupDeployment -Name "ra-adfs-data-deployment" -ResourceGroupName $workloadResourceGroup.ResourceGroupName `
         -TemplateUri $loadBalancerTemplate.AbsoluteUri -TemplateParameterFile $dataLoadBalancerParametersFile
+}
+
+if ($Mode -eq "PublicDMZ" -Or $Mode -eq "Prepare") {
+    # Deploy Public DMZ 
+    $azureNetworkResourceGroup = Get-AzureRmResourceGroup -Name $azureNetworkResourceGroupName
+
+    Write-Host "Deploying public DMZ..."
+    New-AzureRmResourceGroupDeployment -Name "ra-adfs-dmz-public-deployment" -ResourceGroupName $azureNetworkResourceGroup.ResourceGroupName `
+        -TemplateUri $dmzTemplate.AbsoluteUri -TemplateParameterFile $publicDmzParametersFile
 }
 
 if ($Mode -eq "PrivateDmz") {
