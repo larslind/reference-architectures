@@ -4,7 +4,7 @@
   "parameters": {
     "virtualMachinesSettings": {
       "value": {
-        "namePrefix": "ra-adfs-ad",
+        "namePrefix": "ra-adtrust-ad",
         "computerNamePrefix": "aad",
         "size": "Standard_DS3_v2",
         "osType": "Windows",
@@ -44,14 +44,14 @@
         ],
         "availabilitySet": {
           "useExistingAvailabilitySet": "No",
-          "name": "ra-adfs-as"
+          "name": "ra-adtrust-as"
         }
       }
     },
     "virtualNetworkSettings": {
       "value": {
-        "name": "ra-adfs-vnet",
-        "resourceGroup": "ra-adfs-network-rg"
+        "name": "ra-adtrust-vnet",
+        "resourceGroup": "ra-adtrust-network-rg"
       }
     },
     "buildingBlockSettings": {

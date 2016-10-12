@@ -4,8 +4,8 @@
   "parameters": {
     "virtualNetworkSettings": {
       "value": {
-        "name": "ra-adfs-onpremise-vnet",
-        "resourceGroup": "ra-adfs-onpremise-rg",
+        "name": "ra-adtrust-onpremise-vnet",
+        "resourceGroup": "ra-adtrust-onpremise-rg",
         "addressPrefixes": [
           "192.168.0.0/16"
         ],

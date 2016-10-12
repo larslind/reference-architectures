@@ -4,7 +4,7 @@
   "parameters": {
     "virtualMachinesSettings": {
       "value": {
-        "namePrefix": "ra-adfs-mgmt",
+        "namePrefix": "ra-adtrust-mgmt",
         "computerNamePrefix": "jumpbox",
         "size": "Standard_DS1_v2",
         "osType": "windows",
@@ -46,8 +46,8 @@
     },
     "virtualNetworkSettings": {
       "value": {
-        "name": "ra-adfs-vnet",
-        "resourceGroup": "ra-adfs-network-rg"
+        "name": "ra-adtrust-vnet",
+        "resourceGroup": "ra-adtrust-network-rg"
       }
     },
     "buildingBlockSettings": {

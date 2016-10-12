@@ -78,8 +78,8 @@
     },
     "virtualNetworkSettings": {
       "value": {
-        "name": "ra-adfs-vnet",
-        "resourceGroup": "ra-adfs-network-rg"
+        "name": "ra-adtrust-vnet",
+        "resourceGroup": "ra-adtrust-network-rg"
       }
     }
   }

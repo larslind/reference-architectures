@@ -4,13 +4,13 @@
   "parameters": {
     "virtualNetworkSettings": {
       "value": {
-        "name": "ra-adfs-onpremise-vnet",
-        "resourceGroup": "ra-adfs-onpremise-rg"
+        "name": "ra-adtrust-onpremise-vnet",
+        "resourceGroup": "ra-adtrust-onpremise-rg"
       }
     },
     "virtualNetworkGatewaySettings": {
       "value": {
-        "name": "ra-adfs-onpremise-vpn-vgw",
+        "name": "ra-adtrust-onpremise-vpn-vgw",
         "gatewayType": "Vpn",
         "vpnType": "RouteBased",
         "sku": "Standard"

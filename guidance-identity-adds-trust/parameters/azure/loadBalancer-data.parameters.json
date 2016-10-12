@@ -4,7 +4,7 @@
   "parameters": {
     "virtualMachinesSettings": {
       "value": {
-        "namePrefix": "ra-adfs-data",
+        "namePrefix": "ra-adtrust-data",
         "computerNamePrefix": "data",
         "size": "Standard_DS1_v2",
         "osType": "windows",
@@ -41,16 +41,16 @@
         "extensions": [ ],
         "availabilitySet": {
           "useExistingAvailabilitySet": "No",
-          "name": "ra-adfs-data-vm-as"
+          "name": "ra-adtrust-data-vm-as"
         }
       }
     },
     "loadBalancerSettings": {
       "value": {
-        "name": "ra-adfs-data-lb",
+        "name": "ra-adtrust-data-lb",
         "frontendIPConfigurations": [
           {
-            "name": "ra-adfs-data-lb-fe",
+            "name": "ra-adtrust-data-lb-fe",
             "loadBalancerType": "internal",
             "internalLoadBalancerSettings": {
               "privateIPAddress": "10.0.3.254",
@@ -60,7 +60,7 @@
         ],
         "backendPools": [
           {
-            "name": "ra-adfs-data-lb-bep",
+            "name": "ra-adtrust-data-lb-bep",
             "nicIndex": 0
           }
         ],
@@ -70,8 +70,8 @@
             "frontendPort": 443,
             "backendPort": 443,
             "protocol": "Tcp",
-            "backendPoolName": "ra-adfs-data-lb-bep",
-            "frontendIPConfigurationName": "ra-adfs-data-lb-fe",
+            "backendPoolName": "ra-adtrust-data-lb-bep",
+            "frontendIPConfigurationName": "ra-adtrust-data-lb-fe",
             "probeName": "https-probe",
             "enableFloatingIP": false
           }
@@ -89,8 +89,8 @@
     },
     "virtualNetworkSettings": {
       "value": {
-        "name": "ra-adfs-vnet",
-        "resourceGroup": "ra-adfs-network-rg"
+        "name": "ra-adtrust-vnet",
+        "resourceGroup": "ra-adtrust-network-rg"
       }
     },
     "buildingBlockSettings": {

@@ -4,8 +4,8 @@
   "parameters": {
     "virtualNetworkSettings": {
       "value": {
-        "name": "ra-adfs-vnet",
-        "resourceGroup": "ra-adfs-network-rg",
+        "name": "ra-adtrust-vnet",
+        "resourceGroup": "ra-adtrust-network-rg",
         "addressPrefixes": [
           "10.0.0.0/16"
         ],
@@ -49,14 +49,6 @@
           {
             "name": "adds",
             "addressPrefix": "10.0.4.0/27"
-          },
-          {
-            "name": "adfs",
-            "addressPrefix": "10.0.5.0/27"
-          },
-          {
-            "name": "proxy",
-            "addressPrefix": "10.0.6.0/27"
           }
         ],
         "dnsServers": [
