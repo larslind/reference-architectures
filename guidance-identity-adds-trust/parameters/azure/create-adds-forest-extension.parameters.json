@@ -5,7 +5,7 @@
     "virtualMachinesExtensionSettings": {
       "value": [
         {
-          "vms": [ "ra-adtrust-onpremise-ad-vm1" ],
+          "vms": [ "ra-adtrust-ad-vm1" ],
           "extensions": [
             {
               "name": "install-adds-forest",
@@ -16,8 +16,8 @@
               "settingsConfigMapperUri": "https://raw.githubusercontent.com/mspnp/reference-architectures/master/guidance-identity-adds-trust/templates/onpremise/ad-forest-extension-settings-mapper.json",
               "settingsConfig": {
                 "activeDirectorySettings": {
-                  "domainName": "contoso.com",
-                  "domainNetbiosName": "contoso",
+                  "domainName": "treyresearch.com",
+                  "domainNetbiosName": "treyresearch",
                   "safeModePassword": "Saf3M0de@PW"
                 },
                 "fileUris": [
