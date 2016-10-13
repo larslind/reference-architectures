@@ -52,7 +52,6 @@ $onpremiseConnectionParametersFile = [System.IO.Path]::Combine($PSScriptRoot, "p
 
 
 # Azure ADDS Parameter Files
-$azureVirtualNetworkOnpremiseAndAzureDnsParametersFile = [System.IO.Path]::Combine($PSScriptRoot, "parameters\azure\virtualNetwork-with-azure-dns.parameters.json")
 $azureAddsVirtualMachinesParametersFile = [System.IO.Path]::Combine($PSScriptRoot, "parameters\azure\virtualMachines-adds.parameters.json")
 
 $azureCreateAddsForestExtensionParametersFile = [System.IO.Path]::Combine($PSScriptRoot, "parameters\azure\create-adds-forest-extension.parameters.json")
@@ -175,13 +174,6 @@ if ($Mode -eq "AzureADDS" -Or $Mode -eq "Prepare") {
     New-AzureRmResourceGroupDeployment -Name "ra-adtrust-azure-adds-forest-deployment" `
         -ResourceGroupName $addsResourceGroup.ResourceGroupName `
         -TemplateUri $virtualMachineExtensionsTemplate.AbsoluteUri -TemplateParameterFile $azureCreateAddsForestExtensionParametersFile
-
-    # Update DNS server to point to azure dns
-    $azureNetworkResourceGroup = Get-AzureRmResourceGroup -Name $azureNetworkResourceGroupName
-    Write-Host "Updating virtual network DNS..."
-    New-AzureRmResourceGroupDeployment -Name "ra-adtrust-vnet-onpremise-azure-dns-deployment" `
-        -ResourceGroupName $azureNetworkResourceGroup.ResourceGroupName `
-        -TemplateUri $virtualNetworkTemplate.AbsoluteUri -TemplateParameterFile $azureVirtualNetworkOnpremiseAndAzureDnsParametersFile
 
     Write-Host "Creating ADDS domain controller..."
     New-AzureRmResourceGroupDeployment -Name "ra-adtrust-azure-adds-dc-deployment" `
