@@ -59,6 +59,7 @@ $azureAddAddsDomainControllerExtensionParametersFile = [System.IO.Path]::Combine
 
 $azureVirtualNetworkGatewayParametersFile = [System.IO.Path]::Combine($PSScriptRoot, "parameters\azure\virtualNetworkGateway.parameters.json")
 $azureVirtualNetworkParametersFile = [System.IO.Path]::Combine($PSScriptRoot, "parameters\azure\virtualNetwork.parameters.json")
+$azureVirtualNetworkDnsParametersFile = [System.IO.Path]::Combine($PSScriptRoot, "parameters\azure\virtualNetwork-adds-dns.parameters.json")
 $webLoadBalancerParametersFile = [System.IO.Path]::Combine($PSScriptRoot, "parameters\azure\loadBalancer-web.parameters.json")
 $bizLoadBalancerParametersFile = [System.IO.Path]::Combine($PSScriptRoot, "parameters\azure\loadBalancer-biz.parameters.json")
 $dataLoadBalancerParametersFile = [System.IO.Path]::Combine($PSScriptRoot, "parameters\azure\loadBalancer-data.parameters.json")
@@ -169,6 +170,12 @@ if ($Mode -eq "AzureADDS" -Or $Mode -eq "Prepare") {
     New-AzureRmResourceGroupDeployment -Name "ra-adtrust-adds-deployment" `
 		-ResourceGroupName $addsResourceGroup.ResourceGroupName `
         -TemplateUri $virtualMachineTemplate.AbsoluteUri -TemplateParameterFile $azureAddsVirtualMachinesParametersFile
+
+    # Remove the Azure DNS entry since the forest will create a DNS forwarding entry.
+    Write-Host "Updating virtual network DNS servers..."
+    New-AzureRmResourceGroupDeployment -Name "ra-adtrust-azure-dns-vnet-deployment" `
+        -ResourceGroupName $addsResourceGroup.ResourceGroupName -TemplateUri $virtualNetworkTemplate.AbsoluteUri `
+        -TemplateParameterFile $azureVirtualNetworkDnsParametersFile
 
     Write-Host "Creating ADDS forest..."
     New-AzureRmResourceGroupDeployment -Name "ra-adtrust-azure-adds-forest-deployment" `
