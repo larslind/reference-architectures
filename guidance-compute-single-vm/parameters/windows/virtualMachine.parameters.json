@@ -8,9 +8,8 @@
         "computerNamePrefix": "cn",
         "size": "Standard_DS1_v2",
         "osType": "windows",
-        "adminUsername": "testuser",
-        "adminPassword": "AweS0me@PW",
-        "sshPublicKey": "",
+        "adminUsername": "",
+        "adminPassword": "",
         "osAuthenticationType": "password",
         "nics": [
           {
