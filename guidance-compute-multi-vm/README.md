@@ -1,16 +1,16 @@
 # Deploying a multiple VMs to Azure
 
-This reference architecture (RA) deploys multiple virtual machine (VM) instances to Azure. This reference architecture implements the proven best practices for [running multiple VMs on Azure for scalability and availability][guidance].
+This reference architecture (RA) deploys multiple virtual machine (VM) instances to Azure. This RA implements the proven best practices for [running multiple VMs on Azure for scalability and availability][guidance].
 
 ![[0]][0]
 
 ## Deployment components
 
-This reference architecture is deployed using a set of Azure Resource Manager templates that we've designed to be a set of building blocks.  
+This RA is deployed using a set of Azure Resource Manager templates that we've designed to be a set of building blocks.  
 
-The templates use a set of [parameter files][root-parameters] to define the resources that will be deployed. For this deployment, there is one set of parameter files for [Windows][root-parameters-windows] and another set for [Linux][root-parameters-linux]. You can deploy the reference architecture as is by following the instructions in the [Deploying this Reference Architecture](#deploying-this-reference-architecture) section. 
+The templates use a set of [parameter files][root-parameters] to define the resources that will be deployed. For this deployment, there is one set of parameter files for [Windows][root-parameters-windows] and another set for [Linux][root-parameters-linux]. You can deploy this RA as is by following the instructions in the [Deploying this Reference Architecture](#deploying-this-reference-architecture) section. 
 
-For more information on how to modify this reference architecture deployment by editing the parameter files, it's best to first read the [Understanding this Reference Architecture Deployment](#understanding-this-reference-architecture-deployement) section, and then the [Customizing this Reference Architecture Deployment](#customizing-this-deployment) section.
+For more information on how to modify this RA by editing the parameter files, it's best to first read the [Understanding this Reference Architecture Deployment](#understanding-this-reference-architecture-deployement) section, and then the [Customizing this Reference Architecture Deployment](#customizing-this-deployment) section.
 
 ## Deploying this reference architecture
 
@@ -26,7 +26,7 @@ The reference architecture can be deployed using several methods:
     <img src="http://azuredeploy.net/deploybutton.png"/></a>
 
 2. Once the link has opened in the Azure portal, you must enter values for some of the settings: 
-    - The **Resource group** name is already defined in the parameter file, so select **Use Existing** and enter `ra-single-vm-rg` in the text box.
+    - The **Resource group** name is already defined in the parameter file, so select **Use Existing** and enter `ra-multi-vm-rg` in the text box.
     - Select the region from the **Location** drop down box.
     - Do not edit the **Template Root Uri** or the **Parameter Root Uri** text boxes.
     - Select the **Os Type** from the drop down box, **windows** or **linux**.
@@ -82,7 +82,7 @@ Regardless of where the parameters are located, each `\parameters` folder contai
     \parameters\linux\<parameter files>
 ````
 
-This reference architecture includes a VNet, a NSG, and two VMs as shown in the diagram above. Let's take a look at each of the **parameter files** and the values of the properties used to deploy this reference architecture.
+This reference architecture includes a VNet, a NSG, and two VMs as shown in the architecture diagram above. Let's take a look at each of the **parameter files** and the values of the properties used to deploy this reference architecture.
 
 > Note that the building block templates deploy all resources into a single resource group. 
 
@@ -114,16 +114,14 @@ The `virtualNetwork.parameters.json` ([windows][vnet-windows-parameters] / [linu
   }
 ````
 
-- `"name"` specifies the name to be assigned to the VNet. This name is used both to define the name of the VNet in the Azure environment and as a reference for other resources in the other templates.
+- `name` specifies the name to be assigned to the VNet. This name is used both to define the name of the VNet in the Azure environment and as a reference for other resources in the other templates.
 
-- `"resourceGroup"` specifies the name of the Resource Group that the VNet will be assigned to. The value of this property must agree with the value specified in the Azure Resource Manager UI, [Azure Powershell script][solution-psscript], or [Bash script][solution-shscript].
+- `resourceGroup` specifies the name of the Resource Group that the VNet will be assigned to. The value of this property must agree with the value specified in the Azure Resource Manager UI, [Azure Powershell script][solution-psscript], or [Bash script][solution-shscript].
 
-- The `"addressPrefixes"` array specifies CIDR address blocks for the VNet. In this RA there's only a single address block for the VNet: `10.0.0.0/16`. 
+- The `addressPrefixes` array specifies CIDR address blocks for the VNet. In this RA there's only a single address block for the VNet: `10.0.0.0/16`. 
 
-- `"subnets"` is an array of objects for specifying subnets. The [network recommendation][guidance-network] for [running multiple VMs on Azure][guidance] is to place all VMs on the same subnet, so one subnet is defined here. The subnet object has the following properties:
-
+- `subnets` is an array of objects for specifying subnets. The [network recommendation][guidance-network] for [running multiple VMs on Azure][guidance] is to place all VMs on the same subnet, so one subnet is defined here. The subnet object has the following properties:
     - `name` defines the name of the subnet. It is also used as reference for other resources in the deployment templates.
-
     - The `addressPrefix` sub-property specifies the CIDR address block for the subnet. Note that the address block specified for the subnet (`10.0.1.0/24`) must be fall within the address block specified for the VNet (`10.0.0.0/16`).
 
 - `"dnsServers"` is an array of elements which defines the IP addresses of private DNS servers for the VNet. The array for this RA is empty to specify that Azure-managed DNS should be used for name resolution.
@@ -144,7 +142,7 @@ A [security consideration][guidance-security] for [running multiple VMs on Azure
     }
 ````
 
-- `"name"` references the VNet name that was specified above to specify that this NSG applies to it.
+- `name` references the VNet name that was specified above to specify that this NSG applies to it.
 
 - `resourceGroup` references the name of the resource group. 
 
@@ -229,22 +227,21 @@ A [security consideration][guidance-security] for [running multiple VMs on Azure
     }
 ````
 
-- `"name"` defines the name of the NSG. 
+- `name` defines the name of the NSG. 
 
-- `"subnets"` is an array of the subnet names that the NSG will apply to. In this RA, the value `"ra-multi-vm-sn"` references the name of the CIDR address block `10.0.1.0\24` defined above in the VNet parameters. 
+- `subnets` is an array of the subnet names that the NSG will apply to. In this RA, the value `"ra-multi-vm-sn"` references the name of the CIDR address block `10.0.1.0\24` defined above in the VNet parameters. 
 
-- `"networkInterfaces"` is an array of the names of the VM NICs that the NSG will be restricted to. This property is empty to specify that all the NSG should apply to all NICs.
+- `networkInterfaces` is an array of the names of the VM NICs that the NSG will be restricted to. This property is empty to specify that all the NSG should apply to all NICs.
 
-- `"securityRules"` is an array of security rules property objects that specifies the allowed protocols and VM ports that the protocol will be directed to.
+- `securityRules` is an array of security rules property objects that specifies the allowed protocols and VM ports that the protocol will be directed to.
     - For the `windows` RA, the properties specify an inbound rule (`"default-allow-rdp"`) to allow remote desktop connections. 
     - For the `linux` RA, the properties specify an inbound rule (`"default-allow-ssh"`) to allow SSH session connections. 
     - For both RAs, the properties specify an inbound rule (`"default-allow-http"`) to allow HTTP connections.
 
 -------------------------
-### Virtual machine (VM)
+### Virtual machines (VMs) and load balancer
 
-The `loadBalancer.parameters.json` ([windows][vm-windows-parameters]/[linux][vm-linux-parameters]) file is used by the 
-[loadBalancer-backend-n-vm][bb-vm] template to deploy the VMs and the load balancer. It includes four parameters: `virtualMachinesSettings`, `loadBalancerSettings`,`virtualNetworkSettings`, and `buildingBlockSettings`. 
+The `loadBalancer.parameters.json` ([windows][vm-windows-parameters]/[linux][vm-linux-parameters]) file is used by the [loadBalancer-backend-n-vm][bb-vm] template to deploy the VMs and the load balancer. It includes four parameters: `virtualMachinesSettings`, `loadBalancerSettings`,`virtualNetworkSettings`, and `buildingBlockSettings`. 
 
 #### `virtualMachinesSettings` parameter for `\windows`:
 
@@ -312,6 +309,7 @@ The `loadBalancer.parameters.json` ([windows][vm-windows-parameters]/[linux][vm-
 ````
 
 #### `virtualMachinesSettings` parameter for `\linux`:
+
 ````json
     "virtualMachinesSettings": {
       "value": {
@@ -375,42 +373,42 @@ The `loadBalancer.parameters.json` ([windows][vm-windows-parameters]/[linux][vm-
     }
 ````
 
-- The template automatically generates Azure display names and OS host names based on the number of VMs that are created. `"namePrefix"` specifies the prefix of the Azure display name for each VM, and `"computerNamePrefix"` specifies the prefix for the computer name for the VM. A suffix is appended to both based on the order in which the VM was created by the Resource Manager. In this example the `"namePrefix"` is set to `"ra-multi"`. Two VMs are specified for creation (see the `"vmCount"` property in the  `buildingBlockSettings` parameter below for more details), and this results in an Azure display name of `"ra-multi1"` for the first VM and `"ra-multi2"` for the second. The `computerNamePrefix` property is set to `"cn"`, which results in an computer name of `"cn1"` for the first VM and `"cn2"` for the second.
+- The template automatically generates Azure display names and OS host names based on the number of VMs that are created. `namePrefix` specifies the prefix of the Azure display name for each VM, and `computerNamePrefix` specifies the prefix for the computer name for the VM. A suffix is appended to both based on the order in which the VM was created by the Resource Manager. In this example  `namePrefix` is set to `"ra-multi"`. Two VMs are specified for creation (see the `vmCount` property in the  `buildingBlockSettings` parameter below for more details), and this results in an Azure display name of `"ra-multi1"` for the first VM and `"ra-multi2"` for the second. The `computerNamePrefix` property is set to `"cn"`, which results in an computer name of `"cn1"` for the first VM and `"cn2"` for the second.
 
-- `"size"` specifies the size of the VM. The `"Standard_DS1_v2"` size specifications are available in the [sizes for virtual machines in Azure](https://azure.microsoft.com/documentation/articles/virtual-machines-windows-sizes/#dsv2-series) documentation.
+- `size` specifies the size of the VM. The `"Standard_DS1_v2"` size specification is available in the [sizes for virtual machines in Azure](https://azure.microsoft.com/documentation/articles/virtual-machines-windows-sizes/#dsv2-series) documentation.
 
-- `"osType"` is a directive used by the building blocks templates themselves. The valid values are `windows` for Windows VMs and `linux` for Linux VMs.  
+- `osType` is a directive used by the building blocks templates themselves. The valid values are `windows` for Windows VMs and `linux` for Linux VMs.  
 
 - Each VM OS requires an administrator account.
-    - `"adminUsername"` specifies the user name for the administrator account. Note that this is purposely left blank here for security purposes.
-    - `"adminPassword"` specifies the administrator password. Note that this is also purposely left blank here. 
-    - `"osAuthenticationType"` specifies the sign in authentication type: `password` or `ssh`. For `windows`, the only valid value is `password`, while either `password` or `ssh` is valid for a `linux` deployment. Note that if `"ssh"` is specified for `"linux"`, `"ssh"` specifies the SSH key to be used for logging in.
+    - `adminUsername` specifies the user name for the administrator account. Note that this is purposely left blank here for security purposes.
+    - `adminPassword` specifies the administrator password. Note that this is also purposely left blank here. 
+    - `osAuthenticationType` specifies the sign in authentication type: `"password"` or `"ssh"`. For the `\windows` RA, note that the only valid value is `password`, while either `"password"` or `"ssh"` is valid for the `\linux` RA. Note that if `"ssh"` is specified for the `\linux` RA, the `ssh` property specifies the SSH key to be used for logging in.
 
-- `"nics"` specifies the settings for each VM's virtual network interface (NIC). A VM can have more than one NIC assigned to it so this property is implemented as an array of multiple NIC property objects.
-    - `"isPublic"` specifies whether or not a [Public IP resource][public-ip-address] (PIP) will be deployed and associated with the NIC. It's set to `"false"` because a load balancer is being deployed, and the load balancer will route incoming public traffic to each of the VMs.
-    - `"subnetName"` specifies the subnet that this NIC is associated with. In this case it's the `"ra-multi-vm-sn"` subnet deployed with the VNet above.
-    - `"privateIPAllocationMethod"` can be set to either `"static"` or `"dynamic"`. It's set to `"dynamic"` here to specify the IP address will be dynamically allocated by Azure.
-    - `"publicIPAllocationMethod"` specifies whether or not the NIC's public IP address should be statically or dynamically allocated. `"isPublic"` is set to `"false"` here, so this property is not used.
-    - `"isPrimary"` specifies whether or not this NIC is the primary NIC for the VM. This is set to `"true"` because a NIC must be primary to be in the load balancer's back end pool.
-    - `"enableIPForwarding"` is used to specify whether or not the NIC can be used on user defined routes. It's set to `"false"` here.
-    - `"domainNameLabelPrefix"` specifies the DNS prefix for the PIP, if it was deployed using the `"isPublic"` property. The value is empty for this RA because no PIP is deployed.
-    - `"dnsServer"` is an array that specifies the IP addresses of any DNS servers deployed in the VNet that the NIC should use for name resolution. This RA doesn't deploy any DNS servers, so the value is empty.
+- `nics` specifies the settings for each VM's virtual network interface (NIC). A VM can have more than one NIC assigned to it so this property is implemented as an array of multiple NIC property objects.
+    - `isPublic` specifies whether or not a [Public IP resource][public-ip-address] (PIP) will be deployed and associated with the NIC. It's set to `"false"` because a load balancer is being deployed, and the load balancer will route incoming public traffic to each of the VMs.
+    - `subnetName` references the subnet that this NIC is associated with. In this case it's the `"ra-multi-vm-sn"` subnet deployed with the VNet above.
+    - `privateIPAllocationMethod` can be set to either `"static"` or `"dynamic"`. It's set to `"dynamic"` here to specify the IP address will be dynamically allocated by Azure.
+    - `publicIPAllocationMethod` specifies whether or not the NIC's public IP address should be statically or dynamically allocated. `"isPublic"` is set to `"false"` here, so this property is not used.<!--TODO: verify-->
+    - `isPrimary` specifies whether or not this NIC is the primary NIC for the VM. This is set to `"true"` because a NIC must be primary to be in the load balancer's back end pool.
+    - `enableIPForwarding` is used to specify whether or not the NIC can be used on user defined routes. It's set to `"false"` here.
+    - `domainNameLabelPrefix` specifies the DNS prefix for the load balancer. There's no DNS prefix for this RA, so it's empty.
+    - `dnsServers` is an array that specifies the IP addresses of any DNS servers deployed in the VNet that the NIC should use for name resolution. This RA doesn't deploy any DNS servers, so the value is empty.
 
-- The `"imageReference"` parameter specifies the OS to be installed on the VM. The values of the `"windows"` deployment properties deploys a VM with Windows Server 2012 R2 Datacenter. The values of the `"linux"` deployment properties deploys a VM with Canonical Ubuntu Server. 
+- `imageReference` specifies the OS to be installed on the VM. The `\windows` RA property values specify a VM with Windows Server 2012 R2 Datacenter. The `\linux` RA property values specify a VM with Canonical Ubuntu Server. 
 
-- The `dataDisks` property defines the attributes of the data disks that are to be created for use with each of the VMs. In this example, the values of the properties create one empty data disk that is 128GB in size with no cache. For more information, see the Azure Res
+- `dataDisks` specifies the attributes of the data disks to be created for use with each of the VMs. For this RA, the values specify two empty data disks that are 128GB in size, empty upon creation, and do not cache.
 
-- The `osDisk` property defines the cache setting of the OS drive for the VM. In this example, the value of the `caching` sub-property specifies that the OS disk is to perform write-back caching.
+- `osDisk` specifies the attribues of the OS drive for the VMs. In this RA, the value of the `caching` sub-property specifies that the OS disk is to perform write-back caching.
 
-- The `extensions` property is an array of objects that describe the extensions that will be installed on the VM when it is deployed. The values of the properties in the `"windows"` deployment specify that Internet Information Services (IIS) is to be installed. The values of the property in the `"linux"` deployment specify that Apache2 Web Server is to be installed. The installation of VM extensions at deployment is complex and beyond the scope of this topic. For more information, see [`"extensions" property`][bb-vm]. 
+- `extensions` an array of property objects that describe the extensions that will be installed on the VM when it is deployed. The values of the properties in the `"windows"` deployment specify that Internet Information Services (IIS) is to be installed. The values of the property in the `"linux"` deployment specify that Apache2 Web Server is to be installed. The installation of VM extensions at deployment is complex and beyond the scope of this topic. For more information, see [`"extensions" property`][bb-vm]. 
 
-- In order for the availability SLA for Azure VMs to apply, you must place your VMs in an availability set. The load balancer also requires that VMs in back-end pools are in an availability set. The `"availabilitySet"` property has two sub-properties:
-    - `"useExistingAvailabilitySet"`: `"Yes"` specifies that an existing availability set is to be used, while `"No"` specifies that a new availability set is to be created. 
-    - `"name"` specifies the name for the availability set that's created if the `"useExistingAvailabilitySet"` sub-property is set to `"No"`, as it is for both the `"windows"` and `"linux"` deployments.
+- In order for the availability SLA for Azure VMs to apply, you must place your VMs in an availability set. The load balancer also requires that VMs in back-end pools are in an availability set. The `availabilitySet` property has two sub-properties:
+    - `useExistingAvailabilitySet`: `"Yes"` specifies that an existing availability set is to be used, while `"No"` specifies that a new availability set is to be created. 
+    - `name` specifies the name for the availability set that's created if the `useExistingAvailabilitySet` sub-property is set to `"No"`, as it is for both the `\windows` and `\linux` RAs.
 
-#### `"loadBalancerSettings"` parameter for `"windows"` and `"linux"`
+#### `loadBalancerSettings` parameter for `windows` and `linux`
 
-The properties for the load balancer settings parameter are taken from the [Create or update a load balancer REST api](https://msdn.microsoft.com/library/azure/mt163574.aspx). The specific property values for this reference architecture are as follows:
+The `loadBalancerSettings` properties specify the front end IP configuration, load balancing rules, health probes, back end pool, and incoming network address translation (NAT) rules for the load balancer. 
 
 ````json
    "loadBalancerSettings": {
@@ -468,46 +466,48 @@ The properties for the load balancer settings parameter are taken from the [Crea
     }
 ````
 
-- the `"name"` property specifies the Azure Resource Manager display name of the load balancer and also acts as a reference for other resources in the template.
+- `name` specifies the Azure Resource Manager display name of the load balancer and also acts as a reference for other resources in the template.
 
-- the `"frontendIPConfigurations"` property is an array of objects that specify the incoming traffic rules for the load balancer. The configuration object has the following properties:
-    - `"name"` specifies the name of the configuration.
-    - `"loadBalancerType"` specifies whether the load balancer is `"public"` or `"internal"`.
-    - `"domainNameLabel"` specifies the domain name prefix for the load balancer if the load balancer is public-facing as it is here. This is the label that will be prefixed to the Azure fully qualified domain name for the load balancer.
-    - `"internalLoadBalancerSettings"` specifies settings for the load balancer itself. It has the following sub-properties:
-        - `"privateIPAddress"` specifies the VNet IP address of the load balancer.
-        - `"subnetName"` is a reference to the name of the subnet that the load balancer is associated with. Recall that the subnet named `"ra-multi-vm-sn"` was created earlier in the `"VirtualNetworkSettings"` parameter.
+- `frontendIPConfigurations` is an array of property objects that specify the incoming traffic rules for the load balancer. The configuration object has the following properties:
+    - `nam"` specifies the name of the configuration.
+    - `loadBalancerType` specifies whether the load balancer is `"public"` or `"internal"`.
+    - `domainNameLabel` specifies the domain name prefix for the load balancer if the load balancer is public-facing as it is here. This is the label that will be prefixed to the Azure fully qualified domain name for the load balancer.
+    - `internalLoadBalancerSettings` specifies settings for the load balancer itself. It has the following sub-properties:
+        - `privateIPAddres"` specifies the VNet IP address of the load balancer.
+        - `subnetName` is a reference to the name of the subnet that the load balancer is associated with. Recall that the subnet named `"ra-multi-vm-sn"` was created earlier in the `VirtualNetworkSettings` parameter.
 
-- `"loadBalancingRules"` is an array of property objects that specify the traffic handling rules for the load balancer. The properties for this RA are:
-    - `"name"` specifies the name of the rule.
-    - `"frontendPort"` specifies the port number the load balancer listens on.
-    - `"backendPort"` specifies the port number to which traffic will be forwarded on the backend VMs.
-    - `"protocol"` specifies the protocol that this rule applies to. Either `"Tcp"` or `"Udp"`.
-    - `"backendPoolName"` references the name of the back end pool to which this rule applies. Note that the `"ra-multi-vm-lb-bep1"` value here refers to the back end pool that will be specified in the `"backendPools"` parameter shortly. 
-    - `"frontendIPConfigurationName"` references the name of an inbound network address translation (NAT) rule. Not that the `"ra-multi-vm-lb-fe-config1"` value here references the inbound NAT rule that will be specified in the `"inboundNatRules"` property shortly.
-    - `"enableFloatingIP"` specifies whether or not the load balancer's IP address will be assigned to a secondary load balancer if this load balancer fails. There's only one load balancer in this RA so the value is set to `"false"`.
-    - `"probeName"` references the name of a health probe specified in the `"probes"` property array. The name '`lbp1"` refers to a health probe that will be specified shortly.
+- `loadBalancingRules` is an array of property objects that specify the traffic handling rules for the load balancer. The properties for this RA are:
+    - `name` specifies the name of the rule.
+    - `frontendPort` specifies the port number the load balancer listens on.
+    - `backendPort` specifies the port number to which traffic will be forwarded on the backend VMs.
+    - `protocol` specifies the protocol that this rule applies to. Either `"Tcp"` or `"Udp"`.
+    - `backendPoolName` references the name of the back end pool to which this rule applies. Note that the `"ra-multi-vm-lb-bep1"` value here refers to the back end pool that will be specified in the `backendPools` parameter shortly. 
+    - `frontendIPConfigurationName` references the name of an inbound network address translation (NAT) rule. Not that the `"ra-multi-vm-lb-fe-config1"` value here references the inbound NAT rule that will be specified in the `inboundNatRules` property shortly.
+    - `enableFloatingIP` specifies whether or not the load balancer's IP address will be assigned to a secondary load balancer if this load balancer fails. There's only one load balancer in this RA so the value is set to `"false"`.
+    - `probeName` references the name of a health probe specified in the `probes` property array. The name '`lbp1"` refers to a health probe that will be specified shortly.
 
-- `"probes"` is an array of property objects that specify the properties for a load balancer health probe. Health probes periodically query a REST api on the VM and evaluate the response to determine whether or not to send requests to the VM. The properties for this RA are:
-    - `"name"` specifies the name of the health probe.
-    - `"port"` specifies the port on the VM that listens for health probe requests. The VMs in this RA listen on port `"80"`.
-    - `"protocol"` specifies the protocol that the load balancer is to use when querying the VMs. The VMs in this RA respond to the `"Http"` protocol, but they could have also used the `"Tcp"` protocol. Note that the VMs respond to the load balancer with an Http `200 OK` to indicate they are healthy.
-    - `"requestPath"` specifies the URI to be queried for health status. The value of `"/"` here indicates the root URI is to be queried.
+- `probe` is an array of property objects that specify the properties for a load balancer health probe. Health probes periodically query a REST API on the VM and evaluate the response to determine whether or not to send requests to the VM. The properties for this RA are:
+    - `name` specifies the name of the health probe.
+    - `port` specifies the port on the VM that listens for health probe requests. The VMs in this RA listen on port `"80"`.
+    - `protocol` specifies the protocol that the load balancer is to use when querying the VMs. The VMs in this RA respond to the `"Http"` protocol, but they could have also used the `"Tcp"` protocol. Note that the VMs respond to the load balancer with an Http `200 OK` to indicate they are healthy.
+    - `requestPath` specifies the URI to be queried for health status. The value of `"/"` here indicates the root URI is to be queried.
 
-- `"backendPools"` is an array of property objects that specify the back end VM address pools. For this RA there's a single back end pool named `"ra-multi-vm-lb-bep1"`, which you will recall was referred to in the `"loadBalancingRules"` `"backendPoolName"` property earlier. The `"nicIndex"` property refers to the index of the NIC property object that has `"isPrimary"` set to `"true"` in the NIC array specified in the `"virtualMachinesSettings"` parameter. In this RA it's set to `"0"` because there's only one NIC in the array.
+- `backendPools` is an array of property objects that specify the back end VM address pools. The property objects have the following values for this RA:
+    - `name` specifies the name of the back end pool. For this RA it's set to `"ra-multi-vm-lb-bep1"`, which was referred to earlier in the `loadBalancingRules` `backendPoolName` property. 
+    - `nicIndex` refers to the index of the NIC property object that has `isPrimary` set to `"true"` in the NIC array specified in the `virtualMachinesSettings` parameter. In this RA it's set to `"0"` because there's only one NIC in the array.
 
--`"inboundNatRules"` is an array of property objects that specify the inbound NAT rules for the load balancer. The properties for the one NAT rule for this RA are:
-    - `"namePrefix"` specifies the name of the rule. It's named `"rdp"` for this RA because this rule is used to redirect remote desktop protocol traffic to the backend VMs.
-    - `"frontendIPConfigurationName"` references the name of the front end IP configuration that this inbound NAT rule applies to. For this RA, this rule, `"rdp"` applies to the `"ra-multi-vm-lb-fe-config1"` front end IP configuration that was specified earlier in the `"frontendIPConfigurations"` array.
-    - `"startingFrontendPort"` is used to create unique port numbers on the load balancer for the VMs in the back end pool per inbound rule by incrementing from this starting port number. Here, it's set to `"50000"`, so the first VM will be mapped to port `50000` and the second VM will be mapped to port `50001`. 
-    - `"backendPort"` specifies the back end port on the VMs that this rule will redirect traffic to. This NAT rule is used to redirect RDP traffic to the backend VMs, and RDP listens on port `"3389"`.
-    - `"natRuleType"` specifies the collection of VMs that this NAT rule applies to. For this RA it's set to `"all"` to specify that this rule applies to all VMs in the back end pool, and that an incoming port should be mapped to the back end VM starting at the `"startingFrontendPort"` index.
-    - `"protocol"` specifies the protocol the rule applies to. Here it's `"Tcp"`, and the only other valid protocol is `"Udp"`.
-    - `"nicIndex"` is reference to the index of the NIC property object that has `"isPrimary"` set to `"true"` in the NIC array specified in the `"virtualMachinesSettings"` parameter, similar to how it the same value was specified for the property object in the `"backendPools"` property.
+-`inboundNatRules` is an array of property objects that specify the inbound NAT rules for the load balancer. The properties for the one NAT rule for this RA are:
+    - `namePrefix` specifies the name of the rule. It's named `"rdp"` for this RA because this rule is used to redirect remote desktop protocol traffic to the backend VMs.
+    - `frontendIPConfigurationNam"` references the name of the front end IP configuration that this inbound NAT rule applies to. For this RA, this rule applies to the `"ra-multi-vm-lb-fe-config1"` front end IP configuration that was specified earlier in the `frontendIPConfigurations` array.
+    - `startingFrontendPort` is used to create unique port numbers on the load balancer for the VMs in the back end pool per inbound rule by incrementing from this starting port number. Here, it's set to `"50000"`, so the first VM will be mapped to port `50000` and the second VM will be mapped to port `50001`. 
+    - `backendPort` specifies the back end port on the VMs that this rule will redirect traffic to. This NAT rule is used to redirect RDP traffic to the backend VMs, and RDP listens on port `"3389"`.
+    - `natRuleType` specifies the collection of VMs that this NAT rule applies to. For this RA it's set to `"all"` to specify that this rule applies to all VMs in the back end pool.
+    - `protocol` specifies the protocol that the rule applies to. For this RA it's `"Tcp"`.
+    - `nicIndex` is a reference to the index of the NIC property object that has `isPrimary` set to `"true"` in the NIC array specified in the `virtualMachinesSettings` parameter, similar to how it the same value was specified for the property object in the `backendPools` property.
 
-#### `"virtuaNetworkSettings"` parameter for `"\windows"` and `"\linux"`:
+#### `virtuaNetworkSettings` parameter for `\windows` and `\linux`:
 
-The `"virtualNetworkSettings"` parameter references the VNet that the VM will be deployed to. 
+The `virtualNetworkSettings` parameter references the VNet that the VM will be deployed to. 
 
 ````json
 "virtualNetworkSettings": {
@@ -518,10 +518,10 @@ The `"virtualNetworkSettings"` parameter references the VNet that the VM will be
     }
 ````
 
-- `"name"` references the name of the VNet that was deployed earlier in the `"virtualNetworkSettings"` parameter. 
-- `"resourceGroup"` references the name of the Resource Group that includes the VNet.  
+- `name` references the name of the VNet that was deployed earlier in the `virtualNetworkSettings` parameter. 
+- `resourceGroup` references the name of the Resource Group that includes the VNet.  
 
-#### `"buildingBlockSettings"` parameter for `"\windows"` and `"\linux"`:
+#### `buildingBlockSettings` parameter for `\windows` and `\linux`:
 
 The `buildingBlockSettings` parameter is a set of properites used to control the behavior of the building block templates themselves. 
 
@@ -537,7 +537,7 @@ The `buildingBlockSettings` parameter is a set of properites used to control the
 - `storageAccountsCount` specifies the number of Storage Accounts that will be created for each VM.
 - `vmCount` specifies the number of VMs to be created. 
 - `vmStartIndex` specifies the initial value of the numbering to be used for the VM names.
- 
+
 ## Customizing this reference architecture deployment
 
 Now that you've seen how the reference architecture deployment parameter files were created, you can edit the parameter files to customize it. The parameter documentation for each template is available here:
@@ -546,7 +546,7 @@ Now that you've seen how the reference architecture deployment parameter files w
 |--------|--------------|-------------|
 |Vnet|virtualNetwork.parameters.json|[vnet-n-subnet][bb-vnet]|
 |NSG|networkSecurityGroups.parameters.json|[networkSecurityGroups][bb-nsg]|
-|VM|virtualMachine.parameters.json|[multi-vm-n-nic-m-storage][bb-vm]|
+|VMs and load balancer|loadBalancer.parameters.json.parameters.json|[loadBalancer-backend-n-vm][bb-vm]|
 
 Once you've edited the parameter files with your custom property values, follow the instructions below for the type of deployment:
 
