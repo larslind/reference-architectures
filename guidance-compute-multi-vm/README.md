@@ -82,7 +82,7 @@ Regardless of where the parameters are located, each `\parameters` folder contai
     \parameters\linux\<parameter files>
 ````
 
-This reference architecture includes a VNet, a NSG, and two VMs as shown in the diagram above. Let's take a look at each of the parameter files and the values of the properties used to deploy this reference architecture.
+This reference architecture includes a VNet, a NSG, and two VMs as shown in the diagram above. Let's take a look at each of the **parameter files** and the values of the properties used to deploy this reference architecture.
 
 > Note that the building block templates deploy all resources into a single resource group. 
 
@@ -410,6 +410,8 @@ The `loadBalancer.parameters.json` ([windows][vm-windows-parameters]/[linux][vm-
 
 #### `"loadBalancerSettings"` parameter for `"windows"` and `"linux"`
 
+The properties for the load balancer settings parameter are taken from the [Create or update a load balancer REST api](https://msdn.microsoft.com/library/azure/mt163574.aspx). The specific property values for this reference architecture are as follows:
+
 ````json
    "loadBalancerSettings": {
       "value": {
@@ -475,19 +477,67 @@ The `loadBalancer.parameters.json` ([windows][vm-windows-parameters]/[linux][vm-
     - `"internalLoadBalancerSettings"` specifies settings for the load balancer itself. It has the following sub-properties:
         - `"privateIPAddress"` specifies the VNet IP address of the load balancer.
         - `"subnetName"` is a reference to the name of the subnet that the load balancer is associated with. Recall that the subnet named `"ra-multi-vm-sn"` was created earlier in the `"VirtualNetworkSettings"` parameter.
-- `"loadBalancingRules"` is an array of objects that specify the traffic handling rules for the load balancer. The objects have the following sub-properties:
+
+- `"loadBalancingRules"` is an array of property objects that specify the traffic handling rules for the load balancer. The properties for this RA are:
     - `"name"` specifies the name of the rule.
     - `"frontendPort"` specifies the port number the load balancer listens on.
     - `"backendPort"` specifies the port number to which traffic will be forwarded on the backend VMs.
-    - `"protocol"` specifies the protocol that this rule applies to. Either `"TCP"` or `"UDP"`.
-    - `"backendPoolName"` references the name of the backend pool to which this rule applies. Note that the `"ra-multi-vm-lb-bep1"` value here refers to the 
+    - `"protocol"` specifies the protocol that this rule applies to. Either `"Tcp"` or `"Udp"`.
+    - `"backendPoolName"` references the name of the back end pool to which this rule applies. Note that the `"ra-multi-vm-lb-bep1"` value here refers to the back end pool that will be specified in the `"backendPools"` parameter shortly. 
+    - `"frontendIPConfigurationName"` references the name of an inbound network address translation (NAT) rule. Not that the `"ra-multi-vm-lb-fe-config1"` value here references the inbound NAT rule that will be specified in the `"inboundNatRules"` property shortly.
+    - `"enableFloatingIP"` specifies whether or not the load balancer's IP address will be assigned to a secondary load balancer if this load balancer fails. There's only one load balancer in this RA so the value is set to `"false"`.
+    - `"probeName"` references the name of a health probe specified in the `"probes"` property array. The name '`lbp1"` refers to a health probe that will be specified shortly.
 
-#### `virtualMachinesSettings` parameter for `\windows`:
+- `"probes"` is an array of property objects that specify the properties for a load balancer health probe. Health probes periodically query a REST api on the VM and evaluate the response to determine whether or not to send requests to the VM. The properties for this RA are:
+    - `"name"` specifies the name of the health probe.
+    - `"port"` specifies the port on the VM that listens for health probe requests. The VMs in this RA listen on port `"80"`.
+    - `"protocol"` specifies the protocol that the load balancer is to use when querying the VMs. The VMs in this RA respond to the `"Http"` protocol, but they could have also used the `"Tcp"` protocol. Note that the VMs respond to the load balancer with an Http `200 OK` to indicate they are healthy.
+    - `"requestPath"` specifies the URI to be queried for health status. The value of `"/"` here indicates the root URI is to be queried.
 
-The `virtualNetworkSettings` parameter references the VNet that the VM will be deployed to. The `name` property references the name of the VNet. The `resourceGroup` property references the name of the Resource Group that includes the VNet. This is the same for both the `windows` and `linux` deployments. 
+- `"backendPools"` is an array of property objects that specify the back end VM address pools. For this RA there's a single back end pool named `"ra-multi-vm-lb-bep1"`, which you will recall was referred to in the `"loadBalancingRules"` `"backendPoolName"` property earlier. The `"nicIndex"` property refers to the index of the NIC property object that has `"isPrimary"` set to `"true"` in the NIC array specified in the `"virtualMachinesSettings"` parameter. In this RA it's set to `"0"` because there's only one NIC in the array.
 
-The `buildingBlockSettings` parameter is a set of properites used to control the behavior of the building block templates themselves. The `vmCount` property defines the number of VMs to be created. The `vmStartIndex` property is used to define the initial value of the numbering to be used for the VM names. The `storageAccountsCount` property defines the number of Storage Accounts to be created. These properties are the same for both the `windows` and `linux` deployments.
+-`"inboundNatRules"` is an array of property objects that specify the inbound NAT rules for the load balancer. The properties for the one NAT rule for this RA are:
+    - `"namePrefix"` specifies the name of the rule. It's named `"rdp"` for this RA because this rule is used to redirect remote desktop protocol traffic to the backend VMs.
+    - `"frontendIPConfigurationName"` references the name of the front end IP configuration that this inbound NAT rule applies to. For this RA, this rule, `"rdp"` applies to the `"ra-multi-vm-lb-fe-config1"` front end IP configuration that was specified earlier in the `"frontendIPConfigurations"` array.
+    - `"startingFrontendPort"` is used to create unique port numbers on the load balancer for the VMs in the back end pool per inbound rule by incrementing from this starting port number. Here, it's set to `"50000"`, so the first VM will be mapped to port `50000` and the second VM will be mapped to port `50001`. 
+    - `"backendPort"` specifies the back end port on the VMs that this rule will redirect traffic to. This NAT rule is used to redirect RDP traffic to the backend VMs, and RDP listens on port `"3389"`.
+    - `"natRuleType"` specifies the collection of VMs that this NAT rule applies to. For this RA it's set to `"all"` to specify that this rule applies to all VMs in the back end pool, and that an incoming port should be mapped to the back end VM starting at the `"startingFrontendPort"` index.
+    - `"protocol"` specifies the protocol the rule applies to. Here it's `"Tcp"`, and the only other valid protocol is `"Udp"`.
+    - `"nicIndex"` is reference to the index of the NIC property object that has `"isPrimary"` set to `"true"` in the NIC array specified in the `"virtualMachinesSettings"` parameter, similar to how it the same value was specified for the property object in the `"backendPools"` property.
 
+#### `"virtuaNetworkSettings"` parameter for `"\windows"` and `"\linux"`:
+
+The `"virtualNetworkSettings"` parameter references the VNet that the VM will be deployed to. 
+
+````json
+"virtualNetworkSettings": {
+      "value": {
+        "name": "ra-multi-vm-vnet",
+        "resourceGroup": "ra-multi-vm-rg"
+      }
+    }
+````
+
+- `"name"` references the name of the VNet that was deployed earlier in the `"virtualNetworkSettings"` parameter. 
+- `"resourceGroup"` references the name of the Resource Group that includes the VNet.  
+
+#### `"buildingBlockSettings"` parameter for `"\windows"` and `"\linux"`:
+
+The `buildingBlockSettings` parameter is a set of properites used to control the behavior of the building block templates themselves. 
+
+````json
+"buildingBlockSettings": {
+      "value": {
+        "storageAccountsCount": 1,
+        "vmCount": 2,
+        "vmStartIndex": 1
+      }
+}
+````
+- `storageAccountsCount` specifies the number of Storage Accounts that will be created for each VM.
+- `vmCount` specifies the number of VMs to be created. 
+- `vmStartIndex` specifies the initial value of the numbering to be used for the VM names.
+ 
 ## Customizing this reference architecture deployment
 
 Now that you've seen how the reference architecture deployment parameter files were created, you can edit the parameter files to customize it. The parameter documentation for each template is available here:
