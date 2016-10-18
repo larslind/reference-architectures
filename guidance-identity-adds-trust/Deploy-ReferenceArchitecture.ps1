@@ -186,8 +186,21 @@ if ($Mode -eq "AzureADDS" -Or $Mode -eq "Prepare") {
     New-AzureRmResourceGroupDeployment -Name "ra-adtrust-azure-adds-dc-deployment" `
         -ResourceGroupName $addsResourceGroup.ResourceGroupName `
         -TemplateUri $virtualMachineExtensionsTemplate.AbsoluteUri -TemplateParameterFile $azureAddAddsDomainControllerExtensionParametersFile
-}
 
+	Write-Host "##########################################################################"
+	Write-Host "# Manual steps to install AD Domain Trust between from Azure Domain to Onprem Domain"
+	Write-Host "##########################################################################"
+	Write-Host 
+	Write-Host "# 1. RDP to the jumpbox, then RDP to ra-adtrust-onpremise-ad-vm1 (ip 192.168.0.4) with contoso\testuser "
+	Write-Host 
+	Write-Host "# 2. In onpremise-ad-vm1, run incoming-trust.ps1 "
+	Write-Host  
+	Write-Host "# 3. From jumpbox, RDP to ra-adtrust-ad-vm1 (ip 10.0.4.4), run outgoing-trust.ps1"
+	Write-Host 
+	Write-Host "# 4. To test, following the link https://technet.microsoft.com/en-us/library/cc753821(v=ws.11).aspx "
+	Write-Host 
+	Write-Host "##########################################################################"
+}
 
 
 
