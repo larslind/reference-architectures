@@ -66,6 +66,7 @@ $dataLoadBalancerParametersFile = [System.IO.Path]::Combine($PSScriptRoot, "para
 $managementParametersFile = [System.IO.Path]::Combine($PSScriptRoot, "parameters\azure\virtualMachines-mgmt.parameters.json")
 $privateDmzParametersFile = [System.IO.Path]::Combine($PSScriptRoot, "parameters\azure\dmz-private.parameters.json")
 $publicDmzParametersFile = [System.IO.Path]::Combine($PSScriptRoot, "parameters\azure\dmz-public.parameters.json")
+$azureWebVmDomainJoinExtensionParametersFile = [System.IO.Path]::Combine($PSScriptRoot, "parameters\azure\web-vm-domain-join.parameters.json")
 
 
 # Azure Onpremise Deployments
@@ -196,9 +197,14 @@ if ($Mode -eq "WebTier" -Or $Mode -eq "Prepare") {
     $workloadResourceGroup = New-AzureRmResourceGroup -Name $workloadResourceGroupName -Location $Location
 
     Write-Host "Deploying web load balancer..."
-    New-AzureRmResourceGroupDeployment -Name "ra-adtrust-web-deployment" -ResourceGroupName $workloadResourceGroup.ResourceGroupName `
+    New-AzureRmResourceGroupDeployment -Name "ra-adtrust-web-deployment"  `
+		-ResourceGroupName $workloadResourceGroup.ResourceGroupName `
         -TemplateUri $loadBalancerTemplate.AbsoluteUri -TemplateParameterFile $webLoadBalancerParametersFile
 
+    Write-Host "Joining Web Vm to domain..."
+    New-AzureRmResourceGroupDeployment -Name "ra-adtrust-web-vm-join-domain-deployment" `
+        -ResourceGroupName $workloadResourceGroup.ResourceGroupName `
+        -TemplateUri $virtualMachineExtensionsTemplate.AbsoluteUri -TemplateParameterFile $azureWebVmDomainJoinExtensionParametersFile
 }
 
 if ($Mode -eq "AzureADDS" -Or $Mode -eq "Prepare") {
