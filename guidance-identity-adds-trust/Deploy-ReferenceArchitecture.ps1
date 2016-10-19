@@ -9,7 +9,7 @@ param(
   $Location,
   
   [Parameter(Mandatory=$false)]
-  [ValidateSet("Prepare", "Onpremise", "Infrastructure", "CreateVpn", "AzureADDS", "Workload", "PublicDmz", "PrivateDmz")]
+  [ValidateSet("Prepare", "Onpremise", "Infrastructure", "CreateVpn", "AzureADDS", "WebTier", "Workload", "PublicDmz", "PrivateDmz")]
   $Mode = "Prepare"
 )
 
@@ -187,6 +187,21 @@ if ($Mode -eq "AzureADDS" -Or $Mode -eq "Prepare") {
         -ResourceGroupName $addsResourceGroup.ResourceGroupName `
         -TemplateUri $virtualMachineExtensionsTemplate.AbsoluteUri -TemplateParameterFile $azureAddAddsDomainControllerExtensionParametersFile
 
+}
+
+if ($Mode -eq "WebTier" -Or $Mode -eq "Prepare") {
+    # Deploy web tiers: 
+
+    Write-Host "Creating workload resource group..."
+    $workloadResourceGroup = New-AzureRmResourceGroup -Name $workloadResourceGroupName -Location $Location
+
+    Write-Host "Deploying web load balancer..."
+    New-AzureRmResourceGroupDeployment -Name "ra-adtrust-web-deployment" -ResourceGroupName $workloadResourceGroup.ResourceGroupName `
+        -TemplateUri $loadBalancerTemplate.AbsoluteUri -TemplateParameterFile $webLoadBalancerParametersFile
+
+}
+
+if ($Mode -eq "AzureADDS" -Or $Mode -eq "Prepare") {
 	Write-Host "##########################################################################"
 	Write-Host "# Manual steps to install AD Domain Trust between from Azure Domain to Onprem Domain"
 	Write-Host "##########################################################################"
@@ -209,21 +224,19 @@ if ($Mode -eq "AzureADDS" -Or $Mode -eq "Prepare") {
 
 
 
-
-
 ##########################################################################
 # Deployment workload and Dmz in cloud (optional for this guidance)
 ##########################################################################
 
 if ($Mode -eq "Workload") {
-    # Deploy workload tiers: RG, web, biz, and data
+    # Deploy workload tiers: RG, biz, and data
 
     Write-Host "Creating workload resource group..."
     $workloadResourceGroup = New-AzureRmResourceGroup -Name $workloadResourceGroupName -Location $Location
 
-    Write-Host "Deploying web load balancer..."
-    New-AzureRmResourceGroupDeployment -Name "ra-adtrust-web-deployment" -ResourceGroupName $workloadResourceGroup.ResourceGroupName `
-        -TemplateUri $loadBalancerTemplate.AbsoluteUri -TemplateParameterFile $webLoadBalancerParametersFile
+#    Write-Host "Deploying web load balancer..."
+#    New-AzureRmResourceGroupDeployment -Name "ra-adtrust-web-deployment" -ResourceGroupName $workloadResourceGroup.ResourceGroupName `
+#        -TemplateUri $loadBalancerTemplate.AbsoluteUri -TemplateParameterFile $webLoadBalancerParametersFile
 
     Write-Host "Deploying biz load balancer..."
     New-AzureRmResourceGroupDeployment -Name "ra-adtrust-biz-deployment" -ResourceGroupName $workloadResourceGroup.ResourceGroupName `

@@ -88,7 +88,7 @@
         ],
         "probes": [
           {
-            "name": "http-rule",
+            "name": "http-probe",
             "port": 80,
             "protocol": "Http",
             "requestPath": "/"
