@@ -4,7 +4,7 @@
   "parameters": {
     "virtualMachinesSettings": {
       "value": {
-        "namePrefix": "ra-single-vm",
+        "namePrefix": "ra-single",
         "computerNamePrefix": "cn",
         "size": "Standard_DS1_v2",
         "osType": "windows",
