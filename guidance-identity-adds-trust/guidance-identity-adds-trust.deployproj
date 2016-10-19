@@ -30,6 +30,7 @@
     </None>
     <Content Include="Deploy-ReferenceArchitecture.ps1" />
     <Content Include="parameters\azure\virtualNetwork.parameters.json" />
+    <None Include="extensions\iisaspnet.ps1.zip" />
     <None Include="extensions\outgoing-trust.ps1" />
     <None Include="extensions\incoming-trust.ps1" />
     <None Include="extensions\adds-forest.ps1" />
