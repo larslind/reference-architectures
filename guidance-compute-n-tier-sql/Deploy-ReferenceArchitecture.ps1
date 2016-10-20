@@ -27,7 +27,6 @@ Write-Host "Using $templateRootUriString to locate templates"
 Write-Host
 
 $templateRootUri = New-Object System.Uri -ArgumentList @($templateRootUriString)
-$referenceArchitectureRootUri = New-Object System.Uri -ArgumentList @("https://raw.githubusercontent.com/mspnp/reference-architectures/master/guidance-compute-n-tier-sql/parameters/")
 
 $loadBalancerTemplate = New-Object System.Uri -ArgumentList @($templateRootUri, "templates/buildingBlocks/loadBalancer-backend-n-vm/azuredeploy.json")
 $virtualNetworkTemplate = New-Object System.Uri -ArgumentList @($templateRootUri, "templates/buildingBlocks/vnet-n-subnet/azuredeploy.json")
@@ -36,23 +35,23 @@ $virtualMachineExtensionsTemplate = New-Object System.Uri -ArgumentList @($templ
 $networkSecurityGroupTemplate = New-Object System.Uri -ArgumentList @($templateRootUri, "templates/buildingBlocks/networkSecurityGroups/azuredeploy.json")
 
 # Azure ADDS Parameter Files
-$domainControllersParametersFile = [System.IO.Path]::Combine($PSScriptRoot, "adds\ad.parameters.json")
-$virtualNetworkDNSParametersFile = [System.IO.Path]::Combine($PSScriptRoot, "adds\virtualNetwork-adds-dns.parameters.json")
-$addAddsDomainControllerExtensionParametersFile = [System.IO.Path]::Combine($PSScriptRoot, "adds\add-adds-domain-controller.parameters.json")
-$createAddsDomainControllerForestExtensionParametersFile = [System.IO.Path]::Combine($PSScriptRoot, "adds\create-adds-forest-extension.parameters.json")
+$domainControllersParametersFile = [System.IO.Path]::Combine($PSScriptRoot, "parameters\adds\ad.parameters.json")
+$virtualNetworkDNSParametersFile = [System.IO.Path]::Combine($PSScriptRoot, "parameters\adds\virtualNetwork-adds-dns.parameters.json")
+$addAddsDomainControllerExtensionParametersFile = [System.IO.Path]::Combine($PSScriptRoot, "parameters\adds\add-adds-domain-controller.parameters.json")
+$createAddsDomainControllerForestExtensionParametersFile = [System.IO.Path]::Combine($PSScriptRoot, "parameters\adds\create-adds-forest-extension.parameters.json")
 
 # SQL Always On Parameter Files
-$sqlParametersFile = [System.IO.Path]::Combine($PSScriptRoot, "sql.parameters.json")
-$fswParametersFile = [System.IO.Path]::Combine($PSScriptRoot, "fsw.parameters.json")
-$sqlPrepareAOExtensionParametersFile = [System.IO.Path]::Combine($PSScriptRoot, "sql-iaas-ao-extensions.parameters.json")
-$sqlConfigureAOExtensionParametersFile = [System.IO.Path]::Combine($PSScriptRoot, "sql-configure-ao-extension.parameters.json")
+$sqlParametersFile = [System.IO.Path]::Combine($PSScriptRoot, "parameters\sql.parameters.json")
+$fswParametersFile = [System.IO.Path]::Combine($PSScriptRoot, "parameters\fsw.parameters.json")
+$sqlPrepareAOExtensionParametersFile = [System.IO.Path]::Combine($PSScriptRoot, "parameters\sql-iaas-ao-extensions.parameters.json")
+$sqlConfigureAOExtensionParametersFile = [System.IO.Path]::Combine($PSScriptRoot, "parameters\sql-configure-ao-extension.parameters.json")
 
 # Infrastructure And Workload Parameters Files
-$virtualNetworkParametersFile = [System.IO.Path]::Combine($PSScriptRoot, "virtualNetwork.parameters.json")
-$managementParametersFile = [System.IO.Path]::Combine($PSScriptRoot, "virtualMachines-mgmt.parameters.json")
-$serviceALoadBalancerParametersFile = [System.IO.Path]::Combine($PSScriptRoot, "serviceA.parameters.json")
-$serviceBLoadBalancerParametersFile = [System.IO.Path]::Combine($PSScriptRoot, "serviceB.parameters.json")
-$networkSecurityGroupParametersFile = [System.IO.Path]::Combine($PSScriptRoot, "networkSecurityGroups.parameters.json")
+$virtualNetworkParametersFile = [System.IO.Path]::Combine($PSScriptRoot, "parameters\virtualNetwork.parameters.json")
+$managementParametersFile = [System.IO.Path]::Combine($PSScriptRoot, "parameters\virtualMachines-mgmt.parameters.json")
+$serviceALoadBalancerParametersFile = [System.IO.Path]::Combine($PSScriptRoot, "parameters\serviceA.parameters.json")
+$serviceBLoadBalancerParametersFile = [System.IO.Path]::Combine($PSScriptRoot, "parameters\serviceB.parameters.json")
+$networkSecurityGroupParametersFile = [System.IO.Path]::Combine($PSScriptRoot, "parameters\networkSecurityGroups.parameters.json")
 
 $infrastructureResourceGroupName = "ra-ntier-sql-network-rg"
 $workloadResourceGroupName = "ra-ntier-sql-workload-rg"
