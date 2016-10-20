@@ -29,10 +29,9 @@ Write-Host "Using $templateRootUriString to locate templates"
 Write-Host
 
 $templateRootUri = New-Object System.Uri -ArgumentList @($templateRootUriString)
-$referenceArchitectureRootUri = New-Object System.Uri -ArgumentList @("https://raw.githubusercontent.com/mspnp/reference-architectures/master/")
 
-$onPremiseVirtualNetworkGatewayTemplate = New-Object System.Uri -ArgumentList @($referenceArchitectureRootUri, "guidance-identity-adds-trust/templates/onpremise/virtualNetworkGateway.json")
-$onPremiseConnectionTemplate = New-Object System.Uri -ArgumentList @($referenceArchitectureRootUri, "guidance-identity-adds-trust/templates/onpremise/connection.json")
+$onPremiseVirtualNetworkGatewayTemplateFile = [System.IO.Path]::Combine($PSScriptRoot, "templates\onpremise\virtualNetworkGateway.json")
+$onPremiseConnectionTemplateFile = [System.IO.Path]::Combine($PSScriptRoot, "templates\onpremise\connection.json")
 
 $loadBalancerTemplate = New-Object System.Uri -ArgumentList @($templateRootUri, "templates/buildingBlocks/loadBalancer-backend-n-vm/azuredeploy.json")
 $virtualNetworkTemplate = New-Object System.Uri -ArgumentList @($templateRootUri, "templates/buildingBlocks/vnet-n-subnet/azuredeploy.json")
@@ -143,7 +142,7 @@ if ($Mode -eq "CreateVpn" -Or $Mode -eq "Prepare") {
     Write-Host "Deploying Onpremise Virtual Network Gateway..."
     New-AzureRmResourceGroupDeployment -Name "ra-adtrust-onpremise-vpn-gateway-deployment" `
         -ResourceGroupName $onpremiseNetworkResourceGroup.ResourceGroupName `
-        -TemplateUri $onPremiseVirtualNetworkGatewayTemplate.AbsoluteUri -TemplateParameterFile $onpremiseVirtualNetworkGatewayParametersFile
+        -TemplateFile $onPremiseVirtualNetworkGatewayTemplateFile -TemplateParameterFile $onpremiseVirtualNetworkGatewayParametersFile
 
     Write-Host "Deploying Azure Virtual Network Gateway..."
     New-AzureRmResourceGroupDeployment -Name "ra-adtrust-vpn-gateway-deployment" -ResourceGroupName $azureNetworkResourceGroup.ResourceGroupName `
@@ -152,7 +151,7 @@ if ($Mode -eq "CreateVpn" -Or $Mode -eq "Prepare") {
     Write-Host "Creating Onpremise connection..."
     New-AzureRmResourceGroupDeployment -Name "ra-adtrust-onpremise-connection-deployment" `
         -ResourceGroupName $onpremiseNetworkResourceGroup.ResourceGroupName `
-        -TemplateUri $onPremiseConnectionTemplate.AbsoluteUri -TemplateParameterFile $onpremiseConnectionParametersFile
+        -TemplateFile $onPremiseConnectionTemplateFile -TemplateParameterFile $onpremiseConnectionParametersFile
 }
 
 ##########################################################################
