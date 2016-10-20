@@ -11,7 +11,7 @@
     },
     "parameterRootUri": {
       "type": "string",
-      "defaultValue": "https://raw.githubusercontent.com/mspnp/reference-architectures/master/",
+      "defaultValue": "https://raw.githubusercontent.com/mspnp/reference-architectures/master/guidance-hybrid-network-er/parameters/",
       "metadata": {
         "decription": "Root path for parameters"
       }
@@ -24,8 +24,8 @@
         "virtualNetworkGateway": "[uri(parameters('templateRootUri'), 'templates/buildingBlocks/vpn-gateway-vpn-connection/azuredeploy.json')]"
       },
       "parameter": {
-        "virtualNetwork": "[uri(parameters('parameterRootUri'), 'guidance-hybrid-network-er/parameters/virtualNetwork.parameters.json')]",
-        "virtualNetworkGateway": "[uri(parameters('parameterRootUri'), 'guidance-hybrid-network-er/parameters/virtualNetworkGateway.parameters.json')]"
+        "virtualNetwork": "[uri(parameters('parameterRootUri'), 'virtualNetwork.parameters.json')]",
+        "virtualNetworkGateway": "[uri(parameters('parameterRootUri'), 'virtualNetworkGateway.parameters.json')]"
       }
     }
   },

@@ -11,7 +11,7 @@
     },
     "parameterRootUri": {
       "type": "string",
-      "defaultValue": "https://aotemplates.blob.core.windows.net/ratemplates/guidance-compute-n-tier-sql/parameters/",
+      "defaultValue": "https://raw.githubusercontent.com/mspnp/reference-architectures/master/guidance-compute-n-tier-sql/parameters/",
       "metadata": {
         "decription": "Root path for parameters"
       }

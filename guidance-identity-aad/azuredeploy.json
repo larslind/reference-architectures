@@ -11,7 +11,7 @@
     },
     "parameterRootUri": {
       "type": "string",
-      "defaultValue": "https://raw.githubusercontent.com/mspnp/reference-architectures/master/",
+      "defaultValue": "https://raw.githubusercontent.com/mspnp/reference-architectures/master/guidance-compute-n-tier/parameters/",
       "metadata": {
         "decription": "Root path for parameters"
       }
@@ -37,12 +37,12 @@
         "networkSecurityGroup": "[concat(parameters('templateRootUri'), 'templates/buildingBlocks/networkSecurityGroups/azuredeploy.json')]"
       },
       "parameter": {
-        "virtualNetwork": "[concat(parameters('parameterRootUri'), 'guidance-compute-n-tier/parameters/', parameters('osType'), '/virtualNetwork.parameters.json')]",
-        "networkSecurityGroup": "[concat(parameters('parameterRootUri'), 'guidance-compute-n-tier/parameters/', parameters('osType'), '/networkSecurityGroups.parameters.json')]",
-        "webTier": "[concat(parameters('parameterRootUri'), 'guidance-compute-n-tier/parameters/', parameters('osType'), '/webTier.parameters.json')]",
-        "dataTier": "[concat(parameters('parameterRootUri'), 'guidance-compute-n-tier/parameters/', parameters('osType'), '/dataTier.parameters.json')]",
-        "businessTier": "[concat(parameters('parameterRootUri'), 'guidance-compute-n-tier/parameters/', parameters('osType'), '/businessTier.parameters.json')]",
-        "managementTier": "[concat(parameters('parameterRootUri'), 'guidance-compute-n-tier/parameters/', parameters('osType'), '/managementTier.parameters.json')]"
+        "virtualNetwork": "[concat(parameters('parameterRootUri'), parameters('osType'), '/virtualNetwork.parameters.json')]",
+        "networkSecurityGroup": "[concat(parameters('parameterRootUri'), parameters('osType'), '/networkSecurityGroups.parameters.json')]",
+        "webTier": "[concat(parameters('parameterRootUri'), parameters('osType'), '/webTier.parameters.json')]",
+        "dataTier": "[concat(parameters('parameterRootUri'), parameters('osType'), '/dataTier.parameters.json')]",
+        "businessTier": "[concat(parameters('parameterRootUri'), parameters('osType'), '/businessTier.parameters.json')]",
+        "managementTier": "[concat(parameters('parameterRootUri'), parameters('osType'), '/managementTier.parameters.json')]"
       }
     }
   },

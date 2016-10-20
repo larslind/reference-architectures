@@ -27,7 +27,6 @@ Write-Host "Using $templateRootUriString to locate templates"
 Write-Host
 
 $templateRootUri = New-Object System.Uri -ArgumentList @($templateRootUriString)
-$referenceArchitectureRootUri = New-Object System.Uri -ArgumentList @("https://aotemplates.blob.core.windows.net/ratemplates/guidance-compute-n-tier-sql/")
 
 $loadBalancerTemplate = New-Object System.Uri -ArgumentList @($templateRootUri, "templates/buildingBlocks/loadBalancer-backend-n-vm/azuredeploy.json")
 $virtualNetworkTemplate = New-Object System.Uri -ArgumentList @($templateRootUri, "templates/buildingBlocks/vnet-n-subnet/azuredeploy.json")
