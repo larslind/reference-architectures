@@ -11,7 +11,7 @@
     },
     "parameterRootUri": {
       "type": "string",
-      "defaultValue": "https://raw.githubusercontent.com/mspnp/reference-architectures/master/",
+      "defaultValue": "https://raw.githubusercontent.com/mspnp/reference-architectures/master/guidance-hybrid-network-secure-vnet-dmz/parameters/",
       "metadata": {
         "decription": "Root path for parameters"
       }
@@ -24,8 +24,8 @@
         "vpn": "[concat(parameters('buildingBlocksRootUri'), 'templates/buildingBlocks/vpn-gateway-vpn-connection/azuredeploy.json')]"
       },
       "parameter": {
-        "virtualNetwork": "[concat(parameters('parameterRootUri'), 'guidance-hybrid-network-secure-vnet-dmz/parameters/virtualNetwork.parameters.json')]",
-        "vpn": "[concat(parameters('parameterRootUri'), 'guidance-hybrid-network-secure-vnet-dmz/parameters/vpn.parameters.json')]"
+        "virtualNetwork": "[concat(parameters('parameterRootUri'), 'virtualNetwork.parameters.json')]",
+        "vpn": "[concat(parameters('parameterRootUri'), 'vpn.parameters.json')]"
       }
     }
   },

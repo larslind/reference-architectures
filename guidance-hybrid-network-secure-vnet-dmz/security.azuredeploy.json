@@ -11,7 +11,7 @@
     },
     "parameterRootUri": {
       "type": "string",
-      "defaultValue": "https://raw.githubusercontent.com/mspnp/reference-architectures/master/",
+      "defaultValue": "https://raw.githubusercontent.com/mspnp/reference-architectures/master/guidance-hybrid-network-secure-vnet-dmz/parameters/",
       "metadata": {
         "decription": "Root path for parameters"
       }
@@ -25,10 +25,10 @@
         "networkSecurityGroups": "[concat(parameters('buildingBlocksRootUri'), 'templates/buildingBlocks/networkSecurityGroups/azuredeploy.json')]"
       },
       "parameter": {
-        "mgmtSubnetVMs": "[concat(parameters('parameterRootUri'), 'guidance-hybrid-network-secure-vnet-dmz/parameters/virtualMachines-mgmt-subnet.parameters.json')]",
-        "dmz": "[concat(parameters('parameterRootUri'), 'guidance-hybrid-network-secure-vnet-dmz/parameters/dmz.parameters.json')]",
-        "internetDmz": "[concat(parameters('parameterRootUri'), 'guidance-hybrid-network-secure-vnet-dmz/parameters/internet-dmz.parameters.json')]",
-        "networkSecurityGroups": "[concat(parameters('parameterRootUri'), 'guidance-hybrid-network-secure-vnet-dmz/parameters/networkSecurityGroups.parameters.json')]"
+        "mgmtSubnetVMs": "[concat(parameters('parameterRootUri'), 'virtualMachines-mgmt-subnet.parameters.json')]",
+        "dmz": "[concat(parameters('parameterRootUri'), 'dmz.parameters.json')]",
+        "internetDmz": "[concat(parameters('parameterRootUri'), 'internet-dmz.parameters.json')]",
+        "networkSecurityGroups": "[concat(parameters('parameterRootUri'), 'networkSecurityGroups.parameters.json')]"
       }
     }
   },

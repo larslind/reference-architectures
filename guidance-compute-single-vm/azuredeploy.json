@@ -11,7 +11,7 @@
     },
     "parameterRootUri": {
       "type": "string",
-      "defaultValue": "https://raw.githubusercontent.com/mspnp/reference-architectures/master/",
+      "defaultValue": "https://raw.githubusercontent.com/mspnp/reference-architectures/master/guidance-compute-single-vm/parameters/",
       "metadata": {
         "decription": "Root path for parameters"
       }
@@ -36,9 +36,9 @@
         "networkSecurityGroup": "[uri(parameters('templateRootUri'), 'templates/buildingBlocks/networkSecurityGroups/azuredeploy.json')]"
       },
       "parameter": {
-        "virtualNetwork": "[uri(parameters('parameterRootUri'), concat('guidance-compute-single-vm/parameters/', parameters('osType'), '/virtualNetwork.parameters.json'))]",
-        "virtualMachine": "[uri(parameters('parameterRootUri'), concat('guidance-compute-single-vm/parameters/', parameters('osType'), '/virtualMachine.parameters.json'))]",
-        "networkSecurityGroup": "[uri(parameters('parameterRootUri'), concat('guidance-compute-single-vm/parameters/', parameters('osType'), '/networkSecurityGroups.parameters.json'))]"
+        "virtualNetwork": "[uri(parameters('parameterRootUri'), concat(parameters('osType'), '/virtualNetwork.parameters.json'))]",
+        "virtualMachine": "[uri(parameters('parameterRootUri'), concat(parameters('osType'), '/virtualMachine.parameters.json'))]",
+        "networkSecurityGroup": "[uri(parameters('parameterRootUri'), concat(parameters('osType'), '/networkSecurityGroups.parameters.json'))]"
       }
     }
   },

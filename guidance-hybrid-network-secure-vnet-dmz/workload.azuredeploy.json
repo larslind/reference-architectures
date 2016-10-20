@@ -11,7 +11,7 @@
     },
     "parameterRootUri": {
       "type": "string",
-      "defaultValue": "https://raw.githubusercontent.com/mspnp/reference-architectures/master/",
+      "defaultValue": "https://raw.githubusercontent.com/mspnp/reference-architectures/master/guidance-hybrid-network-secure-vnet-dmz/parameters/",
       "metadata": {
         "decription": "Root path for parameters"
       }
@@ -23,9 +23,9 @@
         "loadBalancer": "[concat(parameters('buildingBlocksRootUri'), 'templates/buildingBlocks/loadBalancer-backend-n-vm/azuredeploy.json')]"
       },
       "parameter": {
-        "webSubnetLoadBalancerAndVMs": "[concat(parameters('parameterRootUri'), 'guidance-hybrid-network-secure-vnet-dmz/parameters/loadBalancer-web-subnet.parameters.json')]",
-        "bizSubnetLoadBalancerAndVMs": "[concat(parameters('parameterRootUri'), 'guidance-hybrid-network-secure-vnet-dmz/parameters/loadBalancer-biz-subnet.parameters.json')]",
-        "dataSubnetLoadBalancerAndVMs": "[concat(parameters('parameterRootUri'), 'guidance-hybrid-network-secure-vnet-dmz/parameters/loadBalancer-data-subnet.parameters.json')]"
+        "webSubnetLoadBalancerAndVMs": "[concat(parameters('parameterRootUri'), 'loadBalancer-web-subnet.parameters.json')]",
+        "bizSubnetLoadBalancerAndVMs": "[concat(parameters('parameterRootUri'), 'loadBalancer-biz-subnet.parameters.json')]",
+        "dataSubnetLoadBalancerAndVMs": "[concat(parameters('parameterRootUri'), 'loadBalancer-data-subnet.parameters.json')]"
       }
     }
   },
