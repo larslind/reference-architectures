@@ -67,6 +67,7 @@ $managementParametersFile = [System.IO.Path]::Combine($PSScriptRoot, "parameters
 $privateDmzParametersFile = [System.IO.Path]::Combine($PSScriptRoot, "parameters\azure\dmz-private.parameters.json")
 $publicDmzParametersFile = [System.IO.Path]::Combine($PSScriptRoot, "parameters\azure\dmz-public.parameters.json")
 $azureWebVmDomainJoinExtensionParametersFile = [System.IO.Path]::Combine($PSScriptRoot, "parameters\azure\web-vm-domain-join.parameters.json")
+$azureWebVmEnableWindowsAuthExtensionParametersFile = [System.IO.Path]::Combine($PSScriptRoot, "parameters\azure\web-vm-enable-windows-auth.parameters.json")
 
 
 # Azure Onpremise Deployments
@@ -205,6 +206,11 @@ if ($Mode -eq "WebTier" -Or $Mode -eq "Prepare") {
     New-AzureRmResourceGroupDeployment -Name "ra-adtrust-web-vm-join-domain-deployment" `
         -ResourceGroupName $workloadResourceGroup.ResourceGroupName `
         -TemplateUri $virtualMachineExtensionsTemplate.AbsoluteUri -TemplateParameterFile $azureWebVmDomainJoinExtensionParametersFile
+
+    Write-Host "Enable Windows Auth..."
+    New-AzureRmResourceGroupDeployment -Name "ra-adtrust-web-vm-enable-windows-auth" `
+        -ResourceGroupName $workloadResourceGroup.ResourceGroupName `
+        -TemplateUri $virtualMachineExtensionsTemplate.AbsoluteUri -TemplateParameterFile $azureWebVmEnableWindowsAuthExtensionParametersFile
 }
 
 if ($Mode -eq "AzureADDS" -Or $Mode -eq "Prepare") {

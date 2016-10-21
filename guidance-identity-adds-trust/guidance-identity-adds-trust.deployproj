@@ -31,11 +31,13 @@
     <Content Include="Deploy-ReferenceArchitecture.ps1" />
     <Content Include="parameters\azure\virtualNetwork.parameters.json" />
     <None Include="extensions\iisaspnet.ps1.zip" />
+    <None Include="extensions\enable-windows-auth.ps1" />
     <None Include="extensions\outgoing-trust.ps1" />
     <None Include="extensions\incoming-trust.ps1" />
     <None Include="extensions\adds-forest.ps1" />
     <None Include="extensions\adds.ps1" />
     <None Include="parameters\azure\add-adds-domain-controller.parameters.json" />
+    <None Include="parameters\azure\web-vm-enable-windows-auth.parameters.json" />
     <None Include="parameters\azure\web-vm-domain-join.parameters.json" />
     <None Include="parameters\azure\create-adds-forest-extension.parameters.json" />
     <None Include="parameters\azure\dmz-private.parameters.json" />
@@ -51,11 +53,11 @@
     <None Include="parameters\onpremise\connection.parameters.json" />
     <None Include="parameters\onpremise\create-adds-forest-extension.parameters.json" />
     <None Include="parameters\onpremise\virtualMachines-adds.parameters.json" />
-    <None Include="parameters\onpremise\virtualNetwork - Copy.parameters.json" />
     <None Include="parameters\onpremise\virtualNetwork-adds-dns.parameters.json" />
     <None Include="parameters\onpremise\virtualNetwork.parameters.json" />
     <None Include="parameters\onpremise\virtualNetworkGateway.parameters.json" />
     <None Include="templates\onpremise\ad-forest-extension-settings-mapper.json" />
+    <None Include="templates\onpremise\enable-windows-auth-extension-settings-mapper.json" />
     <None Include="templates\onpremise\adds-domain-controller-extension-settings-mapper.json" />
     <None Include="templates\onpremise\connection.json" />
     <None Include="templates\onpremise\virtualNetworkGateway.json" />

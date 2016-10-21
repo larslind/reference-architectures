@@ -1,0 +1,30 @@
+﻿{
+  "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "virtualMachinesExtensionSettings": {
+      "value": [
+        {
+          "vms": [ "ra-adtrust-web-vm1", "ra-adtrust-web-vm2" ],
+          "extensions": [
+            {
+              "name": "enable-windows-auth",
+              "publisher": "Microsoft.Compute",
+              "type": "CustomScriptExtension",
+              "typeHandlerVersion": "1.8",
+              "autoUpgradeMinorVersion": false,
+              "settingsConfigMapperUri": "https://raw.githubusercontent.com/mspnp/reference-architectures/master/guidance-identity-adds-trust/templates/onpremise/enable-windows-auth-extension-settings-mapper.json",
+              "settingsConfig": {
+                "fileUris": [
+                  "https://raw.githubusercontent.com/mspnp/reference-architectures/master/guidance-identity-adds-trust/extensions/enable-windows-auth.ps1"
+                ]
+              },
+              "protectedSettingsConfig": {
+              }
+            }
+          ]
+        }
+      ]
+    }
+  }
+}
