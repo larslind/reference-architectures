@@ -11,8 +11,8 @@
         ],
         "subnets": [
           {
-            "name": "ra-multi-vm-sn",
-            "addressPrefix": "10.0.0.0/24"
+            "name": "web",
+            "addressPrefix": "10.0.1.0/24"
           }
         ],
         "dnsServers": [ ]

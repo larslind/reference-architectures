@@ -15,7 +15,7 @@
         "nics": [
           {
             "isPublic": "false",
-            "subnetName": "ra-multi-vm-sn",
+            "subnetName": "web",
             "privateIPAllocationMethod": "dynamic",
             "publicIPAllocationMethod": "dynamic",
             "isPrimary": "true",
@@ -71,8 +71,8 @@
             "loadBalancerType": "public",
             "domainNameLabel": "",
             "internalLoadBalancerSettings": {
-              "privateIPAddress": "10.0.0.250",
-              "subnetName": "ra-multi-vm-sn"
+              "privateIPAddress": "10.0.1.250",
+              "subnetName": "web"
             }
           }
         ],
