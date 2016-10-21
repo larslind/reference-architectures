@@ -105,8 +105,8 @@
           {
             "name": "http-probe",
             "port": 80,
-            "protocol": "Http",
-            "requestPath": "/"
+            "protocol": "Tcp",
+            "requestPath": null
           },
           {
             "name": "https-probe",
