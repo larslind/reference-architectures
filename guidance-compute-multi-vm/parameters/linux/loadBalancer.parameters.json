@@ -70,10 +70,7 @@
             "name": "ra-multi-vm-lb-fe-config1",
             "loadBalancerType": "public",
             "domainNameLabel": "",
-            "internalLoadBalancerSettings": {
-              "privateIPAddress": "10.0.1.250",
-              "subnetName": "web"
-            }
+            "internalLoadBalancerSettings": { }
           }
         ],
         "loadBalancingRules": [
