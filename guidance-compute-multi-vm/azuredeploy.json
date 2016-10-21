@@ -11,7 +11,7 @@
     },
     "parameterRootUri": {
       "type": "string",
-      "defaultValue": "https://raw.githubusercontent.com/mspnp/reference-architectures/master/",
+      "defaultValue": "https://raw.githubusercontent.com/mspnp/reference-architectures/master/guidance-compute-multi-vm/parameters/",
       "metadata": {
         "decription": "Root path for parameters"
       }
@@ -36,9 +36,9 @@
         "networkSecurityGroup": "[concat(parameters('templateRootUri'), 'templates/buildingBlocks/networkSecurityGroups/azuredeploy.json')]"
       },
       "parameter": {
-        "virtualNetwork": "[concat(parameters('parameterRootUri'), 'guidance-compute-multi-vm/parameters/', parameters('osType'), '/virtualNetwork.parameters.json')]",
-        "loadBalancer": "[concat(parameters('parameterRootUri'), 'guidance-compute-multi-vm/parameters/', parameters('osType'), '/loadBalancer.parameters.json')]",
-        "networkSecurityGroup": "[concat(parameters('parameterRootUri'), 'guidance-compute-multi-vm/parameters/', parameters('osType'), '/networkSecurityGroups.parameters.json')]"
+        "virtualNetwork": "[concat(parameters('parameterRootUri'), parameters('osType'), '/virtualNetwork.parameters.json')]",
+        "loadBalancer": "[concat(parameters('parameterRootUri'), parameters('osType'), '/loadBalancer.parameters.json')]",
+        "networkSecurityGroup": "[concat(parameters('parameterRootUri'), parameters('osType'), '/networkSecurityGroups.parameters.json')]"
       }
     }
   },

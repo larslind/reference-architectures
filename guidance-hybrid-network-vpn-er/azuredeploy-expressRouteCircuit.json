@@ -11,7 +11,7 @@
     },
     "parameterRootUri": {
       "type": "string",
-      "defaultValue": "https://raw.githubusercontent.com/mspnp/reference-architectures/master/",
+      "defaultValue": "https://raw.githubusercontent.com/mspnp/reference-architectures/master/guidance-hybrid-network-vpn-er/parameters/",
       "metadata": {
         "decription": "Root path for parameters"
       }
@@ -23,7 +23,7 @@
         "expressRouteCircuit": "[uri(parameters('templateRootUri'), 'templates/resources/Microsoft.Network/expressRouteCircuits/expressRouteCircuit.json')]"
       },
       "parameter": {
-        "expressRouteCircuit": "[uri(parameters('parameterRootUri'), 'guidance-hybrid-network-vpn-er/parameters/expressRouteCircuit.parameters.json')]"
+        "expressRouteCircuit": "[uri(parameters('parameterRootUri'), 'expressRouteCircuit.parameters.json')]"
       }
     }
   },

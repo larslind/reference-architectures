@@ -11,20 +11,9 @@
     },
     "parameterRootUri": {
       "type": "string",
-      "defaultValue": "https://raw.githubusercontent.com/mspnp/reference-architectures/master/",
+      "defaultValue": "https://raw.githubusercontent.com/mspnp/reference-architectures/master/guidance-compute-n-tier/parameters/",
       "metadata": {
         "decription": "Root path for parameters"
-      }
-    },
-    "osType": {
-      "type": "string",
-      "allowedValues": [
-        "windows",
-        "linux"
-      ],
-      "defaultValue": "linux",
-      "metadata": {
-        "description": "Relative path decider for the template parameters."
       }
     }
   },
@@ -38,15 +27,15 @@
         "availabilitySet": "[concat(parameters('templateRootUri'), 'templates/resources/Microsoft.Compute/virtualMachines/availabilitySet-new.json')]"
       },
       "parameter": {
-        "virtualNetworkNodes": "[concat(parameters('parameterRootUri'), 'guidance-compute-n-tier/parameters/', parameters('osType'), '/virtualNetworkNodes.parameters.json')]",
-        "virtualNetworkManagement": "[concat(parameters('parameterRootUri'), 'guidance-compute-n-tier/parameters/', parameters('osType'), '/virtualNetworkManagement.parameters.json')]",
-        "networkSecurityGroup": "[concat(parameters('parameterRootUri'), 'guidance-compute-n-tier/parameters/', parameters('osType'), '/networkSecurityGroups.parameters.json')]",
-        "webTier": "[concat(parameters('parameterRootUri'), 'guidance-compute-n-tier/parameters/', parameters('osType'), '/webTier.parameters.json')]",
-        "dataTier": "[concat(parameters('parameterRootUri'), 'guidance-compute-n-tier/parameters/', parameters('osType'), '/dataTier.parameters.json')]",
-        "businessTier": "[concat(parameters('parameterRootUri'), 'guidance-compute-n-tier/parameters/', parameters('osType'), '/businessTier.parameters.json')]",
-        "managementTierJumpbox": "[concat(parameters('parameterRootUri'), 'guidance-compute-n-tier/parameters/', parameters('osType'), '/managementTierJumpbox.parameters.json')]",
-        "availabilitySet": "[concat(parameters('parameterRootUri'), 'guidance-compute-n-tier/parameters/', parameters('osType'), '/availabilitySet.parameters.json')]",
-        "managementTierOps": "[concat(parameters('parameterRootUri'), 'guidance-compute-n-tier/parameters/', parameters('osType'), '/managementTierOps.parameters.json')]"
+        "virtualNetworkNodes": "[concat(parameters('parameterRootUri'), 'linux/virtualNetworkNodes.parameters.json')]",
+        "virtualNetworkManagement": "[concat(parameters('parameterRootUri'), 'linux/virtualNetworkManagement.parameters.json')]",
+        "networkSecurityGroup": "[concat(parameters('parameterRootUri'), 'linux/networkSecurityGroups.parameters.json')]",
+        "webTier": "[concat(parameters('parameterRootUri'), 'linux/webTier.parameters.json')]",
+        "dataTier": "[concat(parameters('parameterRootUri'), 'linux/dataTier.parameters.json')]",
+        "businessTier": "[concat(parameters('parameterRootUri'), 'linux/businessTier.parameters.json')]",
+        "managementTierJumpbox": "[concat(parameters('parameterRootUri'), 'linux/managementTierJumpbox.parameters.json')]",
+        "availabilitySet": "[concat(parameters('parameterRootUri'), 'linux/availabilitySet.parameters.json')]",
+        "managementTierOps": "[concat(parameters('parameterRootUri'), 'linux/managementTierOps.parameters.json')]"
       }
     }
   },
