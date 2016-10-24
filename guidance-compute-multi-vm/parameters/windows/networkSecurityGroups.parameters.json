@@ -13,7 +13,7 @@
         {
           "name": "ra-multi-vm-nsg",
           "subnets": [
-            "ra-multi-vm-sn"
+            "web"
           ],
           "networkInterfaces": [
           ],

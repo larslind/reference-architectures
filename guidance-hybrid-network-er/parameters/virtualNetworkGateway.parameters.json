@@ -4,7 +4,8 @@
   "parameters": {
     "virtualNetworkSettings": {
       "value": {
-        "name": "ra-hybrid-er-vnet"
+        "name": "ra-hybrid-er-vnet",
+        "resourceGroup": "ra-hybrid-er-rg"
       }
     },
     "virtualNetworkGatewaySettings": {
