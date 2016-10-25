@@ -20,7 +20,7 @@
             "privateIPAllocationMethod": "dynamic",
             "publicIPAllocationMethod": "dynamic",
             "enableIPForwarding": false,
-            "domainNameLabelPrefix": "rantieropscenter",
+            "domainNameLabelPrefix": "rantierops",
             "dnsServers": [ ]
           }
         ],
@@ -60,7 +60,7 @@
     },
     "virtualNetworkSettings": {
       "value": {
-        "name": "ra-ntier-mgmt-vnet",
+        "name": "ra-ntier-vnet",
         "resourceGroup": "ra-ntier-cassandra-rg"
       }
     },
