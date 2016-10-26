@@ -4,13 +4,16 @@
   "parameters": {
     "loadBalancerSettings": {
       "value": {
-        "name": "service-b-lb",
+        "name": "biz-lb",
         "frontendIPConfigurations": [
           {
-            "name": "service-b-lb-fe-config1",
-            "loadBalancerType": "public",
+            "name": "biz-lb-fe-config1",
+            "loadBalancerType": "internal",
             "domainNameLabel": "",
-            "internalLoadBalancerSettings": { }
+            "internalLoadBalancerSettings": {
+              "privateIPAddress": "10.0.2.100",
+              "subnetName": "biz"
+            }
           }
         ],
         "loadBalancingRules": [
@@ -20,7 +23,7 @@
             "backendPort": 80,
             "protocol": "Tcp",
             "backendPoolName": "lb-bep1",
-            "frontendIPConfigurationName": "service-b-lb-fe-config1",
+            "frontendIPConfigurationName": "biz-lb-fe-config1",
             "enableFloatingIP": false,
             "probeName": "lbp1"
           }
@@ -44,8 +47,8 @@
     },
     "virtualMachinesSettings": {
       "value": {
-        "namePrefix": "service-b",
-        "computerNamePrefix": "svcb",
+        "namePrefix": "biz",
+        "computerNamePrefix": "biz",
         "size": "Standard_DS1_v2",
         "adminUsername": "testuser",
         "adminPassword": "AweS0me@PW",
@@ -56,7 +59,7 @@
           {
             "isPublic": "false",
             "isPrimary": "true",
-            "subnetName": "service-b",
+            "subnetName": "biz",
             "privateIPAllocationMethod": "dynamic",
             "enableIPForwarding": false,
             "domainNameLabelPrefix": "",
@@ -115,7 +118,7 @@
         ],
         "availabilitySet": {
           "useExistingAvailabilitySet": "No",
-          "name": "service-b-as"
+          "name": "biz-as"
         }
       }
     },

@@ -44,10 +44,10 @@
     <None Include="parameters\fsw.parameters.json" />
     <None Include="parameters\sql.parameters.json" />
     <None Include="parameters\networkSecurityGroups.parameters.json" />
-    <None Include="parameters\serviceB.parameters.json" />
+    <None Include="parameters\web.parameters.json" />
     <None Include="parameters\virtualMachines-mgmt.parameters.json" />
     <None Include="parameters\virtualNetwork.parameters.json" />
-    <None Include="parameters\serviceA.parameters.json" />
+    <None Include="parameters\biz.parameters.json" />
     <None Include="templates\adds\ad-forest-extension-settings-mapper.json" />
     <None Include="templates\adds\adds-domain-controller-extension-settings-mapper.json" />
     <None Include="security.azuredeploy.json" />

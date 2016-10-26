@@ -24,8 +24,8 @@
         "virtualMachine": "[concat(parameters('templateRootUri'), 'templates/buildingBlocks/multi-vm-n-nic-m-storage/azuredeploy.json')]"
       },
       "parameter": {
-        "serviceA": "[concat(parameters('parameterRootUri'), 'serviceA.parameters.json')]",
-        "serviceB": "[concat(parameters('parameterRootUri'), 'serviceB.parameters.json')]",
+        "biz": "[concat(parameters('parameterRootUri'), 'biz.parameters.json')]",
+        "web": "[concat(parameters('parameterRootUri'), 'web.parameters.json')]",
         "managementTier": "[concat(parameters('parameterRootUri'), 'virtualMachines-mgmt.parameters.json')]"
       }
     }
@@ -34,14 +34,14 @@
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2015-01-01",
-      "name": "ra-ntier-sql-serviceA-deployment",
+      "name": "ra-ntier-sql-biz-deployment",
       "properties": {
         "mode": "Incremental",
         "templateLink": {
           "uri": "[variables('templates').deployment.loadBalancer]"
         },
         "parametersLink": {
-          "uri": "[variables('templates').parameter.serviceA]",
+          "uri": "[variables('templates').parameter.biz]",
           "contentVersion": "1.0.0.0"
         }
       }
@@ -49,14 +49,14 @@
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2015-01-01",
-      "name": "ra-ntier-sql-serviceB-deployment",
+      "name": "ra-ntier-sql-web-deployment",
       "properties": {
         "mode": "Incremental",
         "templateLink": {
           "uri": "[variables('templates').deployment.loadBalancer]"
         },
         "parametersLink": {
-          "uri": "[variables('templates').parameter.serviceB]",
+          "uri": "[variables('templates').parameter.web]",
           "contentVersion": "1.0.0.0"
         }
       }

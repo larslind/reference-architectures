@@ -49,8 +49,8 @@ $sqlConfigureAOExtensionParametersFile = [System.IO.Path]::Combine($PSScriptRoot
 # Infrastructure And Workload Parameters Files
 $virtualNetworkParametersFile = [System.IO.Path]::Combine($PSScriptRoot, "parameters\virtualNetwork.parameters.json")
 $managementParametersFile = [System.IO.Path]::Combine($PSScriptRoot, "parameters\virtualMachines-mgmt.parameters.json")
-$serviceALoadBalancerParametersFile = [System.IO.Path]::Combine($PSScriptRoot, "parameters\serviceA.parameters.json")
-$serviceBLoadBalancerParametersFile = [System.IO.Path]::Combine($PSScriptRoot, "parameters\serviceB.parameters.json")
+$bizLoadBalancerParametersFile = [System.IO.Path]::Combine($PSScriptRoot, "parameters\biz.parameters.json")
+$webLoadBalancerParametersFile = [System.IO.Path]::Combine($PSScriptRoot, "parameters\web.parameters.json")
 $networkSecurityGroupParametersFile = [System.IO.Path]::Combine($PSScriptRoot, "parameters\networkSecurityGroups.parameters.json")
 
 $infrastructureResourceGroupName = "ra-ntier-sql-network-rg"
@@ -115,14 +115,14 @@ elseif ($Mode -eq "Workload") {
     $workloadResourceGroup = New-AzureRmResourceGroup -Name $workloadResourceGroupName -Location $Location
 
     Write-Host "Deploy Service A servers with load balancer..."
-    New-AzureRmResourceGroupDeployment -Name "ra-ntier-sql-serviceA-deployment" `
+    New-AzureRmResourceGroupDeployment -Name "ra-ntier-sql-biz-deployment" `
         -ResourceGroupName $workloadResourceGroup.ResourceGroupName -TemplateUri $loadBalancerTemplate.AbsoluteUri `
-        -TemplateParameterFile $serviceALoadBalancerParametersFile
+        -TemplateParameterFile $bizLoadBalancerParametersFile
 
 	Write-Host "Deploy Service B servers with load balancer..."
-    New-AzureRmResourceGroupDeployment -Name "ra-ntier-sql-serviceB-deployment" `
+    New-AzureRmResourceGroupDeployment -Name "ra-ntier-sql-web-deployment" `
         -ResourceGroupName $workloadResourceGroup.ResourceGroupName -TemplateUri $loadBalancerTemplate.AbsoluteUri `
-        -TemplateParameterFile $serviceBLoadBalancerParametersFile
+        -TemplateParameterFile $webLoadBalancerParametersFile
 }
 elseif ($Mode -eq "Security") {
     # Deploy DMZs
