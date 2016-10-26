@@ -29,8 +29,8 @@
           ],
           "securityRules": [
             {
-              "name": "allow-traffic-from-service-a",
-              "description": "Allow traffic originating from Service A.",
+              "name": "allow-traffic-from-biz",
+              "description": "Allow traffic originating from Business tier.",
               "protocol": "*",
               "sourcePortRange": "*",
               "destinationPortRange": "1433",
@@ -41,21 +41,9 @@
               "direction": "Inbound"
             },
             {
-              "name": "allow-traffic-from-service-b",
-              "description": "Allow traffic originating from Service B.",
-              "protocol": "*",
-              "sourcePortRange": "*",
-              "destinationPortRange": "1433",
-              "sourceAddressPrefix": "10.0.1.0/24",
-              "destinationAddressPrefix": "*",
-              "access": "Allow",
-              "priority": 110,
-              "direction": "Inbound"
-            },
-            {
               "name": "allow-mgmt-rdp",
               "direction": "Inbound",
-              "priority": 120,
+              "priority": 110,
               "sourceAddressPrefix": "10.0.0.128/25",
               "destinationAddressPrefix": "*",
               "sourcePortRange": "*",
@@ -72,7 +60,7 @@
               "sourceAddressPrefix": "*",
               "destinationAddressPrefix": "*",
               "access": "Deny",
-              "priority": 130,
+              "priority": 120,
               "direction": "Inbound"
             }
           ]
@@ -80,39 +68,27 @@
         {
           "name": "ra-ntier-sql-svca-nsg",
           "subnets": [
-            "service-a"
+            "biz"
           ],
           "networkInterfaces": [
           ],
           "securityRules": [
             {
-              "name": "allow-web-traffic-from-external",
-              "description": "Allow web traffic originating externally.",
+              "name": "allow-web-tier-traffic",
+              "description": "Allow web traffic originating from Web Tier.",
               "protocol": "*",
               "sourcePortRange": "*",
               "destinationPortRange": "80",
-              "sourceAddressPrefix": "*",
+              "sourceAddressPrefix": "10.0.1.0/24",
               "destinationAddressPrefix": "*",
               "access": "Allow",
               "priority": 100,
               "direction": "Inbound"
             },
             {
-              "name": "allow-web-traffic-from-vnet",
-              "description": "Allow web traffic originating from vnet.",
-              "protocol": "*",
-              "sourcePortRange": "*",
-              "destinationPortRange": "80",
-              "sourceAddressPrefix": "10.0.0.0/16",
-              "destinationAddressPrefix": "*",
-              "access": "Allow",
-              "priority": 110,
-              "direction": "Inbound"
-            },
-            {
               "name": "allow-mgmt-rdp",
               "direction": "Inbound",
-              "priority": 120,
+              "priority": 110,
               "sourceAddressPrefix": "10.0.0.128/25",
               "destinationAddressPrefix": "*",
               "sourcePortRange": "*",
@@ -129,7 +105,7 @@
               "sourceAddressPrefix": "*",
               "destinationAddressPrefix": "*",
               "access": "Deny",
-              "priority": 130,
+              "priority": 120,
               "direction": "Inbound"
             }
           ]
@@ -137,7 +113,7 @@
         {
           "name": "ra-ntier-sql-svcb-nsg",
           "subnets": [
-            "service-b"
+            "web"
           ],
           "networkInterfaces": [
           ],

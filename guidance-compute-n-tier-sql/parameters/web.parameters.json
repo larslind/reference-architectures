@@ -4,10 +4,10 @@
   "parameters": {
     "loadBalancerSettings": {
       "value": {
-        "name": "service-a-lb",
+        "name": "web-lb",
         "frontendIPConfigurations": [
           {
-            "name": "service-a-lb-fe-config1",
+            "name": "web-lb-fe-config1",
             "loadBalancerType": "public",
             "domainNameLabel": "",
             "internalLoadBalancerSettings": { }
@@ -20,7 +20,7 @@
             "backendPort": 80,
             "protocol": "Tcp",
             "backendPoolName": "lb-bep1",
-            "frontendIPConfigurationName": "service-a-lb-fe-config1",
+            "frontendIPConfigurationName": "web-lb-fe-config1",
             "enableFloatingIP": false,
             "probeName": "lbp1"
           }
@@ -44,8 +44,8 @@
     },
     "virtualMachinesSettings": {
       "value": {
-        "namePrefix": "service-a",
-        "computerNamePrefix": "svca",
+        "namePrefix": "web",
+        "computerNamePrefix": "web",
         "size": "Standard_DS1_v2",
         "adminUsername": "testuser",
         "adminPassword": "AweS0me@PW",
@@ -56,7 +56,7 @@
           {
             "isPublic": "false",
             "isPrimary": "true",
-            "subnetName": "service-a",
+            "subnetName": "web",
             "privateIPAllocationMethod": "dynamic",
             "enableIPForwarding": false,
             "domainNameLabelPrefix": "",
@@ -115,7 +115,7 @@
         ],
         "availabilitySet": {
           "useExistingAvailabilitySet": "No",
-          "name": "service-a-as"
+          "name": "web-as"
         }
       }
     },
