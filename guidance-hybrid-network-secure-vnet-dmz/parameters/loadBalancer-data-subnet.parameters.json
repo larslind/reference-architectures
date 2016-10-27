@@ -5,7 +5,7 @@
     "virtualMachinesSettings": {
       "value": {
         "namePrefix": "ra-dmz-data",
-        "computerNamePrefix": "cn",
+        "computerNamePrefix": "data",
         "size": "Standard_DS1_v2",
         "osType": "linux",
         "adminUsername": "testuser",
@@ -57,7 +57,7 @@
         ],
         "availabilitySet": {
           "useExistingAvailabilitySet": "No",
-          "name": "ra-data-as"
+          "name": "data-as"
         }
       }
     },
