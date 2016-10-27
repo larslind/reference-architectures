@@ -27,7 +27,7 @@
         "localNetworkGateway": {
           "name": "ra-hybrid-vpn-lgw",
           "ipAddress": "40.50.60.70",
-          "addressPrefixes": [ "10.10.0.0/16" ]
+          "addressPrefixes": [ "192.168.0.0/16" ]
         }
       }
     }
