@@ -5,7 +5,7 @@
     "virtualMachinesSettings": {
       "value": {
         "namePrefix": "ra-dmz-biz",
-        "computerNamePrefix": "cn",
+        "computerNamePrefix": "biz",
         "size": "Standard_DS1_v2",
         "osType": "linux",
         "adminUsername": "testuser",
@@ -57,7 +57,7 @@
         ],
         "availabilitySet": {
           "useExistingAvailabilitySet": "No",
-          "name": "ra-biz-as"
+          "name": "biz-as"
         }
       }
     },
@@ -70,7 +70,7 @@
             "loadBalancerType": "internal",
             "domainNameLabel": "",
             "internalLoadBalancerSettings": {
-              "privateIPAddress": "10.0.4.100",
+              "privateIPAddress": "10.0.2.100",
               "subnetName": "biz"
             }
           }

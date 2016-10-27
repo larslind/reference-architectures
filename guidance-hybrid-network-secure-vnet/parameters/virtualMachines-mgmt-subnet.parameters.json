@@ -67,7 +67,7 @@
         ],
         "availabilitySet": {
           "useExistingAvailabilitySet": "No",
-          "name": ""
+          "name": "mgmt-as"
         }
       }
     },
