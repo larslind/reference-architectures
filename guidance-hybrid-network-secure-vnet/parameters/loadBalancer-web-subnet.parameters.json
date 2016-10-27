@@ -5,7 +5,7 @@
     "virtualMachinesSettings": {
       "value": {
         "namePrefix": "ra-dmz-web",
-        "computerNamePrefix": "cn",
+        "computerNamePrefix": "web",
         "size": "Standard_DS1_v2",
         "osType": "linux",
         "adminUsername": "testuser",
@@ -57,7 +57,7 @@
         ],
         "availabilitySet": {
           "useExistingAvailabilitySet": "No",
-          "name": "ra-web-as"
+          "name": "web-as"
         }
       }
     },
@@ -70,7 +70,7 @@
             "loadBalancerType": "internal",
             "domainNameLabel": "",
             "internalLoadBalancerSettings": {
-              "privateIPAddress": "10.0.3.100",
+              "privateIPAddress": "10.0.1.100",
               "subnetName": "web"
             }
           }
