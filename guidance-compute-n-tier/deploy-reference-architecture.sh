@@ -4,7 +4,7 @@ RESOURCE_GROUP_NAME="ra-ntier-cassandra-rg"
 LOCATION="centralus"
 OS_TYPE="linux"
 
-TEMPLATE_ROOT_URI=${TEMPLATE_ROOT_URI:="https://raw.githubusercontent.com/mspnp/template-building-blocks/master/"}
+TEMPLATE_ROOT_URI=${TEMPLATE_ROOT_URI:="https://raw.githubusercontent.com/larslind/template-building-blocks/master/"}
 # Make sure we have a trailing slash
 [[ "${TEMPLATE_ROOT_URI}" != */ ]] && TEMPLATE_ROOT_URI="${TEMPLATE_ROOT_URI}/"
 
